@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>FlattyBird</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <link href="style.css" rel="stylesheet" />
+    <style >
+    .backk{
+    margin-left: 1vh;
+    margin-top: 1vh;
+    margin-bottom:  1vh;
+    }
+    </style>
+  </head>
+
+<body style="background:#141414 ;color:white;">
+  <a href="back.html"><button class="btn btn-danger backk">Back</button></a>
+
+    <!--	 Testing the git command line tool-->
+    <div id="container">
+        <div id="bird"></div>
+        <div id="pole_1" class="pole"></div>
+        <div id="pole_2" class="pole"></div>
+    </div>
+    <div id="score_div">
+        <p><b>Score: </b><span id="score">0</span></p>
+        <p><b>Speed: </b><span id="speed">5</span></p>
+    </div>
+    <div id="help">
+        <p>Player: Use space bar to control the bird</p>
+    </div>
+    <button id="restart_btn">Restart</button>
+    <script src="jquery.min.js"></script>
+    <script src="script_req.js"></script>
+</body>
+
+</html>
