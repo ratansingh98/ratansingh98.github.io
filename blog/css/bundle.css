@@ -1,3 +1,10 @@
+footer {
+    clear: both;
+    position: relative;
+
+    margin-top: -20px;
+}
+
 #slider-wrapper,
 .bxslider {
   width: 100%;
@@ -322,7 +329,7 @@ a {
 }
 
 .bg-nav {
-  background-color: rgba(250, 250, 250, 0.4);
+  background-color: #141414;
 }
 
 .nav-hovered {
@@ -492,7 +499,7 @@ nav .navbar .ozluy-logo .ozluy-zluy {
   position: relative;
   width: 300px;
   height: 100px;
-  background-color: rgba(67, 68, 72, 0.5);
+  background-color: #302e2e;
   border-radius: 5px;
   color: #fff;
   padding: 10px;
@@ -525,11 +532,7 @@ footer {
   height: 75px;
   width: 100%;
   float: left;
-  background: #1a354e;
-  background: -moz-linear-gradient(top, #1a354e 0, #1a354e 80%, #fff 100%);
-  background: -webkit-linear-gradient(top, #1a354e 0, #1a354e 80%, #fff 100%);
-  background: linear-gradient(to bottom, #1a354e 0, #1a354e 80%, #fff 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#1a354e', endColorstr='#ffffff', GradientType=0);
+  background: #1e1d1d;
 }
 
 .note-for-template-likers {
