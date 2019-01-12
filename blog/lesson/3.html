@@ -96,8 +96,11 @@ bytearray, which is one-dimensional:</p>
 <p class="line"><code>byteArray = bytearray(image)</code></p>
 <p>Conversely, provided that bytearray contains bytes in an appropriate order, we can cast
 and then reshape it to get a numpy.array type that is an image:</p>
-<p class="line"><code>grayImage = numpy.array(grayByteArray).reshape(height, width) </code>&nbsp;&nbsp;&nbsp;# Convert Gray Byte array to Gray image's dimension <br><br>
-<code>bgrImage = numpy.array(bgrByteArray).reshape(height, width, 3)</code>&nbsp;&nbsp;&nbsp;# Convert RBG Byte array to color image's dimension
+<p class="line">
+  # Convert Gray Byte array to Gray image's dimension <br>
+  <code>grayImage = numpy.array(grayByteArray).reshape(height, width) </code><br><br>
+# Convert RBG Byte array to color image's dimension<br>
+<code>bgrImage = numpy.array(bgrByteArray).reshape(height, width, 3)</code>
 </p>
 <p> Here 3 in reshape refers to 3rd dimension which contains color for that pixel.<p>
 <p>As a more complete example, let’s convert bytearray, which contains random bytes to a

@@ -79,7 +79,10 @@
       <p>No matter the format, each pixel has a value, but the difference is in how the pixel is
 represented. For example, we can create a black square image from scratch by simply
 creating a 2D NumPy array:</p>
-      <p class="line"><code>img = numpy.zeros((3,3), dtype=numpy.uint8)</code></p>
+      <p class="line">
+        # Create a array with (3,3) with all zeroes<br>
+        <code>img = numpy.zeros((3,3), dtype=numpy.uint8)</code>
+      </p>
       <p>If we print this image to a console, we obtain the following result:</p>
       <p class="line1">array([<br>
         [0, 0, 0],<br>
@@ -88,7 +91,10 @@ creating a 2D NumPy array:</p>
 <p>Each pixel is represented by a single 8-bit integer, which means that the values for each
 pixel are in the 0-255 range.</p>
 <p>Let’s now convert this image into <strong> Blue-green-red (BGR)</strong> using cv2.cvtColor:</p>
-<p class="line"><code>img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)</code> &nbsp;&nbsp;&nbsp;# Convert array of image to Gray</p>
+<p class="line">
+  # Convert array of image to Gray<br>
+  <code>img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
+  </code> </p>
 <p>Let’s observe how the image has changed:</p>
 <p class="line1">array([[[0, 0, 0],<br>
 [0, 0, 0],<br>
@@ -124,9 +130,12 @@ format. Typically, PNG, JPEG, and TIFF should be among the supported formats too
 <p>Images can be loaded from one file format and saved to another. For example, let’s
 convert an image from PNG to JPEG:</p>
 <p class="line">
-  <code>import cv2 </code>&nbsp;&nbsp;&nbsp;# Load Opencv library<br><br>
-  <code>image = cv2.imread('MyPic.png') </code>&nbsp;&nbsp;&nbsp;# Read Image MyPic.png <br>
-  <code>cv2.imwrite('MyPic.jpg', image)</code>&nbsp;&nbsp;&nbsp;# Convert and Write Image to MyPic.jpg <br>
+  # Load Opencv library<br>
+  <code>import cv2 </code><br><br>
+  # Read Image MyPic.png <br>
+  <code>image = cv2.imread('MyPic.png') </code>&nbsp;&nbsp;&nbsp;<br>
+  # Convert and Write Image to MyPic.jpg <br>
+  <code>cv2.imwrite('MyPic.jpg', image)</code>&nbsp;&nbsp;&nbsp;
 </p>
 <p>By default, imread() returns an image in the BGR color format even if the file uses a
 grayscale format. BGR represents the same color space as red-green-blue (RGB), but the
@@ -143,9 +152,13 @@ byte order is reversed.</p>
 <p>For example, let’s load a JPG file as a grayscale image (losing any color information in
 the process), and then, save it as a grayscale JPG image:</p>
 <p class="line">
-  <code>iimport cv2</code> &nbsp;&nbsp;&nbsp;# Load Opencv library<br><br>
-<code>igrayImage = cv2.imread('MyPic.jpg', cv2.IMREAD_GRAYSCALE)</code> &nbsp;&nbsp;&nbsp;# Read Image MyPic.png as Gray Image<br>
-<code>icv2.imwrite('MyPicGray.jpg', grayImage) </code>&nbsp;&nbsp;&nbsp;# Write Image MyPic.png as Gray Image<br></p>
+  # Load Opencv library<br>
+  <code>import cv2</code><br><br>
+# Read Image MyPic.png as Gray Image<br>
+<code>grayImage = cv2.imread('MyPic.jpg', cv2.IMREAD_GRAYSCALE)</code> <br>
+# Write Image MyPic.png as Gray Image<br>
+<code>cv2.imwrite('MyPicGray.jpg', grayImage) </code><br>
+</p>
 <p>Output should look like this :</p>
 <img src="../image/MyPic.jpg" height="150px"/>
 <img src="../image/MyPicGray.jpg" height="150px"/>
@@ -162,11 +175,16 @@ bits per channel, while PNG allows either 8 or 16 bits per channel.</p>
 First argument is a window name which is a string. second argument is our image. You can create as many windows as you wish, but with different window names.
 </p>
 <p class="line">
-  <code>import cv2 </code>&nbsp;&nbsp;&nbsp;# Load Opencv library<br><br>
-  <code>iimage = cv2.imread('MyPic.jpg')</code> &nbsp;&nbsp;&nbsp;# Read Image MyPic.jpg <br>
-  <code>icv2.imshow('My Picture',image) </code>&nbsp;&nbsp;&nbsp;# Display image<br>
-  <code>icv2.waitKey(0)</code> &nbsp;&nbsp;&nbsp;# Wait for a key press to go next line<br>
-  <code>icv2.destroyAllWindows() </code>&nbsp;&nbsp;&nbsp;# Closes image window<br>
+  # Load Opencv library<br>
+  <code>import cv2 </code><br><br>
+  # Read Image MyPic.jpg <br>
+  <code>image = cv2.imread('MyPic.jpg')</code> <br>
+  # Display image<br>
+  <code>cv2.imshow('My Picture',image) </code><br>
+  # Wait for a key press to go next line<br>
+  <code>cv2.waitKey(0)</code><br>
+  # Closes image window<br>
+  <code>cv2.destroyAllWindows() </code>
 </p>
 
     </div>

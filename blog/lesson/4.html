@@ -89,11 +89,15 @@ white pixel.</p>
 
 
 <p class="line">
-  <code>import cv2 </code>&nbsp;&nbsp;&nbsp;# Import OpenCV library<br>
-<code>import numpy as np</code> &nbsp;&nbsp;&nbsp;# Import Numpy library<br><br>
-<code>img = cv2.imread('MyPic.jpg')</code> &nbsp;&nbsp;&nbsp;# Read Image MyPic.jpg<br>
-<code>img[0:250,0:250] = [255, 255, 255] </code>&nbsp;&nbsp;&nbsp;# Convert 0 to 250 pixels from X and Y coordinates to white<br>
-<code>cv2.imwrite('MyPicWhitePixel.jpg', img)</code> &nbsp;&nbsp;&nbsp;# Write Image as MyPicWhitePixel.jpg<br>
+  # Import Neccessary library<br>
+  <code>import cv2 </code><br>
+<code>import numpy as np</code><br><br>
+# Read Image MyPic.jpg<br>
+<code>img = cv2.imread('MyPic.jpg')</code> <br>
+# Convert 0 to 250 pixels from X and Y coordinates to white<br>
+<code>img[0:250,0:250] = [255, 255, 255] </code><br>
+# Write Image as MyPicWhitePixel.jpg<br>
+<code>cv2.imwrite('MyPicWhitePixel.jpg', img)</code> <br>
 </p>
 <p>The output will look like this:</P>
 <img src="../image/MyPic.jpg" height="150px"/>
@@ -110,12 +114,18 @@ returns the value at the index position. Another itemset() method sets the value
 particular channel of a particular pixel to a specified value (itemset() takes two
 arguments: a three-element tuple (x, y, and index) and the new value)</P>
 <p class="line">
-<code>import cv2 </code>&nbsp;&nbsp;&nbsp; # Import OpenCV library<br>
-<code>import numpy as np </code>&nbsp;&nbsp;&nbsp;# Import Numpy library<br><br>
-<code>img = cv2.imread('MyPic.jpg')</code> &nbsp;&nbsp;&nbsp;#Read image named MyPic.jpg<br>
-<code>print(img.item(150, 120, 0)) </code>&nbsp;&nbsp;&nbsp;# Prints the current value of Blue for that pixel<br>
-<code>img.itemset( (150, 120, 0), 255)  </code>&nbsp;&nbsp;&nbsp; # Set the value of Blue for (150,120) pixel to 255<br>
-<code>print(img.item(150, 120, 0)) </code>&nbsp;&nbsp;&nbsp;# Print value of Blue at (150,120) pixel<br>
+  # Import OpenCV library<br>
+<code>import cv2 </code><br>
+# Import Numpy library<br>
+<code>import numpy as np </code><br><br>
+#Read image named MyPic.jpg<br>
+<code>img = cv2.imread('MyPic.jpg')</code> <br>
+# Prints the current value of Blue for that pixel<br>
+<code>print(img.item(150, 120, 0)) </code><br>
+# Set the value of Blue for (150,120) pixel to 255<br>
+<code>img.itemset( (150, 120, 0), 255)  </code><br>
+# Print value of Blue at (150,120) pixel<br>
+<code>print(img.item(150, 120, 0)) </code><br>
 </p>
 <p> The output will be :</p>
 <p class="line1">
@@ -132,12 +142,18 @@ copying a portion of the image over to another position in the image):</p>
 
 
 <p class="line">
-<code>  import cv2 </code>&nbsp;&nbsp;&nbsp; # Import OpenCV library<br>
-<code>import numpy as np  </code>&nbsp;&nbsp;&nbsp;# Import Numpy library<br><br>
-<code>img = cv2.imread('MyPic.jpg') </code> &nbsp;&nbsp;&nbsp;# Read Image named MyPic.jpg<br>
-<code>my_roi = img[0:300, 0:300]</code> &nbsp;&nbsp;&nbsp;# Define region in my_roi <br>
-<code>img[300:600, 300:600] = my_roi  </code>&nbsp;&nbsp;&nbsp;# Replace that region with my_roi <br>
-<code>cv2.imwrite('ROI.jpg', img)</code> &nbsp;&nbsp;&nbsp;# Write Image as ROI.jpg<br>
+  # Import OpenCV library<br>
+<code>  import cv2 </code><br>
+# Import Numpy library<br>
+<code>import numpy as np  </code><br><br>
+# Read Image named MyPic.jpg<br>
+<code>img = cv2.imread('MyPic.jpg') </code> <br>
+# Define region in my_roi <br>
+<code>my_roi = img[0:300, 0:300]</code> <br>
+# Replace that region with my_roi <br>
+<code>img[300:600, 300:600] = my_roi  </code><br>
+# Write Image as ROI.jpg<br>
+<code>cv2.imwrite('ROI.jpg', img)</code> <br>
 </p>
 
 <p>The output will look like this:</P>
@@ -149,12 +165,18 @@ copying a portion of the image over to another position in the image):</p>
 <p>Finally, there are a few interesting details we can obtain from numpy.array, such as the
 image properties using this code:</p>
 <p class="line">
-<code>  import cv2</code>  &nbsp;&nbsp;&nbsp; # Import OpenCV library <br>
-<code>  import numpy as np</code>  &nbsp;&nbsp;&nbsp;# Import Numpy library <br> <br>
-<code>  img = cv2.imread('MyPic.jpg')</code> &nbsp;&nbsp;&nbsp;# Read Image named MyPic.jpg <br>
-<code>  print(img.shape)</code> &nbsp;&nbsp;&nbsp;# Shape of Image array <br>
-<code>  print(img.size)</code> &nbsp;&nbsp;&nbsp;# Size of Image array <br>
-<code>  print(img.dtype)</code> &nbsp;&nbsp;&nbsp;# Data type of Image array <br>
+  # Import OpenCV library <br>
+<code>  import cv2</code>  <br>
+# Import Numpy library <br>
+<code>  import numpy as np</code> <br><br>
+# Read Image named MyPic.jpg <br>
+<code>  img = cv2.imread('MyPic.jpg')</code> <br>
+# Shape of Image array <br>
+<code>  print(img.shape)</code> <br>
+# Size of Image array <br>
+<code>  print(img.size)</code> <br>
+# Data type of Image array <br>
+<code>  print(img.dtype)</code> <br>
 </p>
 
 <ul>
