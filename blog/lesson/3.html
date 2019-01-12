@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>Introduction</title>
+  <title>Random Bytes to grayscale and BGR image</title>
   <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,minimum-scale=1">
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,6 +13,9 @@
   <style>
   .line{
     background-color:  rgba(144, 144, 144, 0.3);
+  }
+  .line1{
+    background-color:  rgba(060, 060, 060, 0.3);
   }
   </style>
 </head>
@@ -54,7 +57,7 @@
       <ul class="bxslider-subpages">
         <li style="background-color:#212020">
           <div class="slider-inner-shell">
-            <div class="slider-detail"><i class="fa fa-book"></i><span>Introduction</span></div>
+            <div class="slider-detail"><i class="fa fa-book"></i><span>Random Bytes to grayscale and BGR image</span></div>
           </div>
         </li>
       </ul>
@@ -62,26 +65,55 @@
   </div>
   <section class="section-about">
     <div class="container">
-      <h2>What is Computer Vision ?</h2>
-      <p>Computer vision is an interdisciplinary field that deals with how computers can be made to gain high-level understanding from digital images or videos.</p>
-      <p>From the perspective of engineering, it seeks to automate tasks that the human visual system can do.</p>
-      <p>Computer vision tasks include methods for acquiring, processing, analyzing and understanding digital images, and extraction of high-dimensional data from the real world in order to produce numerical or symbolic information, e.g., in the forms of decisions.</p>
-      <h2>What is Digital Image Processing ?</h2>
-      <p>Computer vision relies heavily upon and Venn-diagrams with digital image processing, which is also what it sounds like, but it’s different. The following tasks could be said to fall under the scope of digital image processing:</p>
-      <ul>
-        <li><strong>Pattern recognition:</strong> Self-explanatory. Find the regularities.</li>
-        <li><strong>Feature Extraction:</strong> Breaking down an image into distinct features.</li>
-        <li><strong>Classification:</strong> Does this cluster of edges/shapes seem like a car? A dog?</li>
-        <li><strong>Multi-scale signal analysis:</strong> What are some other ways to see this image?</li>
-        <li><strong>Graphical Projection:</strong> How do we represent a 3d object in 2d?</li>
-      </ul>
-      <h2>Prerequisites</h2>
-      <ul>
-      <li>Preferrably Ubuntu with python3.</li>
-      <li>Knowledge of Python.</li>
-      <li>Passion for problem solving.</li>
-      <li>Basic maths.</li>
-    </ul>
+      <h2>Converting between an image and raw bytes</h2>
+      <p>Conceptually, a byte is an integer ranging from 0 to 255. In all real-time graphic
+applications today, a pixel is typically represented by one byte per channel, though other
+representations are also possible.</p>
+<p>An OpenCV image is a 2D or 3D array of the .array type. An 8-bit grayscale image is a
+2D array containing byte values. A 24-bit BGR image is a 3D array, which also contains
+byte values. We may access these values by using an expression, such as image[0, 0] or
+image[0, 0, 0]. The first index is the pixel’s y coordinate or row, 0 being the top. The
+second index is the pixel’s x coordinate or column, 0 being the leftmost. The third index (if
+applicable) represents a color channel.</p>
+<p>For example, in an 8-bit grayscale image with a white pixel in the upper-left corner,
+image[0, 0] is 255. For a 24-bit BGR image with a blue pixel in the upper-left corner,
+image[0, 0] is [255, 0, 0].</p>
+<p>As an <strong>alternative</strong> to using an expression, such as image[0, 0] or image[0, 0] = 128, we
+may use an expression, such as image.item((0, 0)) or image.setitem((0, 0), 128).
+The latter expressions are more efficient for single-pixel operations. However, as we will
+see in subsequent chapters, we usually want to perform operations on large slices of an
+image rather than on single pixels.</p>
+<p>Provided that an image has 8 bits per channel, we can cast it to a standard Python
+bytearray, which is one-dimensional:</p>
+<p class="line">byteArray = bytearray(image)</p>
+<p>Conversely, provided that bytearray contains bytes in an appropriate order, we can cast
+and then reshape it to get a numpy.array type that is an image:</p>
+<p class="line">grayImage = numpy.array(grayByteArray).reshape(height, width) &nbsp;&nbsp;&nbsp;# Convert Gray Byte array to Gray image's dimension <br><br>
+bgrImage = numpy.array(bgrByteArray).reshape(height, width, 3)&nbsp;&nbsp;&nbsp;# Convert RBG Byte array to color image's dimension
+</p>
+<p> Here 3 in reshape refers to 3rd dimension which contains color for that pixel.<p>
+<p>As a more complete example, let’s convert bytearray, which contains random bytes to a
+grayscale image and a BGR image:</p>
+<p class="line">
+  # Import Neccessary libraries.<br>
+  import cv2<br>
+  import numpy<br>
+  import os<br><br>
+  # Make an array of 120,000 random bytes.<br>
+  randomByteArray = bytearray(os.urandom(120000))<br>
+  flatNumpyArray = numpy.array(randomByteArray)<br><br>
+  # Convert the array to make a 400x300 grayscale image.<br>
+  grayImage = flatNumpyArray.reshape(300, 400)<br>
+  cv2.imwrite('RandomGray.png', grayImage)<br><br>
+  # Convert the array to make a 400x100 color image.<br>
+  bgrImage = flatNumpyArray.reshape(100, 400, 3)<br>
+  cv2.imwrite('RandomColor.png', bgrImage)<br>
+</p>
+<p>After running this script, we should have a pair of randomly generated images,
+RandomGray.png and RandomColor.png, in the script’s directory.</p>
+<p>The output should look like this :</p>
+<img src="../image/RandomColor.png" height="150px" width="200px"/>
+<img src="../image/RandomGray.png" height="150px"/>
     </div>
   </section>
   <footer >
