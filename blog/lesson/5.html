@@ -96,7 +96,7 @@ frames from one AVI file and writes them to another with a YUV encoding:
   int(videoCapture.get( cv2.CAP_PROP_FRAME_HEIGHT)))</code> <br>
   # Writing Video in ('I','4','2','0') encoding as MyOutputVid.avi<br>
   <code>videoWriter = cv2.VideoWriter(
-  'MyOutputVid.avi', cv2.VideoWriter_fourcc('I','4','2','0'), fps, size)</code> <br>
+  'MyOutputVid.avi', cv2.VideoWriter_fourcc ('I','4','2','0'), fps, size)</code> <br>
   # Read captured video and store them in success and frame <br>
   <code>success, frame = videoCapture.read()</code> <br>
   # Loop until there are no more frames.<br>
