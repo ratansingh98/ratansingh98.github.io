@@ -10,12 +10,20 @@
   <link href="../css/bundle.css" rel="stylesheet" type="text/css">
   <link href="../icons/css/font-awesome.min.css" rel="stylesheet" type="text/css">
   <link rel="shortcut-icon" href="/assets/icons/favicon.ico">
+  <link rel="icon" href="../icons/icon.png">
   <style>
   .line{
     background-color:  rgba(144, 144, 144, 0.3);
+    border: 1px solid black;
+    padding: 10px;
   }
   .line1{
     background-color:  rgba(060, 060, 060, 0.3);
+    border: 1px solid black;
+    padding: 10px;
+  }
+  code{
+    color: blue;
   }
   </style>
 </head>
@@ -85,29 +93,29 @@ see in subsequent chapters, we usually want to perform operations on large slice
 image rather than on single pixels.</p>
 <p>Provided that an image has 8 bits per channel, we can cast it to a standard Python
 bytearray, which is one-dimensional:</p>
-<p class="line">byteArray = bytearray(image)</p>
+<p class="line"><code>byteArray = bytearray(image)</code></p>
 <p>Conversely, provided that bytearray contains bytes in an appropriate order, we can cast
 and then reshape it to get a numpy.array type that is an image:</p>
-<p class="line">grayImage = numpy.array(grayByteArray).reshape(height, width) &nbsp;&nbsp;&nbsp;# Convert Gray Byte array to Gray image's dimension <br><br>
-bgrImage = numpy.array(bgrByteArray).reshape(height, width, 3)&nbsp;&nbsp;&nbsp;# Convert RBG Byte array to color image's dimension
+<p class="line"><code>grayImage = numpy.array(grayByteArray).reshape(height, width) </code>&nbsp;&nbsp;&nbsp;# Convert Gray Byte array to Gray image's dimension <br><br>
+<code>bgrImage = numpy.array(bgrByteArray).reshape(height, width, 3)</code>&nbsp;&nbsp;&nbsp;# Convert RBG Byte array to color image's dimension
 </p>
 <p> Here 3 in reshape refers to 3rd dimension which contains color for that pixel.<p>
 <p>As a more complete example, let’s convert bytearray, which contains random bytes to a
 grayscale image and a BGR image:</p>
 <p class="line">
   # Import Neccessary libraries.<br>
-  import cv2<br>
-  import numpy<br>
-  import os<br><br>
-  # Make an array of 120,000 random bytes.<br>
-  randomByteArray = bytearray(os.urandom(120000))<br>
-  flatNumpyArray = numpy.array(randomByteArray)<br><br>
+  <code>import cv2</code><br>
+  <code>import numpy</code><br>
+  <code>import os</code><br><br>
+  # Make an array of 120,000 random bytes.</code><br>
+<code>  randomByteArray = bytearray(os.urandom(120000))</code><br>
+  <code>flatNumpyArray = numpy.array(randomByteArray)</code><br><br>
   # Convert the array to make a 400x300 grayscale image.<br>
-  grayImage = flatNumpyArray.reshape(300, 400)<br>
-  cv2.imwrite('RandomGray.png', grayImage)<br><br>
+  <code>grayImage = flatNumpyArray.reshape(300, 400)</code><br>
+  <code>cv2.imwrite('RandomGray.png', grayImage)</code><br><br>
   # Convert the array to make a 400x100 color image.<br>
-  bgrImage = flatNumpyArray.reshape(100, 400, 3)<br>
-  cv2.imwrite('RandomColor.png', bgrImage)<br>
+  <code>bgrImage = flatNumpyArray.reshape(100, 400, 3</code>)<br>
+  <code>cv2.imwrite('RandomColor.png', bgrImage)</code><br>
 </p>
 <p>After running this script, we should have a pair of randomly generated images,
 RandomGray.png and RandomColor.png, in the script’s directory.</p>

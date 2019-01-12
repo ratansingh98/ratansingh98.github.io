@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>Introduction</title>
+  <title>Reading/writing a video file</title>
   <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,minimum-scale=1">
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -65,7 +65,7 @@
       <ul class="bxslider-subpages">
         <li style="background-color:#212020">
           <div class="slider-inner-shell">
-            <div class="slider-detail"><i class="fa fa-book"></i><span>Introduction</span></div>
+            <div class="slider-detail"><i class="fa fa-book"></i><span>Reading/Writing a video file</span></div>
           </div>
         </li>
       </ul>
@@ -73,26 +73,55 @@
   </div>
   <section class="section-about">
     <div class="container">
-      <h2>What is Computer Vision ?</h2>
-      <p>Computer vision is an interdisciplinary field that deals with how computers can be made to gain high-level understanding from digital images or videos.</p>
-      <p>From the perspective of engineering, it seeks to automate tasks that the human visual system can do.</p>
-      <p>Computer vision tasks include methods for acquiring, processing, analyzing and understanding digital images, and extraction of high-dimensional data from the real world in order to produce numerical or symbolic information, e.g., in the forms of decisions.</p>
-      <h2>What is Digital Image Processing ?</h2>
-      <p>Computer vision relies heavily upon and Venn-diagrams with digital image processing, which is also what it sounds like, but it’s different. The following tasks could be said to fall under the scope of digital image processing:</p>
-      <ul>
-        <li><strong>Pattern recognition:</strong> Self-explanatory. Find the regularities.</li>
-        <li><strong>Feature Extraction:</strong> Breaking down an image into distinct features.</li>
-        <li><strong>Classification:</strong> Does this cluster of edges/shapes seem like a car? A dog?</li>
-        <li><strong>Multi-scale signal analysis:</strong> What are some other ways to see this image?</li>
-        <li><strong>Graphical Projection:</strong> How do we represent a 3d object in 2d?</li>
-      </ul>
-      <h2>Prerequisites</h2>
-      <ul>
-      <li>Preferrably Ubuntu with python3.</li>
-      <li>Knowledge of Python and it's numpy library.</li>
-      <li>Passion for problem solving.</li>
-      <li>Basic maths.</li>
-    </ul>
+      <h2>Reading and Writing a video file</h2>
+      <p>OpenCV provides the VideoCapture and VideoWriter classes that support various video
+file formats. The supported formats vary by system but should always include an AVI. Via
+its <strong>read()</strong> method, a VideoCapture class may be polled for new frames until it reaches the
+end of its video file. Each frame is an image in a BGR format.
+</p>
+<p>
+  Conversely, an image may be passed to the <strong> write() </strong> method of the VideoWriter class,
+which appends the image to a file in VideoWriter. Let’s look at an example that reads
+frames from one AVI file and writes them to another with a YUV encoding:
+</P>
+<p class="line">
+  # Import OpenCV library<br>
+  <code>import cv2</code> &nbsp;&nbsp;&nbsp;<br><br>
+  # Loading/Reading Video<br>
+  <code>videoCapture = cv2.VideoCapture('MyInputVid.avi')</code> <br>
+  # Capture Frames<br>
+  <code>fps = videoCapture.get(cv2.CAP_PROP_FPS)</code> <br>
+  # Store width and height of video in size set<br>
+  <code>size = (int(videoCapture.get( cv2.CAP_PROP_FRAME_WIDTH)),
+  int(videoCapture.get( cv2.CAP_PROP_FRAME_HEIGHT)))</code> <br>
+  # Writing Video in ('I','4','2','0') encoding as MyOutputVid.avi<br>
+  <code>videoWriter = cv2.VideoWriter(
+  'MyOutputVid.avi', cv2.VideoWriter_fourcc('I','4','2','0'), fps, size)</code> <br>
+  # Read captured video and store them in success and frame <br>
+  <code>success, frame = videoCapture.read()</code> <br>
+  # Loop until there are no more frames.<br>
+  <code>while success:</code> <br> &nbsp;&nbsp;&nbsp;&nbsp;
+  <code>videoWriter.write(frame)</code> <br>&nbsp;&nbsp;&nbsp;&nbsp;
+  <code>success, frame = videoCapture.read()</code> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</p>
+<p>The arguments to the VideoWriter class constructor deserve special attention. A video’s
+filename must be specified. Any preexisting file with this name is overwritten. A video
+codec must also be specified. The available codecs may vary from system to system.
+These are the options that are included:</P>
+<ul>
+  <li><strong>cv2.VideoWriter_fourcc('I','4','2','0'): </strong>This option is an uncompressed YUV
+encoding, 4:2:0 chroma subsampled. This encoding is widely compatible but
+produces large files. The file extension should be .avi.</li>
+  <li><strong>cv2.VideoWriter_fourcc('P','I','M','1'): </strong> This option is MPEG-1. The file
+extension should be .avi.</li>
+  <li><strong>cv2.VideoWriter_fourcc('X','V','I','D'): </strong> This option is MPEG-4 and a
+preferred option if you want the resulting video size to be average. The file extension
+should be .avi.</li>
+  <li><strong>cv2.VideoWriter_fourcc('T','H','E','O'):</strong> This option is Ogg Vorbis. The file
+extension should be .ogv.</li>
+  <li><strong>cv2.VideoWriter_fourcc('F','L','V','1'):</strong>This option is a Flash video. The file
+extension should be .flv.</li>
+</ul>
     </div>
   </section>
   <footer >

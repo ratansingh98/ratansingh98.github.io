@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Accessing image pixels</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,minimum-scale=1">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu:400,500,700,300&amp;subset=latin-ext" rel="stylesheet" type="text/css">
+  <link href="../css/bundle.css" rel="stylesheet" type="text/css">
+  <link href="../icons/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link rel="shortcut-icon" href="/assets/icons/favicon.ico">
+  <link rel="icon" href="../icons/icon.png">
+  <style>
+  .line{
+    background-color:  rgba(144, 144, 144, 0.3);
+    border: 1px solid black;
+    padding: 10px;
+  }
+  .line1{
+    background-color:  rgba(060, 060, 060, 0.3);
+    border: 1px solid black;
+    padding: 10px;
+  }
+  code{
+    color: blue;
+  }
+  </style>
+</head>
+
+<body>
+  <nav class="bg-nav">
+    <div class="container">
+      <div class="navbar"><a href="../../index.html" class="ozluy-logo">
+            <div class="ozluy-zluy">RSDharra</div></a>
+        <div class="device device--alt">
+          <div class="device__screen">
+            <div id="menu-icon-wrapper2" style="visibility:hidden" class="menu-icon-wrapper">
+              <svg width="1000px" height="1000px">
+                  <path id="pathD" d="M 300 400 L 700 400 C 900 400 900 750 600 850 A 400 400 0 0 1 200 200 L 800 800" style="stroke-dashoffset: 5803.15px; stroke-dasharray: 2901.57px, 2981.57px, 240px;"></path>
+                  <path id="pathE" d="M 300 500 L 700 500" style="stroke-dashoffset: 800px; stroke-dasharray: 400px, 480px, 240px;"></path>
+                  <path id="pathF" d="M 700 600 L 300 600 C 100 600 100 200 400 150 A 400 380 0 1 1 200 800 L 800 200" style="stroke-dashoffset: 6993.11px; stroke-dasharray: 3496.56px, 3576.56px, 240px;"></path>
+                </svg>
+              <button id="menu-icon-trigger2" class="menu-icon-trigger"></button>
+            </div>
+            <div id="dummy2" class="dummy">
+              <div class="dummy__item"></div>
+              <div class="dummy__item"></div>
+              <div class="dummy__item"></div>
+              <div class="dummy__item"></div>
+            </div>
+          </div>
+        </div>
+        <ul class="navbar-links">
+          <li><a href="../../about.html"><i class="mobil-nav-icon fa fa-home"></i>About</a></li>
+          <li><a href="../../work.html"><i class="mobil-nav-icon fa fa-trophy"></i>My Work</a></li>
+          <li><a href="../index.html"><i class="mobil-nav-icon fa fa-book"></i>Blog</a></li>
+          <li><a href="../../contact.html"><i class="mobil-nav-icon fa fa-envelope"></i>Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="home-banner">
+    <div>
+      <ul class="bxslider-subpages">
+        <li style="background-color:#212020">
+          <div class="slider-inner-shell">
+            <div class="slider-detail"><i class="fa fa-book"></i><span>Accessing image pixels</span></div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <section class="section-about">
+    <div class="container">
+      <h2>Changing Pixel color values in image</h2>
+      <p>Now that you have a better understanding of how an image is formed, we can start
+performing basic operations on it. We know that the easiest (and most common) way to
+load an image in OpenCV is to use the imread function. We also know that this will return
+an image, which is really an array (either a 2D or 3D one, depending on the parameters
+you passed to imread()).</p>
+
+<p>The y.array structure is well optimized for array operations, and it allows certain kinds of
+bulk manipulations that are not available in a plain Python list. These kinds of .array
+type-specific operations come in handy for image manipulations in OpenCV. Let’s explore
+image manipulations from the start and step by step though, with a basic example: say you
+want to manipulate a pixel at the coordinates, (0, 0) to (250,250), of a BGR image and turn it into a
+white pixel.</p>
+
+
+<p class="line">
+  <code>import cv2 </code>&nbsp;&nbsp;&nbsp;# Import OpenCV library<br>
+<code>import numpy as np</code> &nbsp;&nbsp;&nbsp;# Import Numpy library<br><br>
+<code>img = cv2.imread('MyPic.jpg')</code> &nbsp;&nbsp;&nbsp;# Read Image MyPic.jpg<br>
+<code>img[0:250,0:250] = [255, 255, 255] </code>&nbsp;&nbsp;&nbsp;# Convert 0 to 250 pixels from X and Y coordinates to white<br>
+<code>cv2.imwrite('MyPicWhitePixel.jpg', img)</code> &nbsp;&nbsp;&nbsp;# Write Image as MyPicWhitePixel.jpg<br>
+</p>
+<p>The output will look like this:</P>
+<img src="../image/MyPic.jpg" height="150px"/>
+<img src="../image/MyPicWhitePixel.jpg" height="150px"/>
+<br><br>
+
+<h2>Changing Pixel color values of one pixel using array </h2>
+<p>Let’s say that you want to change the blue value of a particular pixel, for example, the
+pixel at coordinates, (150, 120). The numpy.array type provides a very handy method,
+item(), which takes three parameters: the x (or left) position, y (or top), and the index
+within the array at (x, y) position (remember that in a BGR image, the data at a certain
+position is a three-element array containing the B, G, and R values in this order) and
+returns the value at the index position. Another itemset() method sets the value of a
+particular channel of a particular pixel to a specified value (itemset() takes two
+arguments: a three-element tuple (x, y, and index) and the new value)</P>
+<p class="line">
+<code>import cv2 </code>&nbsp;&nbsp;&nbsp; # Import OpenCV library<br>
+<code>import numpy as np </code>&nbsp;&nbsp;&nbsp;# Import Numpy library<br><br>
+<code>img = cv2.imread('MyPic.jpg')</code> &nbsp;&nbsp;&nbsp;#Read image named MyPic.jpg<br>
+<code>print(img.item(150, 120, 0)) </code>&nbsp;&nbsp;&nbsp;# Prints the current value of Blue for that pixel<br>
+<code>img.itemset( (150, 120, 0), 255)  </code>&nbsp;&nbsp;&nbsp; # Set the value of Blue for (150,120) pixel to 255<br>
+<code>print(img.item(150, 120, 0)) </code>&nbsp;&nbsp;&nbsp;# Print value of Blue at (150,120) pixel<br>
+</p>
+<p> The output will be :</p>
+<p class="line1">
+  145<br>
+  255<br>
+</p>
+<br>
+<h2> Region Of Interest (ROI) </h2>
+<p>There are a number of interesting things we can do by accessing raw pixels with NumPy’s
+array indexing; one of them is defining regions of interests (ROI). Once the region is
+defined, we can perform a number of operations, namely, binding this region to a variable,
+and then even defining a second region and assigning it the value of the first one (visually
+copying a portion of the image over to another position in the image):</p>
+
+
+<p class="line">
+<code>  import cv2 </code>&nbsp;&nbsp;&nbsp; # Import OpenCV library<br>
+<code>import numpy as np  </code>&nbsp;&nbsp;&nbsp;# Import Numpy library<br><br>
+<code>img = cv2.imread('MyPic.jpg') </code> &nbsp;&nbsp;&nbsp;# Read Image named MyPic.jpg<br>
+<code>my_roi = img[0:300, 0:300]</code> &nbsp;&nbsp;&nbsp;# Define region in my_roi <br>
+<code>img[300:600, 300:600] = my_roi  </code>&nbsp;&nbsp;&nbsp;# Replace that region with my_roi <br>
+<code>cv2.imwrite('ROI.jpg', img)</code> &nbsp;&nbsp;&nbsp;# Write Image as ROI.jpg<br>
+</p>
+
+<p>The output will look like this:</P>
+<img src="../image/MyPic.jpg" height="150px"/>
+<img src="../image/ROI.jpg" height="150px"/>
+<br><br>
+
+<h2> Properties of images</h2>
+<p>Finally, there are a few interesting details we can obtain from numpy.array, such as the
+image properties using this code:</p>
+<p class="line">
+<code>  import cv2</code>  &nbsp;&nbsp;&nbsp; # Import OpenCV library <br>
+<code>  import numpy as np</code>  &nbsp;&nbsp;&nbsp;# Import Numpy library <br> <br>
+<code>  img = cv2.imread('MyPic.jpg')</code> &nbsp;&nbsp;&nbsp;# Read Image named MyPic.jpg <br>
+<code>  print(img.shape)</code> &nbsp;&nbsp;&nbsp;# Shape of Image array <br>
+<code>  print(img.size)</code> &nbsp;&nbsp;&nbsp;# Size of Image array <br>
+<code>  print(img.dtype)</code> &nbsp;&nbsp;&nbsp;# Data type of Image array <br>
+</p>
+
+<ul>
+  <li><strong>Shape : </strong>NumPy returns a tuple containing the width, height, and—if the image is in
+color—the number of channels. This is useful to debug a type of image; if the image
+is monochromatic or grayscale, it will not contain a channel’s value.</li>
+  <li><strong>Size : </strong>: This property refers to the size of an image in pixels.</li>
+  <li><strong>Datatype : </strong>This property refers to the datatype used for an image (normally a
+variation of an unsigned integer type and the bits supported by this type, that is,
+uint8).</li>
+</ul>
+
+    </div>
+  </section>
+  <footer >
+    <div class="container" >
+      <ul class="socials">
+            <li><a target="_blank" href="mailTo:ratan@rsdharra.com" title="ratan@rsdharra.com" class="social-mail"><i class="fa fa-envelope"></i></a></li>
+            <li><a target="_blank" href="https://www.linkedin.com/in/ratan-singh-dharra-198931144/" title="LinkedIn.com/in/ratan-singh-dharra-198931144" class="social-linkedin"><i class="fa fa-linkedin"></i></a></li>
+            <li><a target="_blank" href="https://github.com/ratansingh98" title="Github.com/ratansingh98" class="social-github"><i class="fa fa-github"></i></a></li>
+      </ul>
+      <div class="copyright">Copyright &copy; 2019 <a style="color:yellow;" href = "https://rsdharra.com" target="_blank">Ratan Singh Dharra</a></div>
+    </div>
+  </footer >
+  <div class="google-rainbow">
+    <div class="rainbow-item"></div>
+    <div class="rainbow-item"></div>
+    <div class="rainbow-item"></div>
+    <div class="rainbow-item"></div>
+  </div>
+  <script src="js/bundle.js"></script>
+</body>
+
+</html>

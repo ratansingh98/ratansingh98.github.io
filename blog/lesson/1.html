@@ -10,9 +10,20 @@
   <link href="../css/bundle.css" rel="stylesheet" type="text/css">
   <link href="../icons/css/font-awesome.min.css" rel="stylesheet" type="text/css">
   <link rel="shortcut-icon" href="/assets/icons/favicon.ico">
+  <link rel="icon" href="../icons/icon.png">
   <style>
   .line{
     background-color:  rgba(144, 144, 144, 0.3);
+    border: 1px solid black;
+    padding: 10px;
+  }
+  .line1{
+    background-color:  rgba(060, 060, 060, 0.3);
+    border: 1px solid black;
+    padding: 10px;
+  }
+  code{
+    color: blue;
   }
   </style>
 </head>
@@ -82,8 +93,8 @@
           </div><!-- fragment -->
           <p>Open Python IDLE (or IPython) and type following codes in Python terminal.</p>
           <div class="fragment">
-            <div class="line">import cv2 as cv</div>
-            <div class="line">print(cv.__version__)</div>
+            <div class="line">import cv2 as cv<br>
+            print(cv.__version__)</div>
           </div><!-- fragment -->
           <p>If the results are printed out without any errors, congratulations !!! You have installed OpenCV-Python successfully.</p>
           <p>It is quite easy. But there is a problem with this. Apt repositories may not contain the latest version of OpenCV always. For example, at the time of writing this tutorial, apt repository contains 2.4.8 while latest OpenCV version is
@@ -95,38 +106,38 @@
           <h3>Required build dependencies</h3>
           <p>We need <b>CMake</b> to configure the installation, <b>GCC</b> for compilation, <b>Python-devel</b> and <b>Numpy</b> for building Python bindings etc.</p>
           <div class="fragment">
-            <div class="line">sudo apt-get install cmake</div>
-            <div class="line">sudo apt-get install python-devel numpy</div>
-            <div class="line">sudo apt-get install gcc gcc-c++</div>
+            <div class="line">$ sudo apt-get install cmake<br>
+            $ sudo apt-get install python-devel numpy<br>
+            $ sudo apt-get install gcc gcc-c++</div>
           </div><!-- fragment -->
           <p>Next we need <b>GTK</b> support for GUI features, Camera support (libv4l), Media Support (ffmpeg, gstreamer) etc.</p>
           <div class="fragment">
-            <div class="line">sudo apt-get install gtk2-devel</div>
-            <div class="line">sudo apt-get install libv4l-devel</div>
-            <div class="line">sudo apt-get install ffmpeg-devel</div>
-            <div class="line">sudo apt-get install gstreamer-plugins-base-devel</div>
+            <div class="line">$ sudo apt-get install gtk2-devel<br>
+            $ sudo apt-get install libv4l-devel<br>
+            $ sudo apt-get install ffmpeg-devel<br>
+            $ sudo apt-get install gstreamer-plugins-base-devel</div>
           </div><!-- fragment --><h3>Optional Dependencies</h3>
           <p>Above dependencies are sufficient to install OpenCV in your Ubuntu machine. But depending upon your requirements, you may need some extra dependencies. A list of such optional dependencies are given below. You can either leave it or
             install it, your call :)</p>
           <p>OpenCV comes with supporting files for image formats like PNG, JPEG, JPEG2000, TIFF, WebP etc. But it may be a little old. If you want to get latest libraries, you can install development files for system libraries of these formats.</p>
           <div class="fragment">
-            <div class="line">sudo apt-get install libpng-devel</div>
-            <div class="line">sudo apt-get install libjpeg-turbo-devel</div>
-            <div class="line">sudo apt-get install jasper-devel</div>
-            <div class="line">sudo apt-get install openexr-devel</div>
-            <div class="line">sudo apt-get install libtiff-devel</div>
-            <div class="line">sudo apt-get install libwebp-devel</div>
+            <div class="line">$ sudo apt-get install libpng-devel<br>
+            $ sudo apt-get install libjpeg-turbo-devel<br>
+            $ sudo apt-get install jasper-devel<br>
+            $ sudo apt-get install openexr-devel<br>
+            $ sudo apt-get install libtiff-devel<br>
+            $ sudo apt-get install libwebp-devel</div>
           </div><!-- fragment --><h3>Downloading OpenCV</h3>
           <p>To download the latest source from OpenCV's <a href="https://github.com/opencv/opencv">GitHub Repository</a>. (If you want to contribute to OpenCV choose this. For that, you need to install <b>Git</b> first)</p>
           <div class="fragment">
-            <div class="line">$ sudo apt-get install git</div>
-            <div class="line">$ git clone https://github.com/opencv/opencv.git</div>
+            <div class="line">$ sudo apt-get install git<br>
+            $ git clone https://github.com/opencv/opencv.git</div>
           </div><!-- fragment -->
           <p>It will create a folder "opencv" in current directory. The cloning may take some time depending upon your internet connection.</p>
           <p>Now open a terminal window and navigate to the downloaded "opencv" folder. Create a new "build" folder and navigate to it.</p>
           <div class="fragment">
-            <div class="line">$ mkdir build</div>
-            <div class="line">$ cd build</div>
+            <div class="line">$ mkdir build<br>
+            $ cd build</div>
           </div><!-- fragment --><h3>Configuring and Installing</h3>
           <p>Now we have all the required dependencies, let's install OpenCV. Installation has to be configured with CMake. It specifies which modules are to be installed, installation path, which additional libraries to be used, whether
             documentation and examples to be compiled etc. Most of this work are done automatically with well configured default parameters.</p>
@@ -137,27 +148,27 @@
           <p>OpenCV defaults assume "Release" build type and installation path is "/usr/local". For additional information about CMake options refer to OpenCV C++ compilation guide:</p>
           <p>You should see these lines in your CMake output (they mean that Python is properly found):</p>
           <div class="fragment">
-            <div class="line">-- Python 2:</div>
-            <div class="line">-- Interpreter: /usr/bin/python2.7 (ver 2.7.6)</div>
-            <div class="line">-- Libraries: /usr/lib/x86_64-linux-gnu/libpython2.7.so (ver 2.7.6)</div>
-            <div class="line">-- numpy: /usr/lib/python2.7/dist-packages/numpy/core/include (ver 1.8.2)</div>
-            <div class="line">-- packages path: lib/python2.7/dist-packages</div>
-            <div class="line">--</div>
-            <div class="line">-- Python 3:</div>
-            <div class="line">-- Interpreter: /usr/bin/python3.4 (ver 3.4.3)</div>
-            <div class="line">-- Libraries: /usr/lib/x86_64-linux-gnu/libpython3.4m.so (ver 3.4.3)</div>
-            <div class="line">-- numpy: /usr/lib/python3/dist-packages/numpy/core/include (ver 1.8.2)</div>
-            <div class="line">-- packages path: lib/python3.4/dist-packages</div>
+            <div class="line">-- Python 2:
+            <br>-- Interpreter: /usr/bin/python2.7 (ver 2.7.6)
+            <br>-- Libraries: /usr/lib/x86_64-linux-gnu/libpython2.7.so (ver 2.7.6)
+            <br>-- numpy: /usr/lib/python2.7/dist-packages/numpy/core/include (ver 1.8.2)
+            <br>-- packages path: lib/python2.7/dist-packages
+            <br>--
+            <br>-- Python 3:
+            <br>-- Interpreter: /usr/bin/python3.4 (ver 3.4.3)
+            <br>-- Libraries: /usr/lib/x86_64-linux-gnu/libpython3.4m.so (ver 3.4.3)
+            <br>-- numpy: /usr/lib/python3/dist-packages/numpy/core/include (ver 1.8.2)
+            <br>-- packages path: lib/python3.4/dist-packages</div>
           </div><!-- fragment -->
           <p>Now you build the files using "make" command and install it using "make install" command.</p>
           <div class="fragment">
-            <div class="line">$ make</div>
-            <div class="line"># sudo make install</div>
+            <div class="line">$ make<br>
+            # sudo make install</div>
           </div><!-- fragment -->
           <p>Installation is over. All files are installed in "/usr/local/" folder. Open a Python terminal and try import "cv2".</p>
           <div class="fragment">
-            <div class="line">import cv2 as cv</div>
-            <div class="line">print(cv.__version__)</div>
+            <div class="line">import cv2 as cv<br>
+            print(cv.__version__)</div>
           </div><!-- fragment -->
         </div>
       </div><!-- contents -->

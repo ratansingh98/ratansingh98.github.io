@@ -10,12 +10,20 @@
   <link href="../css/bundle.css" rel="stylesheet" type="text/css">
   <link href="../icons/css/font-awesome.min.css" rel="stylesheet" type="text/css">
   <link rel="shortcut-icon" href="/assets/icons/favicon.ico">
+  <link rel="icon" href="../icons/icon.png">
   <style>
   .line{
     background-color:  rgba(144, 144, 144, 0.3);
+    border: 1px solid black;
+    padding: 10px;
   }
   .line1{
     background-color:  rgba(060, 060, 060, 0.3);
+    border: 1px solid black;
+    padding: 10px;
+  }
+  code{
+    color: blue;
   }
   </style>
 </head>
@@ -71,7 +79,7 @@
       <p>No matter the format, each pixel has a value, but the difference is in how the pixel is
 represented. For example, we can create a black square image from scratch by simply
 creating a 2D NumPy array:</p>
-      <p class="line">img = numpy.zeros((3,3), dtype=numpy.uint8)</p>
+      <p class="line"><code>img = numpy.zeros((3,3), dtype=numpy.uint8)</code></p>
       <p>If we print this image to a console, we obtain the following result:</p>
       <p class="line1">array([<br>
         [0, 0, 0],<br>
@@ -80,7 +88,7 @@ creating a 2D NumPy array:</p>
 <p>Each pixel is represented by a single 8-bit integer, which means that the values for each
 pixel are in the 0-255 range.</p>
 <p>Let’s now convert this image into <strong> Blue-green-red (BGR)</strong> using cv2.cvtColor:</p>
-<p class="line">img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR) &nbsp;&nbsp;&nbsp;# Convert array of image to Gray</p>
+<p class="line"><code>img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)</code> &nbsp;&nbsp;&nbsp;# Convert array of image to Gray</p>
 <p>Let’s observe how the image has changed:</p>
 <p class="line1">array([[[0, 0, 0],<br>
 [0, 0, 0],<br>
@@ -100,8 +108,8 @@ value of the HSV color space has a range of 0-180) and different numbers of chan
 rows, columns, and the number of channels (if there is more than one).</p>
 <p>Consider this example:</p>
 <p class="line">
-  >>> img = numpy.zeros((3,3), dtype=numpy.uint8)<br>
-  >>> img.shape<br>
+  >>> <code>img = numpy.zeros((3,3), dtype=numpy.uint8)</code><br>
+  >>> <code>img.shape</code><br>
 </p>
 <p>The preceding code will print (3,3). If you then converted the image to BGR, the shape
 would be (3,3,3), which indicates the presence of three channels per pixel</p>
@@ -109,16 +117,16 @@ would be (3,3,3), which indicates the presence of three channels per pixel</p>
 
 <br>
 <h2>Reading and Writing Image</h2>
-<p>OpenCV provides the <label class="line">imread()</label> and <label class="line">imwrite()</label> functions that support various file formats
+<p>OpenCV provides the <strong>imread()</strong> and <strong>imwrite()</strong> functions that support various file formats
 for still images. The supported formats vary by system but should always include the BMP
 format. Typically, PNG, JPEG, and TIFF should be among the supported formats too.</p>
 
 <p>Images can be loaded from one file format and saved to another. For example, let’s
 convert an image from PNG to JPEG:</p>
 <p class="line">
-  import cv2 &nbsp;&nbsp;&nbsp;# Load Opencv library<br><br>
-  image = cv2.imread('MyPic.png') &nbsp;&nbsp;&nbsp;# Read Image MyPic.png <br>
-  cv2.imwrite('MyPic.jpg', image)&nbsp;&nbsp;&nbsp;# Convert and Write Image to MyPic.jpg <br>
+  <code>import cv2 </code>&nbsp;&nbsp;&nbsp;# Load Opencv library<br><br>
+  <code>image = cv2.imread('MyPic.png') </code>&nbsp;&nbsp;&nbsp;# Read Image MyPic.png <br>
+  <code>cv2.imwrite('MyPic.jpg', image)</code>&nbsp;&nbsp;&nbsp;# Convert and Write Image to MyPic.jpg <br>
 </p>
 <p>By default, imread() returns an image in the BGR color format even if the file uses a
 grayscale format. BGR represents the same color space as red-green-blue (RGB), but the
@@ -135,9 +143,9 @@ byte order is reversed.</p>
 <p>For example, let’s load a JPG file as a grayscale image (losing any color information in
 the process), and then, save it as a grayscale JPG image:</p>
 <p class="line">
-  import cv2 &nbsp;&nbsp;&nbsp;# Load Opencv library<br><br>
-grayImage = cv2.imread('MyPic.jpg', cv2.IMREAD_GRAYSCALE) &nbsp;&nbsp;&nbsp;# Read Image MyPic.png as Gray Image<br>
-cv2.imwrite('MyPicGray.jpg', grayImage) &nbsp;&nbsp;&nbsp;# Write Image MyPic.png as Gray Image<br></p>
+  <code>iimport cv2</code> &nbsp;&nbsp;&nbsp;# Load Opencv library<br><br>
+<code>igrayImage = cv2.imread('MyPic.jpg', cv2.IMREAD_GRAYSCALE)</code> &nbsp;&nbsp;&nbsp;# Read Image MyPic.png as Gray Image<br>
+<code>icv2.imwrite('MyPicGray.jpg', grayImage) </code>&nbsp;&nbsp;&nbsp;# Write Image MyPic.png as Gray Image<br></p>
 <p>Output should look like this :</p>
 <img src="../image/MyPic.jpg" height="150px"/>
 <img src="../image/MyPicGray.jpg" height="150px"/>
@@ -147,6 +155,20 @@ cv2.imwrite('MyPicGray.jpg', grayImage) &nbsp;&nbsp;&nbsp;# Write Image MyPic.pn
 imwrite() function requires an image to be in the BGR or grayscale format with a certain
 number of bits per channel that the output format can support. For example, bmp requires 8
 bits per channel, while PNG allows either 8 or 16 bits per channel.</p>
+<br>
+
+<h2>Displaying Images</h2>
+<p>Use the function <strong>cv2.imshow()</strong> to display an image in a window. The window automatically fits to the image size.<br>
+First argument is a window name which is a string. second argument is our image. You can create as many windows as you wish, but with different window names.
+</p>
+<p class="line">
+  <code>import cv2 </code>&nbsp;&nbsp;&nbsp;# Load Opencv library<br><br>
+  <code>iimage = cv2.imread('MyPic.jpg')</code> &nbsp;&nbsp;&nbsp;# Read Image MyPic.jpg <br>
+  <code>icv2.imshow('My Picture',image) </code>&nbsp;&nbsp;&nbsp;# Display image<br>
+  <code>icv2.waitKey(0)</code> &nbsp;&nbsp;&nbsp;# Wait for a key press to go next line<br>
+  <code>icv2.destroyAllWindows() </code>&nbsp;&nbsp;&nbsp;# Closes image window<br>
+</p>
+
     </div>
   </section>
   <footer >
