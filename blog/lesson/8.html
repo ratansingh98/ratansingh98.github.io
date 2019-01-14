@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>Random Bytes to grayscale and BGR image</title>
+  <title>High pass filter</title>
   <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,minimum-scale=1">
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -65,7 +65,7 @@
       <ul class="bxslider-subpages">
         <li style="background-color:#212020">
           <div class="slider-inner-shell">
-            <div class="slider-detail"><i class="fa fa-book"></i><span>Random Bytes to grayscale and BGR image</span></div>
+            <div class="slider-detail"><i class="fa fa-book"></i><span>High pass filter</span></div>
           </div>
         </li>
       </ul>
@@ -73,58 +73,82 @@
   </div>
   <section class="section-about">
     <div class="container">
-      <h2>Converting between an image and raw bytes</h2>
-      <p>Conceptually, a byte is an integer ranging from 0 to 255. In all real-time graphic
-applications today, a pixel is typically represented by one byte per channel, though other
-representations are also possible.</p>
-<p>An OpenCV image is a 2D or 3D array of the .array type. An 8-bit grayscale image is a
-2D array containing byte values. A 24-bit BGR image is a 3D array, which also contains
-byte values. We may access these values by using an expression, such as image[0, 0] or
-image[0, 0, 0]. The first index is the pixel’s y coordinate or row, 0 being the top. The
-second index is the pixel’s x coordinate or column, 0 being the leftmost. The third index (if
-applicable) represents a color channel.</p>
-<p>For example, in an 8-bit grayscale image with a white pixel in the upper-left corner,
-image[0, 0] is 255. For a 24-bit BGR image with a blue pixel in the upper-left corner,
-image[0, 0] is [255, 0, 0].</p>
-<p>As an <strong>alternative</strong> to using an expression, such as image[0, 0] or image[0, 0] = 128, we
-may use an expression, such as image.item((0, 0)) or image.setitem((0, 0), 128).
-The latter expressions are more efficient for single-pixel operations. However, as we will
-see in subsequent chapters, we usually want to perform operations on large slices of an
-image rather than on single pixels.</p>
-<p>Provided that an image has 8 bits per channel, we can cast it to a standard Python
-bytearray, which is one-dimensional:</p>
-<p class="line"><code>byteArray = bytearray(image)</code></p>
-<p>Conversely, provided that bytearray contains bytes in an appropriate order, we can cast
-and then reshape it to get a numpy.array type that is an image:</p>
-<p class="line">
-  # Convert Gray Byte array to Gray image's dimension <br>
-  <code>grayImage = numpy.array(grayByteArray).reshape(height, width) </code><br><br>
-# Convert RBG Byte array to color image's dimension<br>
-<code>bgrImage = numpy.array(bgrByteArray).reshape(height, width, 3)</code>
+      <h2>High pass filter</h2>
+
+      <p>A <strong>high pass filter (HPF)</strong> is a filter that examines a region of an image and boosts the
+intensity of certain pixels based on the difference in the intensity with the surrounding
+pixels
 </p>
-<p> Here 3 in reshape refers to 3rd dimension which contains color for that pixel.<p>
-<p>As a more complete example, let’s convert bytearray, which contains random bytes to a
-grayscale image and a BGR image:</p>
-<p class="line">
-  # Import Necessary libraries.<br>
+<p>
+Take, for example, the following kernel:<br>
+[[0, -0.25, 0],<br>
+[-0.25, 1, -0.25],<br>
+[0, -0.25, 0]]<br>
+</p>
+
+<p>
+  A kernel is a set of weights that are applied to a region in a source image to generate a
+single pixel in the destination image. For example, a ksize of 7 implies that 49 (7 x 7)
+source pixels are considered in generating each destination pixel. We can think of a kernel
+as a piece of frosted glass moving over the source image and letting through a diffused
+blend of the source’s light.</p>
+<p>
+  After calculating the sum of differences of the intensities of the central pixel compared to
+all the immediate neighbors, the intensity of the central pixel will be boosted (or not) if a
+high level of changes are found. In other words, if a pixel stands out from the surrounding
+pixels, it will get boosted.</P>
+<p>
+  This is particularly effective in edge detection, where a common form of HPF called high
+boost filter is used
+</p>
+<p>Both high pass and low pass filters use a property called radius, which extends the area of
+the neighbors involved in the filter calculation.
+</p>
+<p><strong>Example :</strong></p>
+
+  <p class="line">
+    # Import Necessary library<br>
+
   <code>import cv2</code><br>
-  <code>import numpy</code><br>
-  <code>import os</code><br><br>
-  # Make an array of 120,000 random bytes.</code><br>
-<code>  randomByteArray = bytearray(os.urandom(120000))</code><br>
-  <code>flatNumpyArray = numpy.array(randomByteArray)</code><br><br>
-  # Convert the array to make a 400x300 grayscale image.<br>
-  <code>grayImage = flatNumpyArray.reshape(300, 400)</code><br>
-  <code>cv2.imwrite('RandomGray.png', grayImage)</code><br><br>
-  # Convert the array to make a 400x100 color image.<br>
-  <code>bgrImage = flatNumpyArray.reshape(100, 400, 3</code>)<br>
-  <code>cv2.imwrite('RandomColor.png', bgrImage)</code><br>
+  <code>import numpy as np</code><br>
+  <code>from scipy import ndimage</code><br><br>
+  # Create a 3x3 Kernel <br>
+  <code>kernel_3x3 = np.array(<br>[[-1, -1, -1],<br>
+  [-1, 8, -1],<br>
+  [-1, -1, -1]])</code><br>
+  # Create a 5x5 Kernel<br>
+  <code>kernel_5x5 = np.array(<br>[[-1, -1, -1, -1, -1],<br>
+  [-1, 1, 2, 1, -1],<br>
+  [-1, 2, 4, 2, -1],<br>
+  [-1, 1, 2, 1, -1],<br>
+  [-1, -1, -1, -1, -1]])</code><br>
+  # Read MyPic.jpg from system as grayscale<br>
+  <code>img = cv2.imread("MyPic.jpg", 0)</code><br>
+  # Apply convolution between image and kernel_3x3 <br>
+  <code>k3 = ndimage.convolve(img, kernel_3x3)</code><br>
+  # Apply convolution between image and kernel_5x5 <br>
+  <code>k5 = ndimage.convolve(img, kernel_5x5)</code><br>
+  # Apply GaussianBlur <br>
+  <code>blurred = cv2.GaussianBlur(img, (11,11), 0)</code><br>
+  # Create Gaussian HPF <br>
+  <code>g_hpf = img - blurred</code><br>
+  # Store all the image <br>
+  <code>cv2.imwrite("3x3.jpg", k3)</code><br>
+  <code>cv2.imwrite("5x5.jpg", k5)</code><br>
+  <code>cv2.imwrite("g_hpf.jpg", g_hpf)</code><br>
+  </p>
+<p><strong>Our input Image:</strong></p>
+<img src="../image/MyPic.jpg" height="150px"/>
+<p><strong>Output Image for kernel_3x3,kernel_5x5 and g_hpf respectively </strong></p>
+<img src="../image/3x3.jpg" height="150px"/>
+<img src="../image/5x5.jpg" height="150px"/>
+<img src="../image/g_hpf.jpg" height="150px"/>
+<p>
+  After the initial imports, we define a 3x3 kernel and a 5x5 kernel, and then we load the
+image in grayscale. Normally, the majority of image processing is done with NumPy;
+however, in this particular case, we want to “convolve” an image with a given kernel and
+NumPy happens to only accept one-dimensional arrays.
 </p>
-<p>After running this script, we should have a pair of randomly generated images,
-RandomGray.png and RandomColor.png, in the script’s directory.</p>
-<p>The output should look like this :</p>
-<img src="../image/RandomColor.png" height="150px" width="200px"/>
-<img src="../image/RandomGray.png" height="150px"/>
     </div>
   </section>
   <footer >

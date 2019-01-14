@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Capturing camera frames</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,minimum-scale=1">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu:400,500,700,300&amp;subset=latin-ext" rel="stylesheet" type="text/css">
+  <link href="../css/bundle.css" rel="stylesheet" type="text/css">
+  <link href="../icons/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link rel="shortcut-icon" href="/assets/icons/favicon.ico">
+  <link rel="icon" href="../icons/icon.png">
+  <style>
+  .line{
+    background-color:  rgba(144, 144, 144, 0.3);
+    border: 1px solid black;
+    padding: 10px;
+  }
+  .line1{
+    background-color:  rgba(060, 060, 060, 0.3);
+    border: 1px solid black;
+    padding: 10px;
+  }
+  code{
+    color: blue;
+  }
+  </style>
+</head>
+
+<body>
+  <nav class="bg-nav">
+    <div class="container">
+      <div class="navbar"><a href="../../index.html" class="ozluy-logo">
+            <div class="ozluy-zluy">RSDharra</div></a>
+        <div class="device device--alt">
+          <div class="device__screen">
+            <div id="menu-icon-wrapper2" style="visibility:hidden" class="menu-icon-wrapper">
+              <svg width="1000px" height="1000px">
+                  <path id="pathD" d="M 300 400 L 700 400 C 900 400 900 750 600 850 A 400 400 0 0 1 200 200 L 800 800" style="stroke-dashoffset: 5803.15px; stroke-dasharray: 2901.57px, 2981.57px, 240px;"></path>
+                  <path id="pathE" d="M 300 500 L 700 500" style="stroke-dashoffset: 800px; stroke-dasharray: 400px, 480px, 240px;"></path>
+                  <path id="pathF" d="M 700 600 L 300 600 C 100 600 100 200 400 150 A 400 380 0 1 1 200 800 L 800 200" style="stroke-dashoffset: 6993.11px; stroke-dasharray: 3496.56px, 3576.56px, 240px;"></path>
+                </svg>
+              <button id="menu-icon-trigger2" class="menu-icon-trigger"></button>
+            </div>
+            <div id="dummy2" class="dummy">
+              <div class="dummy__item"></div>
+              <div class="dummy__item"></div>
+              <div class="dummy__item"></div>
+              <div class="dummy__item"></div>
+            </div>
+          </div>
+        </div>
+        <ul class="navbar-links">
+          <li><a href="../../about.html"><i class="mobil-nav-icon fa fa-home"></i>About</a></li>
+          <li><a href="../../work.html"><i class="mobil-nav-icon fa fa-trophy"></i>My Work</a></li>
+          <li><a href="../index.html"><i class="mobil-nav-icon fa fa-book"></i>Blog</a></li>
+          <li><a href="../../contact.html"><i class="mobil-nav-icon fa fa-envelope"></i>Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="home-banner">
+    <div>
+      <ul class="bxslider-subpages">
+        <li style="background-color:#212020">
+          <div class="slider-inner-shell">
+            <div class="slider-detail"><i class="fa fa-book"></i><span>Capturing Camera Frames</span></div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <section class="section-about">
+    <div class="container">
+      <h2>Capturing Camera Frames</h2>
+
+      <p>OpenCV allows named windows to be created, redrawn, and destroyed using the
+<strong>namedWindow(), imshow(),</strong> and <strong>destroyWindow()</strong> functions. Also, any window may
+capture keyboard input via the <strong>waitKey()</strong> function and mouse input via the
+<strong>setMouseCallback() </strong>function. Let’s look at an example where we show the frames of a
+live camera input:
+</p>
+
+
+<p class="line">
+  # Import OpenCV library<br>
+
+  <code>import cv2</code><br><br>
+  # Initialise clicked to false<br>
+  <code>clicked = False</code><br>
+  # This function change clicked variable value to true when mouse is clicked<br>
+  <code>def onMouse(event, x, y, flags, param):</code><br>
+  <code>&nbsp;&nbsp;&nbsp;&nbsp;global clicked</code><br>
+  <code>&nbsp;&nbsp;&nbsp;&nbsp;if event == cv2.EVENT_LBUTTONUP:</code><br>
+  <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;clicked = True</code><br>
+  # Create a video caputure instance<br>
+  <code>cameraCapture = cv2.VideoCapture(0)</code><br>
+  # Create window named MyWindow<br>
+  <code>cv2.namedWindow('MyWindow')</code><br>
+  # Set onMouse function to window<br>
+  <code>cv2.setMouseCallback('MyWindow', onMouse)</code><br>
+  <code>print('Showing camera feed. Click window or press any key to stop.')</code><br>
+  # Read captured video and store them in success and frame<br>
+  <code>success, frame = cameraCapture.read()</code><br>
+  # Loop until key is not pressed or Mouse is not clicked <br>
+  <code>while success and cv2.waitKey(1) == -1 and not clicked:</code><br>
+  <code>&nbsp;&nbsp;&nbsp;&nbsp;cv2.imshow('MyWindow', frame)</code><br>
+  <code>&nbsp;&nbsp;&nbsp;&nbsp;success, frame = cameraCapture.read()</code><br>
+  # Close window.<br>
+  <code>cv2.destroyWindow('MyWindow')</code><br>
+  # Clear cameraCapture instance<br>
+  <code>cameraCapture.release()</code><br>
+</p>
+
+
+<p>
+  The argument for <strong>waitKey()</strong> is a number of milliseconds to wait for keyboard input. The
+return value is either -1 (meaning that no key has been pressed) or an ASCII keycode,
+such as 27 for Esc.
+</p>
+<p>The mouse callback passed to <strong>setMouseCallback()</strong> should take five arguments, as seen in
+our code sample. The callback’s param argument is set as an optional third argument to
+<strong>setMouseCallback()</strong>. By default, it is 0. The callback’s event argument is one of the
+following actions:
+</p>
+<ul>
+  <li> <strong>cv2.EVENT_MOUSEMOVE: </strong>This event refers to mouse movement</li>
+  <li> <strong>cv2.EVENT_LBUTTONDOWN: </strong>This event refers to the left button down</li>
+  <li> <strong>cv2.EVENT_RBUTTONDOWN: </strong>This refers to the right button down</li>
+  <li> <strong>cv2.EVENT_MBUTTONDOWN: </strong>This refers to the middle button down</li>
+  <li> <strong>cv2.EVENT_LBUTTONUP: </strong>This refers to the left button up</li>
+  <li> <strong>cv2.EVENT_RBUTTONUP: </strong>This event refers to the right button up</li>
+  <li> <strong>cv2.EVENT_MBUTTONUP:  </strong>This event refers to the middle button up</li>
+  <li> <strong>cv2.EVENT_LBUTTONDBLCLK: </strong>This event refers to the left button being double-clicked</li>
+  <li> <strong>cv2.EVENT_RBUTTONDBLCLK: </strong>This refers to the right button being double-clicked</li>
+  <li> <strong>cv2.EVENT_MBUTTONDBLCLK: </strong>This refers to the middle button being double-clicked</li>
+</ul>
+<p>The mouse callback’s flags argument may be some bitwise combination of the following
+events:
+</p>
+<ul>
+  <li> <strong>cv2.EVENT_FLAG_LBUTTON:  </strong>This event refers to the left button being pressed</li>
+  <li> <strong>cv2.EVENT_FLAG_RBUTTON:  </strong>This event refers to the right button being pressed</li>
+  <li> <strong>cv2.EVENT_FLAG_MBUTTON: </strong> This event refers to the middle button being pressed</li>
+  <li> <strong>cv2.EVENT_FLAG_CTRLKEY: </strong>This event refers to the Ctrl key being pressed</li>
+  <li> <strong>cv2.EVENT_FLAG_SHIFTKEY: </strong>This event refers to the Shift key being pressed</li>
+  <li> <strong>cv2.EVENT_FLAG_ALTKEY: </strong>This event refers to the Alt key being pressed</li>
+</ul>
+    </div>
+  </section>
+  <footer >
+    <div class="container" >
+      <ul class="socials">
+            <li><a target="_blank" href="mailTo:ratan@rsdharra.com" title="ratan@rsdharra.com" class="social-mail"><i class="fa fa-envelope"></i></a></li>
+            <li><a target="_blank" href="https://www.linkedin.com/in/ratan-singh-dharra-198931144/" title="LinkedIn.com/in/ratan-singh-dharra-198931144" class="social-linkedin"><i class="fa fa-linkedin"></i></a></li>
+            <li><a target="_blank" href="https://github.com/ratansingh98" title="Github.com/ratansingh98" class="social-github"><i class="fa fa-github"></i></a></li>
+      </ul>
+      <div class="copyright">Copyright &copy; 2019 <a style="color:yellow;" href = "https://rsdharra.com" target="_blank">Ratan Singh Dharra</a></div>
+    </div>
+  </footer >
+  <div class="google-rainbow">
+    <div class="rainbow-item"></div>
+    <div class="rainbow-item"></div>
+    <div class="rainbow-item"></div>
+    <div class="rainbow-item"></div>
+  </div>
+  <script src="js/bundle.js"></script>
+</body>
+
+</html>

@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>Random Bytes to grayscale and BGR image</title>
+  <title>Capturing camera frames</title>
   <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,minimum-scale=1">
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -65,7 +65,7 @@
       <ul class="bxslider-subpages">
         <li style="background-color:#212020">
           <div class="slider-inner-shell">
-            <div class="slider-detail"><i class="fa fa-book"></i><span>Random Bytes to grayscale and BGR image</span></div>
+            <div class="slider-detail"><i class="fa fa-book"></i><span>Capturing Camera Frames</span></div>
           </div>
         </li>
       </ul>
@@ -73,58 +73,41 @@
   </div>
   <section class="section-about">
     <div class="container">
-      <h2>Converting between an image and raw bytes</h2>
-      <p>Conceptually, a byte is an integer ranging from 0 to 255. In all real-time graphic
-applications today, a pixel is typically represented by one byte per channel, though other
-representations are also possible.</p>
-<p>An OpenCV image is a 2D or 3D array of the .array type. An 8-bit grayscale image is a
-2D array containing byte values. A 24-bit BGR image is a 3D array, which also contains
-byte values. We may access these values by using an expression, such as image[0, 0] or
-image[0, 0, 0]. The first index is the pixel’s y coordinate or row, 0 being the top. The
-second index is the pixel’s x coordinate or column, 0 being the leftmost. The third index (if
-applicable) represents a color channel.</p>
-<p>For example, in an 8-bit grayscale image with a white pixel in the upper-left corner,
-image[0, 0] is 255. For a 24-bit BGR image with a blue pixel in the upper-left corner,
-image[0, 0] is [255, 0, 0].</p>
-<p>As an <strong>alternative</strong> to using an expression, such as image[0, 0] or image[0, 0] = 128, we
-may use an expression, such as image.item((0, 0)) or image.setitem((0, 0), 128).
-The latter expressions are more efficient for single-pixel operations. However, as we will
-see in subsequent chapters, we usually want to perform operations on large slices of an
-image rather than on single pixels.</p>
-<p>Provided that an image has 8 bits per channel, we can cast it to a standard Python
-bytearray, which is one-dimensional:</p>
-<p class="line"><code>byteArray = bytearray(image)</code></p>
-<p>Conversely, provided that bytearray contains bytes in an appropriate order, we can cast
-and then reshape it to get a numpy.array type that is an image:</p>
-<p class="line">
-  # Convert Gray Byte array to Gray image's dimension <br>
-  <code>grayImage = numpy.array(grayByteArray).reshape(height, width) </code><br><br>
-# Convert RBG Byte array to color image's dimension<br>
-<code>bgrImage = numpy.array(bgrByteArray).reshape(height, width, 3)</code>
+      <h2>Capturing Camera Frames</h2>
+
+      <p>A stream of camera frames is represented by the VideoCapture class too. However, for a
+camera, we construct a VideoCapture class by passing the camera’s device index instead
+of a video’s filename. Let’s consider an example that captures 10 seconds of video from a
+camera and writes it to an AVI file:
 </p>
-<p> Here 3 in reshape refers to 3rd dimension which contains color for that pixel.<p>
-<p>As a more complete example, let’s convert bytearray, which contains random bytes to a
-grayscale image and a BGR image:</p>
+
 <p class="line">
-  # Import Necessary libraries.<br>
-  <code>import cv2</code><br>
-  <code>import numpy</code><br>
-  <code>import os</code><br><br>
-  # Make an array of 120,000 random bytes.</code><br>
-<code>  randomByteArray = bytearray(os.urandom(120000))</code><br>
-  <code>flatNumpyArray = numpy.array(randomByteArray)</code><br><br>
-  # Convert the array to make a 400x300 grayscale image.<br>
-  <code>grayImage = flatNumpyArray.reshape(300, 400)</code><br>
-  <code>cv2.imwrite('RandomGray.png', grayImage)</code><br><br>
-  # Convert the array to make a 400x100 color image.<br>
-  <code>bgrImage = flatNumpyArray.reshape(100, 400, 3</code>)<br>
-  <code>cv2.imwrite('RandomColor.png', bgrImage)</code><br>
+  # Import OpenCV library<br>
+  <code>import cv2</code><br><br>
+
+  # Create a video caputure instance<br>
+  <code>cameraCapture = cv2.VideoCapture(0)</code><br>
+  # An assumption that our camera have 30fps quality<br>
+  <code>fps = 30 </code><br>
+  # Store width and height of video in size set<br>
+  <code>size = (int(cameraCapture.get( cv2.CAP_PROP_FRAME_WIDTH)) ,
+  int(cameraCapture.get( cv2.CAP_PROP_FRAME_HEIGHT)))</code><br>
+  # Writing Video in ('I','4','2','0') encoding as MyOutputVid.avi<br>
+  <code>videoWriter = cv2.VideoWriter(
+  'MyOutputVid.avi', cv2.VideoWriter_fourcc( 'I','4','2','0'), fps, size)</code><br>
+  # Read captured video and store them in success and frame <br>
+  <code>success, frame = cameraCapture.read()</code><br>
+  # Calculate number of frames required for 10 sec<br>
+  <code>numFramesRemaining = 10 * fps - 1</code><br>
+  # Loop until there are no more frames left.<br>
+  <code>while success and numFramesRemaining > 0:</code><br>
+  <code>&nbsp;&nbsp;&nbsp;&nbsp;videoWriter.write(frame)</code><br>
+  <code>&nbsp;&nbsp;&nbsp;&nbsp;success, frame = cameraCapture.read()</code><br>
+  <code>&nbsp;&nbsp;&nbsp;&nbsp;numFramesRemaining -= 1</code><br>
+  # Erase camera Capture instance<br>
+  <code>cameraCapture.release()</code><br>
 </p>
-<p>After running this script, we should have a pair of randomly generated images,
-RandomGray.png and RandomColor.png, in the script’s directory.</p>
-<p>The output should look like this :</p>
-<img src="../image/RandomColor.png" height="150px" width="200px"/>
-<img src="../image/RandomGray.png" height="150px"/>
+
     </div>
   </section>
   <footer >
