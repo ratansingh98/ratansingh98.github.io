@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Low Pass filter</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,minimum-scale=1">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu:400,500,700,300&amp;subset=latin-ext" rel="stylesheet" type="text/css">
+  <link href="../css/bundle.css" rel="stylesheet" type="text/css">
+  <link href="../icons/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link rel="shortcut-icon" href="/assets/icons/favicon.ico">
+  <link rel="icon" href="../icons/logo.png">
+  <style>
+    .line {
+      background-color: rgba(144, 144, 144, 0.3);
+      border: 1px solid black;
+      padding: 10px;
+    }
+
+    .line1 {
+      background-color: rgba(060, 060, 060, 0.3);
+      border: 1px solid black;
+      padding: 10px;
+    }
+
+    code {
+      color: blue;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="bg-nav">
+    <div class="container">
+      <div class="navbar"><a href="../../index.html" class="ozluy-logo">
+            <div class="ozluy-zluy">RSDharra</div></a>
+        <div class="device device--alt">
+          <div class="device__screen">
+            <div id="menu-icon-wrapper2" style="visibility:hidden" class="menu-icon-wrapper">
+              <svg width="1000px" height="1000px">
+                  <path id="pathD" d="M 300 400 L 700 400 C 900 400 900 750 600 850 A 400 400 0 0 1 200 200 L 800 800" style="stroke-dashoffset: 5803.15px; stroke-dasharray: 2901.57px, 2981.57px, 240px;"></path>
+                  <path id="pathE" d="M 300 500 L 700 500" style="stroke-dashoffset: 800px; stroke-dasharray: 400px, 480px, 240px;"></path>
+                  <path id="pathF" d="M 700 600 L 300 600 C 100 600 100 200 400 150 A 400 380 0 1 1 200 800 L 800 200" style="stroke-dashoffset: 6993.11px; stroke-dasharray: 3496.56px, 3576.56px, 240px;"></path>
+                </svg>
+              <button id="menu-icon-trigger2" class="menu-icon-trigger"></button>
+            </div>
+            <div id="dummy2" class="dummy">
+              <div class="dummy__item"></div>
+              <div class="dummy__item"></div>
+              <div class="dummy__item"></div>
+              <div class="dummy__item"></div>
+            </div>
+          </div>
+        </div>
+        <ul class="navbar-links">
+          <li><a href="../../about.html"><i class="mobil-nav-icon fa fa-home"></i>About</a></li>
+          <li><a href="../../work.html"><i class="mobil-nav-icon fa fa-trophy"></i>My Work</a></li>
+          <li><a href="../index.html"><i class="mobil-nav-icon fa fa-book"></i>Blog</a></li>
+          <li><a href="../../contact.html"><i class="mobil-nav-icon fa fa-envelope"></i>Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="home-banner">
+    <div>
+      <ul class="bxslider-subpages">
+        <li style="background-color:#212020">
+          <div class="slider-inner-shell">
+            <div class="slider-detail"><i class="fa fa-book"></i><span>Low Pass Filter</span></div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <section class="section-about">
+    <div class="container">
+
+      <h2>Low Pass Filter</h2>
+
+      <p>
+        As in one-dimensional signals, images also can be filtered with various low-pass filters(LPF), high-pass filters(HPF) etc. LPF helps in removing noises, blurring the images etc.
+      </p>
+      <p>
+        OpenCV provides a function <strong>cv2.filter2D()</strong> to convolve a kernel with an image. As an example, we will try an averaging filter on an image. A 5x5 averaging filter kernel will look like below:
+</p>
+
+        <p>
+      K = 1/25&nbsp;&nbsp;⎡1&nbsp;1&nbsp;1&nbsp;1&nbsp;1⎤<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;⎢1&nbsp;1&nbsp;1&nbsp;1&nbsp;1&nbsp;⎢<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;⎢1&nbsp;1&nbsp;1&nbsp;1&nbsp;1&nbsp;⎢<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;⎢1&nbsp;1&nbsp;1&nbsp;1&nbsp;1&nbsp;⎢<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;⎣1&nbsp;1&nbsp;1&nbsp;1&nbsp;1⎦
+        </p>
+        <p>
+          <strong>Operation is like this:</strong> keep this kernel above a pixel, add all the 25 pixels below this kernel,
+          take its average and replace the central pixel with the new average value.
+          It continues this operation for all the pixels in the image.
+        </P>
+<p>Try this code and check the result:</p>
+
+<p class="line">
+     # Import Necessary library<br>
+     <code>import cv2</code><br>
+     <code>import numpy as np</code><br><br>
+      # Read MyPic.jpg from system as grayscale<br>
+      <code>img = cv2.imread("MyPic.jpg", 0)</code><br>
+      # Create a 5x5 Kernel<br>
+      <code>kernel = np.ones((5,5), np.float32)/25</code><br>
+      # Apply convolution between image and 5x5 Kernel <br>
+      <code>dst = cv2.filter2D(img,-1, kernel)</code><br>
+      # Store LPF image as lpf.jpg <br>
+      <code>cv2.imwrite("lpf.jpg", dst)</code><br>
+</p>
+
+
+          <p><strong>Our input Image :</strong></p>
+          <img src="../image/MyPic.jpg" height="150px"/>
+          <p><strong>Output Image for LPF will be : </strong></p>
+          <img src="../image/lpf.jpg" height="150px"/>
+<br>
+<h2>Image Blurring</h2>
+          <p>Image blurring is achieved by convolving the image with a low-pass filter kernel. It is useful for removing noises. It actually removes high frequency content (eg: noise, edges) from the image. So edges are blurred a little bit in this operation. (Well, there are blurring techniques which doesn't blur the edges too).</p>
+          <p> OpenCV provides mainly four types of blurring techniques :</p>
+          <ol>
+            <li><h3>Averaging :</h3>
+            <p>This is done by convolving image with a normalized box filter. It simply takes the average of all the pixels under kernel area and replace the central element.
+               This is done by the function<strong> cv2.blur()</strong> or<strong> cv2.boxFilter()</strong>. Check the docs for more details about the kernel. We should specify the width and height of kernel. A<strong> 3x3</strong> normalized box filter would look like below:</p>
+               <p>
+             K = 1/9 &nbsp;⎡1&nbsp;1&nbsp;1&nbsp;1&nbsp;1⎤<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;⎢1&nbsp;1&nbsp;1&nbsp;1&nbsp;1&nbsp;⎢<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;⎢1&nbsp;1&nbsp;1&nbsp;1&nbsp;1&nbsp;⎢<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;⎢1&nbsp;1&nbsp;1&nbsp;1&nbsp;1&nbsp;⎢<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;⎣1&nbsp;1&nbsp;1&nbsp;1&nbsp;1⎦
+               </p>
+               <p class="line">
+                    # Import Necessary library<br>
+                    <code>import cv2</code><br>
+                    <code>import numpy as np</code><br><br>
+                     # Read MyPic.jpg from system as grayscale<br>
+                     <code>img = cv2.imread("MyPic.jpg", 0)</code><br>
+                     # Apply Averaging blur<br>
+                     <code>blur = cv2.blur(img,(5,5))</code><br>
+                     # Store LPF image as lpf.jpg <br>
+                     <code>cv2.imwrite("AvgBlur.jpg", blur)</code><br>
+               </p>
+               <p><strong>Our input Image :</strong></p>
+               <img src="../image/MyPic.jpg" height="150px"/>
+               <p><strong>Output Image for Averaging blur will be : </strong></p>
+               <img src="../image/AvgBlur.jpg" height="150px"/>
+             </li>
+            <br>
+             <li><h3>Gaussian Blurring :</h3>
+              <p>In this, instead of box filter, gaussian kernel is used. It is done with the function, <strong>cv2.GaussianBlur()</strong>.
+                We should specify the width and height of kernel which should be positive and odd.
+                 We also should specify the standard deviation in X and Y direction, sigmaX and sigmaY respectively.
+                  If only sigmaX is specified, sigmaY is taken as same as sigmaX.
+                  If both are given as zeros, they are calculated from kernel size.
+                  Gaussian blurring is highly effective in removing gaussian noise from the image.</p>
+                  <p>If you want, you can create a Gaussian kernel with the function, <strong>cv2.getGaussianKernel()</strong>.</p>
+                  <p>The above code can be modified for Gaussian blurring:</p>
+                  <p class="line">blur = cv2.GaussianBlur(img,(5,5),0)</p>
+             </li>
+            <br>
+             <li><h3> Median Blurring :</h3>
+              <p>Here, the function <strong>cv2.medianBlur()</strong> takes median of all the pixels under kernel area and central element is replaced with this median value.
+                This is highly effective against salt-and-pepper noise in the images.
+                 Interesting thing is that, in the above filters, central element is a newly calculated value which may be a pixel value in the image or a new value.
+                 But in median blurring, central element is always replaced by some pixel value in the image.
+                  It reduces the noise effectively. Its kernel size should be a positive odd integer.</p>
+                  <p>In this demo, I added a 50% noise to our original image and applied median blur.</p>
+                  <p>The code can be modified for Median Blurring :</p>
+                  <p class="line">median = cv2.medianBlur(img,5)</p>
+
+                  <br>
+                   <li><h3>  Bilateral Filtering :</h3>
+                    <p><strong>cv2.bilateralFilter()</strong> is highly effective in noise removal while keeping edges sharp.
+                       But the operation is slower compared to other filters.
+                       We already saw that gaussian filter takes the a neighbourhood around the pixel and find its gaussian weighted average.
+                       This gaussian filter is a function of space alone, that is, nearby pixels are considered while filtering.
+                       It doesn't consider whether pixels have almost same intensity. It doesn't consider whether pixel is an edge pixel or not.
+                        So it blurs the edges also, which we don't want to do.</p>
+                        <p>Bilateral filter also takes a gaussian filter in space, but one more gaussian filter which is a function of pixel difference.
+                          Gaussian function of space make sure only nearby pixels are considered for blurring while gaussian function of intensity difference make sure only those pixels with similar intensity to central pixel is considered for blurring.
+                          So it preserves the edges since pixels at edges will have large intensity variation.</p>
+
+                        <p>The code can be modified for Bilateral Filtering :</p>
+                        <p class="line">blur = cv2.bilateralFilter(img,9,75,75)</p>
+             </li>
+          </ol>
+    </div>
+  </section>
+  <footer>
+    <div class="container">
+      <ul class="socials">
+        <li><a target="_blank" href="mailTo:ratan@rsdharra.com" title="ratan@rsdharra.com" class="social-mail"><i class="fa fa-envelope"></i></a></li>
+        <li><a target="_blank" href="https://www.linkedin.com/in/ratan-singh-dharra-198931144/" title="LinkedIn.com/in/ratan-singh-dharra-198931144" class="social-linkedin"><i class="fa fa-linkedin"></i></a></li>
+        <li><a target="_blank" href="https://github.com/ratansingh98" title="Github.com/ratansingh98" class="social-github"><i class="fa fa-github"></i></a></li>
+      </ul>
+      <div class="copyright">Copyright &copy; 2019 <a style="color:yellow;" href = "https://rsdharra.com" target="_blank">Ratan Singh Dharra</a></div>
+    </div>
+  </footer>
+  <div class="google-rainbow">
+    <div class="rainbow-item"></div>
+    <div class="rainbow-item"></div>
+    <div class="rainbow-item"></div>
+    <div class="rainbow-item"></div>
+  </div>
+  <script src="js/bundle.js"></script>
+</body>
+
+</html>

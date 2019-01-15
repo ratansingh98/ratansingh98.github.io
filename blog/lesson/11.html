@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>Introduction</title>
+  <title>Contour Detection</title>
   <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,minimum-scale=1">
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -65,7 +65,7 @@
       <ul class="bxslider-subpages">
         <li style="background-color:#212020">
           <div class="slider-inner-shell">
-            <div class="slider-detail"><i class="fa fa-book"></i><span>Introduction</span></div>
+            <div class="slider-detail"><i class="fa fa-book"></i><span>Contour Detection</span></div>
           </div>
         </li>
       </ul>
@@ -73,26 +73,71 @@
   </div>
   <section class="section-about">
     <div class="container">
-      <h2>What is Computer Vision ?</h2>
-      <p>Computer vision is an interdisciplinary field that deals with how computers can be made to gain high-level understanding from digital images or videos.</p>
-      <p>From the perspective of engineering, it seeks to automate tasks that the human visual system can do.</p>
-      <p>Computer vision tasks include methods for acquiring, processing, analyzing and understanding digital images, and extraction of high-dimensional data from the real world in order to produce numerical or symbolic information, e.g., in the forms of decisions.</p>
-      <h2>What is Digital Image Processing ?</h2>
-      <p>Computer vision relies heavily upon and Venn-diagrams with digital image processing, which is also what it sounds like, but it’s different. The following tasks could be said to fall under the scope of digital image processing:</p>
-      <ul>
-        <li><strong>Pattern recognition:</strong> Self-explanatory. Find the regularities.</li>
-        <li><strong>Feature Extraction:</strong> Breaking down an image into distinct features.</li>
-        <li><strong>Classification:</strong> Does this cluster of edges/shapes seem like a car? A dog?</li>
-        <li><strong>Multi-scale signal analysis:</strong> What are some other ways to see this image?</li>
-        <li><strong>Graphical Projection:</strong> How do we represent a 3d object in 2d?</li>
-      </ul>
-      <h2>Prerequisites</h2>
-      <ul>
-      <li>Preferrably Ubuntu with python3.</li>
-      <li>Knowledge of Python and it's numpy library.</li>
-      <li>Passion for problem solving.</li>
-      <li>Basic maths.</li>
-    </ul>
+      <h2>Contour Detection</h2>
+
+      <p>Another vital task in computer vision is contour detection, not only because of the obvious
+aspect of detecting contours of subjects contained in an image or video frame, but because
+of the derivative operations connected with identifying contours.
+</p>
+<p>These operations are, namely, computing bounding polygons, approximating shapes, and
+generally calculating regions of interest, which considerably simplify interaction with
+image data because a rectangular region with NumPy is easily defined with an array slice.
+We will be using this technique a lot when exploring the concept of object detection
+(including faces) and object tracking.</p>
+<p>Let’s go in order and familiarize ourselves with the API first with an example:</p>
+<p class="line">
+  # Import Necessary library<br>
+<code>import cv2</code><br>
+<code>import numpy as np</code><br><br>
+
+# Create a black box of 200x200 pixels<br>
+<code>img = np.zeros((200, 200), dtype=np.uint8)</code><br>
+# Add a white box of 100x100 pixels in the black box<br>
+<code>img[50:150, 50:150] = 255</code><br>
+# Store new image as box.jpg<br>
+<code>cv2.imwrite("box.jpg",img)</code><br>
+# Obtain thresholding between 127 and 255 intensity<br>
+<code>ret, thresh = cv2.threshold(img, 127, 255, 0)</code><br>
+# Obtain contours in image with defined thresholding<br>
+<code>image, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE,
+cv2.CHAIN_APPROX_SIMPLE)</code><br>
+# Convert image to gray scale<br>
+<code>color = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)</code><br>
+# Draw green contours of width 4px in the image.<br>
+<code>img = cv2.drawContours(color, contours, -1, (0,255,0), 4)</code><br>
+# Store contoured image as contours.jpg<br>
+<code>cv2.imwrite("contours.jpg",color)</code><br>
+
+</p>
+
+<p><strong>Our input Image:</strong></p>
+<img src="../image/box.jpg" height="150px"/>
+<p><strong>Output Image for Canny Edge Detection will be: </strong></p>
+<img src="../image/contours.jpg" height="150px"/>
+
+<p>
+  Firstly, we create an empty black image that is 200x200 pixels in size. Then, we place a
+  white square in the center of it utilizing ndarray’s ability to assign values on a slice.
+</p>
+<p>
+  We then threshold the image, and call the <strong>findContours() </strong>function. This function has
+three parameters: the input image, hierarchy type, and the contour approximation method.
+There are a number of aspects that are of particular interest in this function:
+</p>
+<ul>
+  <li>The function modifies the input image, so it would be advisable to use a copy of the
+original image (for example, by passing img.copy()).</li>
+  <li><p>Secondly, the hierarchy tree returned by the function is quite important:</p>
+<strong>cv2.RETR_TREE </strong>will retrieve the entire hierarchy of contours in the image, enabling
+you to establish “relationships” between contours. If you only want to retrieve the
+most external contours, use <strong>cv2.RETR_EXTERNAL</strong>. This is particularly useful when you
+want to eliminate contours that are entirely contained in other contours (for example,
+in a vast majority of cases, you won’t need to detect an object within another object
+of the same type).</li>
+</ul>
+<p>The findContours function returns three elements: the modified image, contours, and
+their hierarchy. We use the contours to draw on the color version of the image (so that we
+can draw contours in green) and eventually display it.</p>
     </div>
   </section>
   <footer >
