@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>High pass filter</title>
+  <title>Convex Hull</title>
   <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,minimum-scale=1">
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -65,7 +65,7 @@
       <ul class="bxslider-subpages">
         <li style="background-color:#212020">
           <div class="slider-inner-shell">
-            <div class="slider-detail"><i class="fa fa-book"></i><span>High pass filter</span></div>
+            <div class="slider-detail"><i class="fa fa-book"></i><span>Contours using Convex Hull</span></div>
           </div>
         </li>
       </ul>
@@ -73,86 +73,64 @@
   </div>
   <section class="section-about">
     <div class="container">
-      <h2>High pass filter</h2>
+      <h2>Ramer–Douglas–Peucker Algorithm</h2>
+      <p>The Ramer–Douglas–Peucker algorithm, also known as the Douglas–Peucker algorithm and iterative end-point fit algorithm,
+        is an algorithm that decimates a curve composed of line segments to a similar curve with fewer points.</p>
 
-      <p>A <strong>high pass filter (HPF)</strong> is a filter that examines a region of an image and boosts the
-intensity of certain pixels based on the difference in the intensity with the surrounding
-pixels. HPF filters helps in finding edges in the images.
-</p>
-<p>
-Take, for example, the following kernel:<br>
-[[0, -0.25, 0],<br>
-[-0.25, 1, -0.25],<br>
-[0, -0.25, 0]]<br>
-</p>
-
-<p>
-  A kernel is a set of weights that are applied to a region in a source image to generate a
-single pixel in the destination image. For example, a ksize of 7 implies that 49 (7 x 7)
-source pixels are considered in generating each destination pixel. We can think of a kernel
-as a piece of frosted glass moving over the source image and letting through a diffused
-blend of the source’s light.</p>
-<p>
-  After calculating the sum of differences of the intensities of the central pixel compared to
-all the immediate neighbors, the intensity of the central pixel will be boosted (or not) if a
-high level of changes are found. In other words, if a pixel stands out from the surrounding
-pixels, it will get boosted.</P>
-<p>
-  This is particularly effective in edge detection, where a common form of HPF called high
-boost filter is used
-</p>
-<p>Both high pass and low pass filters use a property called radius, which extends the area of
-the neighbors involved in the filter calculation.
-</p>
-<p><strong>Example :</strong></p>
-
-  <p class="line">
-    # Import Necessary library<br>
-
+      <h2>Finding Contours using Convex Hull</h2>
+<p>A Convex object is one with no interior angles greater than 180 degrees. A shape that is not convex is called Non-Convex or Concave.</p>
+<p>Given a set of points that define a shape, how do we find its convex hull? The algorithms for finding the Convext Hull are often called <strong>Gift Wrapping algorithms</strong>.</p>
+      <p>  It is still a popular algorithm and in a vast majority of cases, it produces the right result. This algorithm is implemented in the convexHull class in OpenCV. Let’s now see how to use it.
+<p class="line">
+  # Import Necessary library<br>
   <code>import cv2</code><br>
-  <code>import numpy as np</code><br>
-  <code>from scipy import ndimage</code><br><br>
-  # Create a 3x3 Kernel <br>
-  <code>kernel_3x3 = np.array(<br>[[-1, -1, -1],<br>
-  [-1, 8, -1],<br>
-  [-1, -1, -1]])</code><br>
-  # Create a 5x5 Kernel<br>
-  <code>kernel_5x5 = np.array(<br>[[-1, -1, -1, -1, -1],<br>
-  [-1, 1, 2, 1, -1],<br>
-  [-1, 2, 4, 2, -1],<br>
-  [-1, 1, 2, 1, -1],<br>
-  [-1, -1, -1, -1, -1]])</code><br>
-  # Read MyPic.jpg from system as grayscale<br>
-  <code>img = cv2.imread("MyPic.jpg", 0)</code><br>
-  # Apply convolution between image and kernel_3x3 <br>
-  <code>k3 = ndimage.convolve(img, kernel_3x3)</code><br>
-  # Apply convolution between image and kernel_5x5 <br>
-  <code>k5 = ndimage.convolve(img, kernel_5x5)</code><br>
-  # Apply GaussianBlur <br>
-  <code>blurred = cv2.GaussianBlur(img, (11,11), 0)</code><br>
-  # Create Gaussian HPF <br>
-  <code>g_hpf = img - blurred</code><br>
-  # Store all the image <br>
-  <code>cv2.imwrite("3x3.jpg", k3)</code><br>
-  <code>cv2.imwrite("5x5.jpg", k5)</code><br>
-  <code>cv2.imwrite("g_hpf.jpg", g_hpf)</code><br>
-  </p>
-<p><strong>Our input Image:</strong></p>
-<img src="../image/MyPic.jpg" height="150px"/>
-<p><strong>Output Image for kernel_3x3,kernel_5x5 and g_hpf respectively :</strong></p>
-<img src="../image/3x3.jpg" height="150px"/>
-<img src="../image/5x5.jpg" height="150px"/>
-<img src="../image/g_hpf.jpg" height="150px"/>
-<p>
-  After the initial imports, we define a 3x3 kernel and a 5x5 kernel, and then we load the
-image in grayscale. Normally, the majority of image processing is done with NumPy;
-however, in this particular case, we want to “convolve” an image with a given kernel and
-NumPy happens to only accept one-dimensional arrays.
+  <code>import numpy as np</code><br><br>
+  # Read Input image<br>
+  <code>img = cv2.imread("Hammer.png", 1) </code><br>
+  # convert to grayscale<br>
+  <code>gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)<br></code>
+  # blur the image to remove noise<br>
+  <code>blur = cv2.blur(gray, (3, 3))<br></code>
+  # Obtain thresholding between 50 and 255 intensity<br>
+  <code>ret, thresh = cv2.threshold(blur, 50, 255, cv2.THRESH_BINARY)</code><br>
+  # Finding contours for the thresholded image<br>
+  <code>im2, contours, hierarchy = cv2.findContours( thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)<br></code>
+  # create hull array for convex hull points<br>
+  <code>hull = []</code><br>
+
+  # calculate points for each contour<br>
+  <code>for i in range(len(contours)):</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;# Creating Convex Hull object for each contour<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>hull.append( cv2.convexHull(contours[i], False))</code><br><br>
+      # create an empty black image<br>
+    <code>drawing = np.zeros((thresh.shape[0], thresh.shape[1], 3), np.uint8)</code><br>
+
+    # draw contours and hull points<br>
+    <code>for i in range(len(contours)):<br></code>
+     &nbsp;&nbsp;&nbsp;&nbsp;# green - color for contours<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;  <code>color_contours = (0, 255, 0)<br></code>
+      &nbsp;&nbsp;&nbsp;&nbsp;  # blue - color for convex hull<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;  <code>color = (255, 0, 0)<br></code>
+      &nbsp;&nbsp;&nbsp;&nbsp;  # draw ith contour<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;  <code>cv2.drawContours(drawing, contours, i, color_contours, 1, 8, hierarchy)<br></code>
+      &nbsp;&nbsp;&nbsp;&nbsp;  # draw ith convex hull object<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;  <code>cv2.drawContours(drawing, hull, i, color, 1, 8)<br></code><br><br>
+        # Draw all the contours in image<br>
+        <code>cv2.drawContours(img, contours, -1, (255, 0, 0), 1)</code><br>
+        # Save image as contour1.jpg<br>
+        <code>cv2.imwrite("convexHull.jpg", img)</code><br>
 </p>
+
+<p><strong>Input Image is: </strong></p>
+<img src="../image/Hammer.png" height="150px"/>
+
+<p><strong>Output Image will be: </strong></p>
+<img src="../image/convexHull.jpg" height="150px"/>
+
     </div>
     <div class="pagination ">
-      <a class="toggler" href="9.html">Prev</a>
-      <a  class="toggler" href="10.html">Next</a>
+      <a class="toggler" href="12.html">Prev</a>
+      <a  class="toggler" href="14.html">Next</a>
     </div>
   </section>
   <footer >

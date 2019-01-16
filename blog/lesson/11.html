@@ -126,7 +126,7 @@ There are a number of aspects that are of particular interest in this function:
 </p>
 <ul>
   <li>The function modifies the input image, so it would be advisable to use a copy of the
-original image (for example, by passing img.copy()).</li>
+original image (for example, by passing <strong>img.copy()</strong>).</li>
   <li><p>Secondly, the hierarchy tree returned by the function is quite important:</p>
 <strong>cv2.RETR_TREE </strong>will retrieve the entire hierarchy of contours in the image, enabling
 you to establish “relationships” between contours. If you only want to retrieve the
@@ -138,6 +138,10 @@ of the same type).</li>
 <p>The findContours function returns three elements: the modified image, contours, and
 their hierarchy. We use the contours to draw on the color version of the image (so that we
 can draw contours in green) and eventually display it.</p>
+    </div>
+    <div class="pagination ">
+      <a class="toggler" href="10.html">Prev</a>
+      <a  class="toggler" href="12.html">Next</a>
     </div>
   </section>
   <footer >

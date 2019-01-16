@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>High pass filter</title>
+  <title>Area of Object</title>
   <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,minimum-scale=1">
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -65,7 +65,7 @@
       <ul class="bxslider-subpages">
         <li style="background-color:#212020">
           <div class="slider-inner-shell">
-            <div class="slider-detail"><i class="fa fa-book"></i><span>High pass filter</span></div>
+            <div class="slider-detail"><i class="fa fa-book"></i><span>Finding Area Using Contour</span></div>
           </div>
         </li>
       </ul>
@@ -73,86 +73,61 @@
   </div>
   <section class="section-about">
     <div class="container">
-      <h2>High pass filter</h2>
+      <h2>Finding Area Using Contour</h2>
 
-      <p>A <strong>high pass filter (HPF)</strong> is a filter that examines a region of an image and boosts the
-intensity of certain pixels based on the difference in the intensity with the surrounding
-pixels. HPF filters helps in finding edges in the images.
+      <p>Finding the contours of a square is a simple task; irregular, skewed, and rotated shapes
+bring the best out of the<strong> cv2.findContours </strong>utility function of OpenCV. Let’s take a look
+at the following image:
 </p>
-<p>
-Take, for example, the following kernel:<br>
-[[0, -0.25, 0],<br>
-[-0.25, 1, -0.25],<br>
-[0, -0.25, 0]]<br>
-</p>
+<img src="../image/Hammer.png" height="150px"/>
+<p>In a real-life application, we would be most interested in determining the bounding box of
+the subject, its minimum enclosing rectangle, and its circle. The<strong> cv2.findContours</strong>
+function in conjunction with a few other OpenCV utilities makes this very easy to
+accomplish:</p>
 
-<p>
-  A kernel is a set of weights that are applied to a region in a source image to generate a
-single pixel in the destination image. For example, a ksize of 7 implies that 49 (7 x 7)
-source pixels are considered in generating each destination pixel. We can think of a kernel
-as a piece of frosted glass moving over the source image and letting through a diffused
-blend of the source’s light.</p>
-<p>
-  After calculating the sum of differences of the intensities of the central pixel compared to
-all the immediate neighbors, the intensity of the central pixel will be boosted (or not) if a
-high level of changes are found. In other words, if a pixel stands out from the surrounding
-pixels, it will get boosted.</P>
-<p>
-  This is particularly effective in edge detection, where a common form of HPF called high
-boost filter is used
-</p>
-<p>Both high pass and low pass filters use a property called radius, which extends the area of
-the neighbors involved in the filter calculation.
-</p>
-<p><strong>Example :</strong></p>
-
-  <p class="line">
-    # Import Necessary library<br>
-
+<p class="line">
+  # Import Necessary library<br>
   <code>import cv2</code><br>
-  <code>import numpy as np</code><br>
-  <code>from scipy import ndimage</code><br><br>
-  # Create a 3x3 Kernel <br>
-  <code>kernel_3x3 = np.array(<br>[[-1, -1, -1],<br>
-  [-1, 8, -1],<br>
-  [-1, -1, -1]])</code><br>
-  # Create a 5x5 Kernel<br>
-  <code>kernel_5x5 = np.array(<br>[[-1, -1, -1, -1, -1],<br>
-  [-1, 1, 2, 1, -1],<br>
-  [-1, 2, 4, 2, -1],<br>
-  [-1, 1, 2, 1, -1],<br>
-  [-1, -1, -1, -1, -1]])</code><br>
-  # Read MyPic.jpg from system as grayscale<br>
-  <code>img = cv2.imread("MyPic.jpg", 0)</code><br>
-  # Apply convolution between image and kernel_3x3 <br>
-  <code>k3 = ndimage.convolve(img, kernel_3x3)</code><br>
-  # Apply convolution between image and kernel_5x5 <br>
-  <code>k5 = ndimage.convolve(img, kernel_5x5)</code><br>
-  # Apply GaussianBlur <br>
-  <code>blurred = cv2.GaussianBlur(img, (11,11), 0)</code><br>
-  # Create Gaussian HPF <br>
-  <code>g_hpf = img - blurred</code><br>
-  # Store all the image <br>
-  <code>cv2.imwrite("3x3.jpg", k3)</code><br>
-  <code>cv2.imwrite("5x5.jpg", k5)</code><br>
-  <code>cv2.imwrite("g_hpf.jpg", g_hpf)</code><br>
-  </p>
-<p><strong>Our input Image:</strong></p>
-<img src="../image/MyPic.jpg" height="150px"/>
-<p><strong>Output Image for kernel_3x3,kernel_5x5 and g_hpf respectively :</strong></p>
-<img src="../image/3x3.jpg" height="150px"/>
-<img src="../image/5x5.jpg" height="150px"/>
-<img src="../image/g_hpf.jpg" height="150px"/>
-<p>
-  After the initial imports, we define a 3x3 kernel and a 5x5 kernel, and then we load the
-image in grayscale. Normally, the majority of image processing is done with NumPy;
-however, in this particular case, we want to “convolve” an image with a given kernel and
-NumPy happens to only accept one-dimensional arrays.
-</p>
+  <code>import numpy as np</code><br><br>
+  # Read Image <br>
+  <code>img = cv2.imread("Hammer.png")</code><br>
+  # Obtain thresholding between 127 and 255 intensity<br>
+  <code>ret, thresh = cv2.threshold( cv2.cvtColor(img.copy(), cv2.COLOR_BGR2GRAY) ,
+  127, 255, cv2.THRESH_BINARY)</code><br>
+  # Obtain contours in image with defined thresholding<br>
+  <code>image, contours, hier = cv2.findContours(thresh, cv2.RETR_EXTERNAL,
+  cv2.CHAIN_APPROX_SIMPLE)</code><br>
+  <code>for c in contours:</code><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;# find bounding box coordinates<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;<code>x,y,w,h = cv2.boundingRect(c)</code><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.rectangle(img, (x,y), (x+w, y+h), (0, 255, 0), 2)</code><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;# find minimum area<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;<code>rect = cv2.minAreaRect(c)</code><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;# calculate coordinates of the minimum area rectangle<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;<code>box = cv2.boxPoints(rect)</code><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;# normalize coordinates to integers<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;<code>box = np.int0(box)</code><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;# draw contours for box<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.drawContours(img, [box], 0, (0,0, 255), 3)</code><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;# calculate center and radius of minimum enclosing circle<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;<code>(x,y),radius = cv2.minEnclosingCircle(c)</code><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;# cast to integers<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;<code>center = (int(x),int(y))</code><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;<code>radius = int(radius)</code><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;# Draw the circle<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;<code>img = cv2.circle(img,center,radius,(0,255,0),2)</code><br><br><br>
+  # Draw all the contours in image<br>
+  <code>cv2.drawContours(img, contours, -1, (255, 0, 0), 1)</code><br>
+  # Save image as contour1.jpg<br>
+  <code>cv2.imwrite("contour1.jpg", img)</code><br>
+
+<p><strong>Output Image will be: </strong></p>
+<img src="../image/contour1.jpg" height="150px"/>
+
     </div>
     <div class="pagination ">
-      <a class="toggler" href="9.html">Prev</a>
-      <a  class="toggler" href="10.html">Next</a>
+      <a class="toggler" href="11.html">Prev</a>
+      <a  class="toggler" href="13.html">Next</a>
     </div>
   </section>
   <footer >

@@ -98,9 +98,9 @@ bytearray, which is one-dimensional:</p>
 and then reshape it to get a numpy.array type that is an image:</p>
 <p class="line">
   # Convert Gray Byte array to Gray image's dimension <br>
-  <code>grayImage = numpy.array(grayByteArray).reshape(height, width) </code><br><br>
+  <code>grayImage = numpy.array( grayByteArray).reshape(height, width) </code><br><br>
 # Convert RBG Byte array to color image's dimension<br>
-<code>bgrImage = numpy.array(bgrByteArray).reshape(height, width, 3)</code>
+<code>bgrImage = numpy.array( bgrByteArray).reshape(height, width, 3)</code>
 </p>
 <p> Here 3 in reshape refers to 3rd dimension which contains color for that pixel.<p>
 <p>As a more complete example, let’s convert bytearray, which contains random bytes to a
@@ -125,6 +125,10 @@ RandomGray.png and RandomColor.png, in the script’s directory.</p>
 <p>The output should look like this :</p>
 <img src="../image/RandomColor.png" height="150px" width="200px"/>
 <img src="../image/RandomGray.png" height="150px"/>
+    </div>
+    <div class="pagination ">
+      <a class="toggler" href="2.html">Prev</a>
+      <a  class="toggler" href="4.html">Next</a>
     </div>
   </section>
   <footer >

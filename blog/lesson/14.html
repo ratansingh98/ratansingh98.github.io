@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>High pass filter</title>
+  <title>Line Detection</title>
   <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,minimum-scale=1">
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -25,6 +25,7 @@
   code{
     color: blue;
   }
+
   </style>
 </head>
 
@@ -65,7 +66,7 @@
       <ul class="bxslider-subpages">
         <li style="background-color:#212020">
           <div class="slider-inner-shell">
-            <div class="slider-detail"><i class="fa fa-book"></i><span>High pass filter</span></div>
+            <div class="slider-detail"><i class="fa fa-book"></i><span>Line Detection</span></div>
           </div>
         </li>
       </ul>
@@ -73,86 +74,57 @@
   </div>
   <section class="section-about">
     <div class="container">
-      <h2>High pass filter</h2>
-
-      <p>A <strong>high pass filter (HPF)</strong> is a filter that examines a region of an image and boosts the
-intensity of certain pixels based on the difference in the intensity with the surrounding
-pixels. HPF filters helps in finding edges in the images.
-</p>
-<p>
-Take, for example, the following kernel:<br>
-[[0, -0.25, 0],<br>
-[-0.25, 1, -0.25],<br>
-[0, -0.25, 0]]<br>
+      <h2>Line Detection</h2>
+      <p>First of all, let’s detect some lines, which is done with the <strong>HoughLines</strong> and <strong>HoughLinesP</strong>
+functions. The only difference between the two functions is that one uses the standard
+Hough transform, and the second uses the probabilistic Hough transform (hence P in the
+name).
 </p>
 
-<p>
-  A kernel is a set of weights that are applied to a region in a source image to generate a
-single pixel in the destination image. For example, a ksize of 7 implies that 49 (7 x 7)
-source pixels are considered in generating each destination pixel. We can think of a kernel
-as a piece of frosted glass moving over the source image and letting through a diffused
-blend of the source’s light.</p>
-<p>
-  After calculating the sum of differences of the intensities of the central pixel compared to
-all the immediate neighbors, the intensity of the central pixel will be boosted (or not) if a
-high level of changes are found. In other words, if a pixel stands out from the surrounding
-pixels, it will get boosted.</P>
-<p>
-  This is particularly effective in edge detection, where a common form of HPF called high
-boost filter is used
+<p>The probabilistic version is so-called because it only analyzes a subset of points and
+estimates the probability of these points all belonging to the same line. This
+implementation is an optimized version of the standard Hough transform, and in this case,
+it’s less computationally intensive and executes faster.
 </p>
-<p>Both high pass and low pass filters use a property called radius, which extends the area of
-the neighbors involved in the filter calculation.
-</p>
-<p><strong>Example :</strong></p>
+<p>Let’s take a look at a very simple example:</p>
 
-  <p class="line">
-    # Import Necessary library<br>
+<p class="line">
+# Import Necessary library<br>
+<code>import cv2</code><br><br>
+# Read Input image<br>
+<code>img = cv2.imread('chess.jpg')</code><br>
+# convert to grayscale<br>
+<code>gray = cv2.cvtColor( img, cv2.COLOR_BGR2GRAY)</code><br>
+# Edge Detection using canny<br>
+<code>edges = cv2.Canny( gray, 50, 120)</code><br>
+# Define threshold Line Length and Line gap<br>
+<code>minLineLength = 20</code><br>
+<code>maxLineGap = 5</code><br>
+# Obtain Hough Lines<br>
+<code>lines = cv2.HoughLinesP( edges, 1, np.pi/180, 100, minLineLength, maxLineGap)</code><br>
+# Loop though the lines and draw them<br>
+<code>for i in range(len(lines)):</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>for x1,y1,x2,y2 in lines[i]:</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.line( img, (x1,y1), (x2,y2), (0,255,0),2)</code><br><br><br>
+# Display Output Image<br>
+<code>cv2.imwrite("Houghedges.jpg", edges)</code><br>
+<code>cv2.imwrite("Houghlines.jpg", img)</code><br>
 
-  <code>import cv2</code><br>
-  <code>import numpy as np</code><br>
-  <code>from scipy import ndimage</code><br><br>
-  # Create a 3x3 Kernel <br>
-  <code>kernel_3x3 = np.array(<br>[[-1, -1, -1],<br>
-  [-1, 8, -1],<br>
-  [-1, -1, -1]])</code><br>
-  # Create a 5x5 Kernel<br>
-  <code>kernel_5x5 = np.array(<br>[[-1, -1, -1, -1, -1],<br>
-  [-1, 1, 2, 1, -1],<br>
-  [-1, 2, 4, 2, -1],<br>
-  [-1, 1, 2, 1, -1],<br>
-  [-1, -1, -1, -1, -1]])</code><br>
-  # Read MyPic.jpg from system as grayscale<br>
-  <code>img = cv2.imread("MyPic.jpg", 0)</code><br>
-  # Apply convolution between image and kernel_3x3 <br>
-  <code>k3 = ndimage.convolve(img, kernel_3x3)</code><br>
-  # Apply convolution between image and kernel_5x5 <br>
-  <code>k5 = ndimage.convolve(img, kernel_5x5)</code><br>
-  # Apply GaussianBlur <br>
-  <code>blurred = cv2.GaussianBlur(img, (11,11), 0)</code><br>
-  # Create Gaussian HPF <br>
-  <code>g_hpf = img - blurred</code><br>
-  # Store all the image <br>
-  <code>cv2.imwrite("3x3.jpg", k3)</code><br>
-  <code>cv2.imwrite("5x5.jpg", k5)</code><br>
-  <code>cv2.imwrite("g_hpf.jpg", g_hpf)</code><br>
-  </p>
-<p><strong>Our input Image:</strong></p>
-<img src="../image/MyPic.jpg" height="150px"/>
-<p><strong>Output Image for kernel_3x3,kernel_5x5 and g_hpf respectively :</strong></p>
-<img src="../image/3x3.jpg" height="150px"/>
-<img src="../image/5x5.jpg" height="150px"/>
-<img src="../image/g_hpf.jpg" height="150px"/>
-<p>
-  After the initial imports, we define a 3x3 kernel and a 5x5 kernel, and then we load the
-image in grayscale. Normally, the majority of image processing is done with NumPy;
-however, in this particular case, we want to “convolve” an image with a given kernel and
-NumPy happens to only accept one-dimensional arrays.
 </p>
+
+
+<p><strong>Input Image is: </strong></p>
+<img src="../image/chess.jpg" height="150px"/>
+
+<p><strong>Output Image for Edges and Lines will be: </strong></p>
+<img src="../image/Houghedges.jpg" height="150px"/>
+<img src="../image/Houghlines.jpg" height="150px"/>
+
     </div>
+
     <div class="pagination ">
-      <a class="toggler" href="9.html">Prev</a>
-      <a  class="toggler" href="10.html">Next</a>
+      <a class="toggler" href="13.html">Prev</a>
+      <a  class="toggler" href="15.html">Next</a>
     </div>
   </section>
   <footer >
