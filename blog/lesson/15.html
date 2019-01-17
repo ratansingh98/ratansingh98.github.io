@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>Line Detection</title>
+  <title>Circle Detection</title>
   <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,minimum-scale=1">
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -66,7 +66,7 @@
       <ul class="bxslider-subpages">
         <li style="background-color:#212020">
           <div class="slider-inner-shell">
-            <div class="slider-detail"><i class="fa fa-book"></i><span>Line Detection</span></div>
+            <div class="slider-detail"><i class="fa fa-book"></i><span>Circle Detection</span></div>
           </div>
         </li>
       </ul>
@@ -74,57 +74,55 @@
   </div>
   <section class="section-about">
     <div class="container">
-      <h2>Line Detection</h2>
-      <p>First of all, let’s detect some lines, which is done with the <strong>HoughLines</strong> and <strong>HoughLinesP</strong>
-functions. The only difference between the two functions is that one uses the standard
-Hough transform, and the second uses the probabilistic Hough transform (hence P in the
-name).
+      <h2>Circle Detection</h2>
+      <p>OpenCV also has a function for detecting circles, called<strong> HoughCircles</strong>. It works in a very
+similar fashion to<strong> HoughLines</strong>, but where minLineLength and maxLineGap were the
+parameters to discard or retain lines, HoughCircles has a minimum distance between
+circles’ centers, minimum, and maximum radius of the circles.</p>
+ <p>Here’s the obligatory example:
 </p>
-
-<p>The probabilistic version is so-called because it only analyzes a subset of points and
-estimates the probability of these points all belonging to the same line. This
-implementation is an optimized version of the standard Hough transform, and in this case,
-it’s less computationally intensive and executes faster.
-</p>
-<p>Let’s take a look at a very simple example:</p>
 
 <p class="line">
-# Import Necessary library<br>
-<code>import cv2</code><br><br>
+  # Import Necessary library</code><br>
+  <code>import cv2</code><br>
+<code>import numpy as np</code><br><br>
 # Read Input image<br>
-<code>img = cv2.imread('chess.jpg')</code><br>
-# convert to grayscale<br>
-<code>gray = cv2.cvtColor( img, cv2.COLOR_BGR2GRAY)</code><br>
-# Edge Detection using canny<br>
-<code>edges = cv2.Canny( gray, 50, 120)</code><br>
-# Define threshold Line Length and Line gap<br>
-<code>minLineLength = 20</code><br>
-<code>maxLineGap = 5</code><br>
-# Obtain Hough Lines<br>
-<code>lines = cv2.HoughLinesP( edges, 1, np.pi/180, 100, minLineLength, maxLineGap)</code><br>
-# Loop though the lines and draw them<br>
-<code>for i in range(len(lines)):</code><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>for x1,y1,x2,y2 in lines[i]:</code><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.line( img, (x1,y1), (x2,y2), (0,255,0),2)</code><br><br><br>
-# Display Output Image<br>
-<code>cv2.imwrite("Houghedges.jpg", edges)</code><br>
-<code>cv2.imwrite("Houghlines.jpg", img)</code><br>
-
+<code>planets = cv2.imread('planet.jpg')</code><br>
+# Convert to grayscale<br>
+<code>gray_img = cv2.cvtColor(planets, cv2.COLOR_BGR2GRAY)</code><br>
+# Apply median Blur to remove noise<br>
+<code>img = cv2.medianBlur( gray_img, 5)</code><br>
+# Convert to grayscale to blurred image<br>
+<code>cimg = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)</code><br>
+# Obtain Hough Circles<br>
+<code>circles = cv2.HoughCircles( img, cv2.HOUGH_GRADIENT, 1 ,120,
+param1=100, param2=30, minRadius=0, maxRadius=0)</code><br>
+# Convert circles to unit16<br>
+<code>circles = np.uint16( np.around(circles))</code><br>
+# Loop though the Circles and draw them<br>
+<code>for i in circles[0,:]:</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;# Draw the outer circle<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.circle(planets,(i[0],i[1]),i[2],(0,255,0),10)</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;# Draw the center of the circle<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.circle(planets,(i[0],i[1]),2,(0,0,255),10)</code><br><br><br>
+# Save Output Image<br>
+<code>cv2.imwrite("HoughCirlces.jpg", planets)</code><br>
 </p>
+
+
 
 
 <p><strong>Input Image is: </strong></p>
-<img src="../image/chess.jpg" height="150px"/>
+<img src="../image/planet.jpg" height="150px"/>
 
-<p><strong>Output Image for Edges and Lines will be: </strong></p>
-<img src="../image/Houghedges.jpg" height="150px"/>
-<img src="../image/Houghlines.jpg" height="150px"/>
+<p><strong>Output Image for Hough Cirlces will be: </strong></p>
+<img src="../image/HoughCirlces.jpg" height="150px"/>
 
     </div>
 
     <div class="pagination ">
-      <a class="toggler" href="13.html">Prev</a>
-      <a  class="toggler" href="15.html">Next</a>
+      <a class="toggler" href="14.html">Prev</a>
+      <a  class="toggler" href="16.html">Next</a>
     </div>
   </section>
   <footer >

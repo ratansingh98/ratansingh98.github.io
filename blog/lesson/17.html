@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>Line Detection</title>
+  <title>Finding Object</title>
   <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,minimum-scale=1">
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -66,7 +66,7 @@
       <ul class="bxslider-subpages">
         <li style="background-color:#212020">
           <div class="slider-inner-shell">
-            <div class="slider-detail"><i class="fa fa-book"></i><span>Line Detection</span></div>
+            <div class="slider-detail"><i class="fa fa-book"></i><span>Finding Object</span></div>
           </div>
         </li>
       </ul>
@@ -74,57 +74,56 @@
   </div>
   <section class="section-about">
     <div class="container">
-      <h2>Line Detection</h2>
-      <p>First of all, let’s detect some lines, which is done with the <strong>HoughLines</strong> and <strong>HoughLinesP</strong>
-functions. The only difference between the two functions is that one uses the standard
-Hough transform, and the second uses the probabilistic Hough transform (hence P in the
-name).
-</p>
+      <h2>Find Waldo</h2>
+      <p>The goal, given a query image of Waldo and the puzzle image,
+        is to find Waldo in in the puzzle image and highlight his location.</p>
+ <p>Here is the image :</p>
+<img src="../image/image.jpg" height="250px"/>
 
-<p>The probabilistic version is so-called because it only analyzes a subset of points and
-estimates the probability of these points all belonging to the same line. This
-implementation is an optimized version of the standard Hough transform, and in this case,
-it’s less computationally intensive and executes faster.
-</p>
-<p>Let’s take a look at a very simple example:</p>
 
 <p class="line">
-# Import Necessary library<br>
-<code>import cv2</code><br><br>
-# Read Input image<br>
-<code>img = cv2.imread('chess.jpg')</code><br>
-# convert to grayscale<br>
-<code>gray = cv2.cvtColor( img, cv2.COLOR_BGR2GRAY)</code><br>
-# Edge Detection using canny<br>
-<code>edges = cv2.Canny( gray, 50, 120)</code><br>
-# Define threshold Line Length and Line gap<br>
-<code>minLineLength = 20</code><br>
-<code>maxLineGap = 5</code><br>
-# Obtain Hough Lines<br>
-<code>lines = cv2.HoughLinesP( edges, 1, np.pi/180, 100, minLineLength, maxLineGap)</code><br>
-# Loop though the lines and draw them<br>
-<code>for i in range(len(lines)):</code><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>for x1,y1,x2,y2 in lines[i]:</code><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.line( img, (x1,y1), (x2,y2), (0,255,0),2)</code><br><br><br>
-# Display Output Image<br>
-<code>cv2.imwrite("Houghedges.jpg", edges)</code><br>
-<code>cv2.imwrite("Houghlines.jpg", img)</code><br>
+  # Import Necessary library</code><br>
+  <code>import cv2<br></code>
+  <code>import numpy as np<br></code><br>
+
+  # Load input image and convert to grayscale<br>
+  <code>image = cv2.imread('image.jpg')<br></code>
+  <code>gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)<br></code>
+
+  # Load template image<br>
+  <code>template = cv2.imread('waldo.jpg', 0)<br></code>
+  # Match Template and grayscaled image<br>
+  <code>result = cv2.matchTemplate(gray, template, cv2.TM_CCOEFF)<br></code>
+  # Find min and val of location and value<br>
+  <code>min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(result)<br></code>
+  # Set Dimensions for box<br>
+  <code>top_left = max_loc<br></code>
+  <code>bottom_right = (top_left[0]+50, top_left[1]+50)<br></code>
+    # Create Bounding box<br>
+  <code>cv2.rectangle(image, top_left, bottom_right, (0, 0, 255), 5)<br></code>
+  # Saved output image<br>
+  <code>cv2.imwrite("Findwaldo.jpg", image)<br></code>
 
 </p>
 
-
-<p><strong>Input Image is: </strong></p>
-<img src="../image/chess.jpg" height="150px"/>
-
-<p><strong>Output Image for Edges and Lines will be: </strong></p>
-<img src="../image/Houghedges.jpg" height="150px"/>
-<img src="../image/Houghlines.jpg" height="150px"/>
-
+<p><strong>Output Image will be: </strong></p>
+<img src="../image/Findwaldo.jpg" height="250px"/>
+<br><br>
+<h3>cv2.matchTemplate() :</h3>
+<p>Compares a template against overlapped image regions.<br>
+The function slides through image , compares the overlapped patches of size w x h against templ using the specified method and stores the comparison results in result .
+  The summation is done over template and/or the image patch: x' = 0...w-1, y' = 0...h-1</p>
+  <p>After the function finishes the comparison, the best matches can be found as global minimums
+    (when <strong>CV_TM_SQDIFF</strong> was used) or maximums (when <strong>CV_TM_CCORR</strong> or <strong>CV_TM_CCOEFF</strong> was used) using the
+    <strong>minMaxLoc()</strong> function. In case of a color image, template summation in the numerator and each sum in
+    the denominator is done over all of the channels and separate mean values are used for each channel.
+    That is, the function can take a color template and a color image.
+     The result will still be a single-channel image, which is easier to analyze.</p>
     </div>
 
     <div class="pagination ">
-      <a class="toggler" href="13.html">Prev</a>
-      <a  class="toggler" href="15.html">Next</a>
+      <a class="toggler" href="16.html">Prev</a>
+      <a  class="toggler" href="soon.html">Next</a>
     </div>
   </section>
   <footer >

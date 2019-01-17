@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>Line Detection</title>
+  <title>Detecting Shapes</title>
   <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,minimum-scale=1">
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -66,7 +66,7 @@
       <ul class="bxslider-subpages">
         <li style="background-color:#212020">
           <div class="slider-inner-shell">
-            <div class="slider-detail"><i class="fa fa-book"></i><span>Line Detection</span></div>
+            <div class="slider-detail"><i class="fa fa-book"></i><span>Detecting Shapes</span></div>
           </div>
         </li>
       </ul>
@@ -74,57 +74,62 @@
   </div>
   <section class="section-about">
     <div class="container">
-      <h2>Line Detection</h2>
-      <p>First of all, let’s detect some lines, which is done with the <strong>HoughLines</strong> and <strong>HoughLinesP</strong>
-functions. The only difference between the two functions is that one uses the standard
-Hough transform, and the second uses the probabilistic Hough transform (hence P in the
-name).
+      <h2>Shape Detection</h2>
+      <p>The detection of shapes with the Hough transform is limited to circles. <strong>approxPolyDP()</strong> allows the approximation of polygons, so if your
+image contains polygons, they will be quite accurately detected, combining the usage of
+<strong>cv2.findContours</strong> and <strong>cv2.approxPolyDP</strong>.</p>
+ <p>Here’s the example:
 </p>
-
-<p>The probabilistic version is so-called because it only analyzes a subset of points and
-estimates the probability of these points all belonging to the same line. This
-implementation is an optimized version of the standard Hough transform, and in this case,
-it’s less computationally intensive and executes faster.
-</p>
-<p>Let’s take a look at a very simple example:</p>
 
 <p class="line">
-# Import Necessary library<br>
-<code>import cv2</code><br><br>
-# Read Input image<br>
-<code>img = cv2.imread('chess.jpg')</code><br>
-# convert to grayscale<br>
-<code>gray = cv2.cvtColor( img, cv2.COLOR_BGR2GRAY)</code><br>
-# Edge Detection using canny<br>
-<code>edges = cv2.Canny( gray, 50, 120)</code><br>
-# Define threshold Line Length and Line gap<br>
-<code>minLineLength = 20</code><br>
-<code>maxLineGap = 5</code><br>
-# Obtain Hough Lines<br>
-<code>lines = cv2.HoughLinesP( edges, 1, np.pi/180, 100, minLineLength, maxLineGap)</code><br>
-# Loop though the lines and draw them<br>
-<code>for i in range(len(lines)):</code><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>for x1,y1,x2,y2 in lines[i]:</code><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.line( img, (x1,y1), (x2,y2), (0,255,0),2)</code><br><br><br>
-# Display Output Image<br>
-<code>cv2.imwrite("Houghedges.jpg", edges)</code><br>
-<code>cv2.imwrite("Houghlines.jpg", img)</code><br>
+  # Import Necessary library</code><br>
+  <code>import cv2<br></code>
+  <code>import numpy as np<br><br></code>
+  # Read Input image<br>
+<code>img = cv2.imread("shapes.png", cv2.IMREAD_GRAYSCALE)<br></code>
+  # Set threshold from 240 to 255 intensity<br>
+<code>_, threshold = cv2.threshold(img, 240, 255, cv2.THRESH_BINARY)<br></code>
+# Find Contours in image<br>
+<code>_, contours, _ = cv2.findContours(threshold, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)<br></code>
+# Set font to FONT_HERSHEY_COMPLEX<br>
+<code>font = cv2.FONT_HERSHEY_COMPLEX<br></code>
+# Loop through the contours and label them<br>
+<code>for cnt in contours:<br></code>
+    <code>&nbsp;&nbsp;&nbsp;&nbsp;approx = cv2.approxPolyDP(cnt, 0.01*cv2.arcLength(cnt, True), True)<br></code>
+    <code>&nbsp;&nbsp;&nbsp;&nbsp;cv2.drawContours(img, [approx], 0, (0), 5)<br></code>
+    <code>&nbsp;&nbsp;&nbsp;&nbsp;x = approx.ravel()[0]<br></code>
+    <code>&nbsp;&nbsp;&nbsp;&nbsp;y = approx.ravel()[1]<br></code>
+
+    <code>&nbsp;&nbsp;&nbsp;&nbsp;if len(approx) == 3:<br></code>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cv2.putText(img, "Triangle", (x, y), font, 1, (0))<br></code>
+    <code>&nbsp;&nbsp;&nbsp;&nbsp;elif len(approx) == 4:<br></code>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cv2.putText(img, "Rectangle", (x, y), font, 1, (0))<br></code>
+    <code>&nbsp;&nbsp;&nbsp;&nbsp;elif len(approx) == 5:<br></code>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cv2.putText(img, "Pentagon", (x, y), font, 1, (0))<br></code>
+    <code>&nbsp;&nbsp;&nbsp;&nbsp;elif 6 < len(approx) < 15:<br></code>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cv2.putText(img, "Ellipse", (x, y), font, 1, (0))<br></code>
+    <code>&nbsp;&nbsp;&nbsp;&nbsp;else:<br></code>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cv2.putText(img, "Circle", (x, y), font, 1, (0))<br></code>
+<br><br>
+# Save Output Image<br>
+<code>cv2.imwrite("DetectedShapes.jpg", img)<br></code>
+
 
 </p>
+
 
 
 <p><strong>Input Image is: </strong></p>
-<img src="../image/chess.jpg" height="150px"/>
+<img src="../image/shapes.png" height="150px"/>
 
-<p><strong>Output Image for Edges and Lines will be: </strong></p>
-<img src="../image/Houghedges.jpg" height="150px"/>
-<img src="../image/Houghlines.jpg" height="150px"/>
+<p><strong>Output Image for Hough Cirlces will be: </strong></p>
+<img src="../image/DetectedShapes.jpg" height="150px"/>
 
     </div>
 
     <div class="pagination ">
-      <a class="toggler" href="13.html">Prev</a>
-      <a  class="toggler" href="15.html">Next</a>
+      <a class="toggler" href="15.html">Prev</a>
+      <a  class="toggler" href="17.html">Next</a>
     </div>
   </section>
   <footer >
