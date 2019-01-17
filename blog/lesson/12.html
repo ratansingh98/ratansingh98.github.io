@@ -98,20 +98,20 @@ accomplish:</p>
   <code>image, contours, hier = cv2.findContours(thresh, cv2.RETR_EXTERNAL,
   cv2.CHAIN_APPROX_SIMPLE)</code><br>
   <code>for c in contours:</code><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;# find bounding box coordinates<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;# Find bounding box coordinates<br>
   &nbsp;&nbsp;&nbsp;&nbsp;<code>x,y,w,h = cv2.boundingRect(c)</code><br>
   &nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.rectangle(img, (x,y), (x+w, y+h), (0, 255, 0), 2)</code><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;# find minimum area<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;# Find minimum area<br>
   &nbsp;&nbsp;&nbsp;&nbsp;<code>rect = cv2.minAreaRect(c)</code><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;# calculate coordinates of the minimum area rectangle<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;# Calculate coordinates of the minimum area rectangle<br>
   &nbsp;&nbsp;&nbsp;&nbsp;<code>box = cv2.boxPoints(rect)</code><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;# normalize coordinates to integers<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;# Normalize coordinates to integers<br>
   &nbsp;&nbsp;&nbsp;&nbsp;<code>box = np.int0(box)</code><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;# draw contours for box<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;# Draw contours for box<br>
   &nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.drawContours(img, [box], 0, (0,0, 255), 3)</code><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;# calculate center and radius of minimum enclosing circle<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;# Calculate center and radius of minimum enclosing circle<br>
   &nbsp;&nbsp;&nbsp;&nbsp;<code>(x,y),radius = cv2.minEnclosingCircle(c)</code><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;# cast to integers<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;# Cast to integers<br>
   &nbsp;&nbsp;&nbsp;&nbsp;<code>center = (int(x),int(y))</code><br>
   &nbsp;&nbsp;&nbsp;&nbsp;<code>radius = int(radius)</code><br>
   &nbsp;&nbsp;&nbsp;&nbsp;# Draw the circle<br>

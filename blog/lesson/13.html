@@ -87,33 +87,33 @@
   <code>import numpy as np</code><br><br>
   # Read Input image<br>
   <code>img = cv2.imread("Hammer.png", 1) </code><br>
-  # convert to grayscale<br>
+  # Convert to grayscale<br>
   <code>gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)<br></code>
-  # blur the image to remove noise<br>
+  # Blur the image to remove noise<br>
   <code>blur = cv2.blur(gray, (3, 3))<br></code>
   # Obtain thresholding between 50 and 255 intensity<br>
   <code>ret, thresh = cv2.threshold(blur, 50, 255, cv2.THRESH_BINARY)</code><br>
   # Finding contours for the thresholded image<br>
   <code>im2, contours, hierarchy = cv2.findContours( thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)<br></code>
-  # create hull array for convex hull points<br>
+  # Create hull array for convex hull points<br>
   <code>hull = []</code><br>
 
-  # calculate points for each contour<br>
+  # Calculate points for each contour<br>
   <code>for i in range(len(contours)):</code><br>
       &nbsp;&nbsp;&nbsp;&nbsp;# Creating Convex Hull object for each contour<br>
       &nbsp;&nbsp;&nbsp;&nbsp;<code>hull.append( cv2.convexHull(contours[i], False))</code><br><br>
-      # create an empty black image<br>
+      # Create an empty black image<br>
     <code>drawing = np.zeros((thresh.shape[0], thresh.shape[1], 3), np.uint8)</code><br>
 
     # draw contours and hull points<br>
     <code>for i in range(len(contours)):<br></code>
      &nbsp;&nbsp;&nbsp;&nbsp;# green - color for contours<br>
       &nbsp;&nbsp;&nbsp;&nbsp;  <code>color_contours = (0, 255, 0)<br></code>
-      &nbsp;&nbsp;&nbsp;&nbsp;  # blue - color for convex hull<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;  # Blue - color for convex hull<br>
       &nbsp;&nbsp;&nbsp;&nbsp;  <code>color = (255, 0, 0)<br></code>
-      &nbsp;&nbsp;&nbsp;&nbsp;  # draw ith contour<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;  # Draw its contour<br>
       &nbsp;&nbsp;&nbsp;&nbsp;  <code>cv2.drawContours(drawing, contours, i, color_contours, 1, 8, hierarchy)<br></code>
-      &nbsp;&nbsp;&nbsp;&nbsp;  # draw ith convex hull object<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;  # Draw its convex hull object<br>
       &nbsp;&nbsp;&nbsp;&nbsp;  <code>cv2.drawContours(drawing, hull, i, color, 1, 8)<br></code><br><br>
         # Draw all the contours in image<br>
         <code>cv2.drawContours(img, contours, -1, (255, 0, 0), 1)</code><br>
