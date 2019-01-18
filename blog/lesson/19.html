@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>ORB For Object Detection</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,minimum-scale=1">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu:400,500,700,300&amp;subset=latin-ext" rel="stylesheet" type="text/css">
+  <link href="../css/bundle.css" rel="stylesheet" type="text/css">
+  <link href="../icons/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link rel="shortcut-icon" href="/assets/icons/favicon.ico">
+  <link rel="icon" href="../icons/logo.png">
+  <style>
+  .line{
+    background-color:  rgba(144, 144, 144, 0.3);
+    border: 1px solid black;
+    padding: 10px;
+  }
+  .line1{
+    background-color:  rgba(060, 060, 060, 0.3);
+    border: 1px solid black;
+    padding: 10px;
+  }
+  code{
+    color: blue;
+  }
+
+  </style>
+</head>
+
+<body>
+  <nav class="bg-nav">
+    <div class="container">
+      <div class="navbar"><a href="../../index.html" class="ozluy-logo">
+            <div class="ozluy-zluy">RSDharra</div></a>
+        <div class="device device--alt">
+          <div class="device__screen">
+            <div id="menu-icon-wrapper2" style="visibility:hidden" class="menu-icon-wrapper">
+              <svg width="1000px" height="1000px">
+                  <path id="pathD" d="M 300 400 L 700 400 C 900 400 900 750 600 850 A 400 400 0 0 1 200 200 L 800 800" style="stroke-dashoffset: 5803.15px; stroke-dasharray: 2901.57px, 2981.57px, 240px;"></path>
+                  <path id="pathE" d="M 300 500 L 700 500" style="stroke-dashoffset: 800px; stroke-dasharray: 400px, 480px, 240px;"></path>
+                  <path id="pathF" d="M 700 600 L 300 600 C 100 600 100 200 400 150 A 400 380 0 1 1 200 800 L 800 200" style="stroke-dashoffset: 6993.11px; stroke-dasharray: 3496.56px, 3576.56px, 240px;"></path>
+                </svg>
+              <button id="menu-icon-trigger2" class="menu-icon-trigger"></button>
+            </div>
+            <div id="dummy2" class="dummy">
+              <div class="dummy__item"></div>
+              <div class="dummy__item"></div>
+              <div class="dummy__item"></div>
+              <div class="dummy__item"></div>
+            </div>
+          </div>
+        </div>
+        <ul class="navbar-links">
+          <li><a href="../../about.html"><i class="mobil-nav-icon fa fa-home"></i>About</a></li>
+          <li><a href="../../work.html"><i class="mobil-nav-icon fa fa-trophy"></i>My Work</a></li>
+          <li><a href="../index.html"><i class="mobil-nav-icon fa fa-book"></i>Blog</a></li>
+          <li><a href="../../contact.html"><i class="mobil-nav-icon fa fa-envelope"></i>Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="home-banner">
+    <div>
+      <ul class="bxslider-subpages">
+        <li style="background-color:#212020">
+          <div class="slider-inner-shell">
+            <div class="slider-detail"><i class="fa fa-book"></i><span>ORB For Object Detection</span></div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <section class="section-about">
+    <div class="container">
+      <h2>ORB For Object Detection</h2>
+      <p>Here we will be looking at real time object detection using ORB and webcam.</p>
+      <p>We will try to detect for below image :</p>
+  <img src="../image/sample.jpg" height="250px"/>
+
+
+<p class="line">
+  #Import Necessary Libraries<br>
+  <code>import cv2</code><br>
+  <code>import numpy as np</code><br><br>
+
+  # Create Instance for Video Capture<br>
+  <code>cap = cv2.VideoCapture(0)</code><br>
+  # Load Sample image which will be detected as grayscale<br>
+  <code>image_template = cv2.imread('sample.jpg', 0)</code><br><br><br>
+
+  # Define Function for ORB detection here new_image is image from webcam<br>
+  <code>def ORB_detector(new_image, image_template):</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;# Convert new_image to grayscale<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>image1 = cv2.cvtColor(new_image, cv2.COLOR_BGR2GRAY)</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;# Create orb detector for image with 1000 features and 1.2 Scale factor. Adjust params according to your need.<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>orb_detector = cv2.ORB_create(1000, 1.2)</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;# Detect and compute orb featurs from image1<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>kp1, des1 = orb_detector.detectAndCompute( image1, None)</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;# Detect and compute orb featurs from image_template<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>kp2, des2 = orb_detector.detectAndCompute( image_template, None)</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;# Create 	Brute-force matcher instance.<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;# Find Matched between both detected feature.<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>matches = bf.match(des1, des2)</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;# Sort them as oer their distance<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>matches = sorted(matches, key=lambda val: val.distance)</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;# Return Length of matches<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>return len(matches)</code><br><br><br>
+
+      # Loops until Enter key is pressed<br>
+      <code>while True:</code><br>
+
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>ret, frame = cap.read()</code><br>
+
+      &nbsp;&nbsp;&nbsp;&nbsp;# Get height and width of the frame<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>height, width = frame.shape[:2]</code><br>
+
+      &nbsp;&nbsp;&nbsp;&nbsp;# Define the Box Dimensions<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>top_left_x = int(width / 3)</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>top_left_y = int((height / 2) + (height / 4))</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>bottom_right_x = int((width / 3) * 2)</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>bottom_right_y = int((height / 2) - (height / 4))</code><br>
+
+      &nbsp;&nbsp;&nbsp;&nbsp;# Draw rectangular box for our region of interest<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.rectangle(frame, (top_left_x, top_left_y),
+                    (bottom_right_x, bottom_right_y), (0, 255, 0), 3)</code><br>
+
+      &nbsp;&nbsp;&nbsp;&nbsp;# Crop window of obeservation we defined above<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>cropped = frame[bottom_right_y: top_left_y, top_left_x:bottom_right_x]</code><br>
+
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>frame = cv2.flip(frame, 1)</code><br>
+
+      &nbsp;&nbsp;&nbsp;&nbsp;# Get number of ORB matches<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>matches = ORB_detector(cropped, image_template)</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;# This will join number of matches with Threshold.<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>output_string = 'Threshold = ' + str(matches)</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;# If matches is smaller than 80 then display Threshold.<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>if matches < 80:</code><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.putText(frame, output_string, (50, 450),
+                  cv2.FONT_HERSHEY_SIMPLEX, 2, (250, 0, 150), 2)</code><br><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;# Else display match is found.<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>else :</code><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.putText(frame, "Match Found", (50, 450),
+                  cv2.FONT_HERSHEY_SIMPLEX, 2, (250, 0, 150), 2)</code><br><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;# Display frame named Object Detector ORB.<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.imshow('Object Detector ORB', frame)</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;# Exit out of the infinite loop by pressing Enter key.<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>if cv2.waitKey(1) == 13:</code><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>break</code><br><br><br>
+# Destroy Create Image and Terminate program.<br>
+  <code>cv2.destroyAllWindows()</code><br>
+
+</p>
+
+
+<p><strong>Output Image will be: </strong></p>
+<img src="../image/Undetected.png" height="250px"/>
+<img src="../image/Detected.png" height="250px"/>
+<br><br>
+
+    </div>
+
+    <div class="pagination ">
+      <a class="toggler" href="18.html">Prev</a>
+      <a  class="toggler" href="20.html">Next</a>
+    </div>
+  </section>
+  <footer >
+    <div class="container" >
+      <ul class="socials">
+            <li><a target="_blank" href="mailTo:ratan@rsdharra.com" title="ratan@rsdharra.com" class="social-mail"><i class="fa fa-envelope"></i></a></li>
+            <li><a target="_blank" href="https://www.linkedin.com/in/ratan-singh-dharra-198931144/" title="LinkedIn.com/in/ratan-singh-dharra-198931144" class="social-linkedin"><i class="fa fa-linkedin"></i></a></li>
+            <li><a target="_blank" href="https://github.com/ratansingh98" title="Github.com/ratansingh98" class="social-github"><i class="fa fa-github"></i></a></li>
+      </ul>
+      <div class="copyright">Copyright &copy; 2019 <a style="color:yellow;" href = "https://rsdharra.com" target="_blank">Ratan Singh Dharra</a></div>
+    </div>
+  </footer >
+  <div class="google-rainbow">
+    <div class="rainbow-item"></div>
+    <div class="rainbow-item"></div>
+    <div class="rainbow-item"></div>
+    <div class="rainbow-item"></div>
+  </div>
+  <script src="js/bundle.js"></script>
+</body>
+
+</html>

@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>Finding Object</title>
+  <title>ORB Algorithm</title>
   <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,minimum-scale=1">
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -66,7 +66,7 @@
       <ul class="bxslider-subpages">
         <li style="background-color:#212020">
           <div class="slider-inner-shell">
-            <div class="slider-detail"><i class="fa fa-book"></i><span>Finding Object</span></div>
+            <div class="slider-detail"><i class="fa fa-book"></i><span>ORB Algorithm</span></div>
           </div>
         </li>
       </ul>
@@ -74,56 +74,52 @@
   </div>
   <section class="section-about">
     <div class="container">
-      <h2>Find Waldo</h2>
-      <p>The goal, given a query image of Waldo and the puzzle image,
-        is to find Waldo in in the puzzle image and highlight his location.</p>
- <p>Here is the image :</p>
-<img src="../image/image.jpg" height="250px"/>
+      <h2>ORB (Oriented FAST and Rotated BRIEF) Algorithm</h2>
+      <p>In many Computer Vision applications, we often need to identify interesting stable points in an image. These points are called keypoints or feature points.
+        There are several keypoint detectors implemented in OpenCV ( e.g. SIFT, SURF, and ORB).
+</p>
+ <p>we will use the ORB feature detector because it was co-invented by my former labmate Vincent Rabaud.
+    Just kidding! We will use ORB because SIFT and SURF are patented and if you want to use it in a real-world application,
+    you need to pay a licensing fee.
+   ORB is fast, accurate and license-free!</p>
+<img src="../image/palace.jpg" height="250px"/>
 
 
 <p class="line">
   # Import Necessary library</code><br>
-  <code>import cv2<br></code>
-  <code>import numpy as np<br></code><br>
-
-  # Load input image and convert to grayscale<br>
-  <code>image = cv2.imread('image.jpg')<br></code>
-  <code>gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)<br></code>
-
-  # Load template image<br>
-  <code>template = cv2.imread('waldo.jpg', 0)<br></code>
-  # Match Template and grayscaled image<br>
-  <code>result = cv2.matchTemplate(gray, template, cv2.TM_CCOEFF)<br></code>
-  # Find min and val of location and value<br>
-  <code>min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(result)<br></code>
-  # Set Dimensions for box<br>
-  <code>top_left = max_loc<br></code>
-  <code>bottom_right = (top_left[0]+50, top_left[1]+50)<br></code>
-    # Create Bounding box<br>
-  <code>cv2.rectangle(image, top_left, bottom_right, (0, 0, 255), 5)<br></code>
-  # Saved output image<br>
-  <code>cv2.imwrite("Findwaldo.jpg", image)<br></code>
+  <code>import cv2</code><br>
+<code>import numpy as np</code><br>
+<br>
+# Load input image and convert to grayscale<br>
+<code>image = cv2.imread('palace.jpg')</code><br>
+<code>gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)</code><br>
+<br>
+# Create ORB , we can specify the number of key points we desire. Here we set to 1000.<br>
+<code>orb = cv2.ORB_create(1000, 1.2)</code><br>
+<br>
+# Obtain descriptors and new final keypoints using ORB<br>
+<code>keypoints, descriptors = orb.detectAndCompute(gray, None)</code><br>
+<code>print("Number of keypoints Detected: ", len(keypoints))</code><br>
+<br>
+# Draw rich key points on input image<br>
+<code>image = cv2.drawKeypoints(
+    image, keypoints, None, flags= cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)</code><br>
+<br>
+# Store Image<br>
+<code>cv2.imwrite("ORB.jpg", image)</code><br>
 
 </p>
 
+
 <p><strong>Output Image will be: </strong></p>
-<img src="../image/Findwaldo.jpg" height="250px"/>
+<img src="../image/ORB.jpg" height="250px"/>
 <br><br>
-<h3>cv2.matchTemplate() :</h3>
-<p>Compares a template against overlapped image regions.<br>
-The function slides through image , compares the overlapped patches of size w x h against templ using the specified method and stores the comparison results in result .
-  The summation is done over template and/or the image patch: x' = 0...w-1, y' = 0...h-1</p>
-  <p>After the function finishes the comparison, the best matches can be found as global minimums
-    (when <strong>CV_TM_SQDIFF</strong> was used) or maximums (when <strong>CV_TM_CCORR</strong> or <strong>CV_TM_CCOEFF</strong> was used) using the
-    <strong>minMaxLoc()</strong> function. In case of a color image, template summation in the numerator and each sum in
-    the denominator is done over all of the channels and separate mean values are used for each channel.
-    That is, the function can take a color template and a color image.
-     The result will still be a single-channel image, which is easier to analyze.</p>
+
     </div>
 
     <div class="pagination ">
-      <a class="toggler" href="16.html">Prev</a>
-      <a  class="toggler" href="18.html">Next</a>
+      <a class="toggler" href="17.html">Prev</a>
+      <a  class="toggler" href="19.html">Next</a>
     </div>
   </section>
   <footer >
