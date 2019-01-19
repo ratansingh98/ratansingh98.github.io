@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>GrabCut</title>
+  <title>Watershed Algorithm</title>
   <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,minimum-scale=1">
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -66,7 +66,7 @@
       <ul class="bxslider-subpages">
         <li style="background-color:#212020">
           <div class="slider-inner-shell">
-            <div class="slider-detail"><i class="fa fa-book"></i><span>Background Removal using GrabCut</span></div>
+            <div class="slider-detail"><i class="fa fa-book"></i><span>Image Segmentation</span></div>
           </div>
         </li>
       </ul>
@@ -74,46 +74,63 @@
   </div>
   <section class="section-about">
     <div class="container">
-      <h2>GrabCut</h2>
-      <p>GrabCut is an image segmentation method based on graph cuts.</p>
-      <p>Starting with a user-specified bounding box around the object to be segmented, the algorithm estimates the color distribution of the target object and that of the background using a Gaussian mixture model. This is used to construct a Markov random field over the pixel labels, with an energy function that prefers connected regions having the same label, and running a graph cut based optimization to infer their values. As this estimate is likely to be more accurate than the original, taken from the bounding box, this two-step procedure is repeated until convergence.</p>
-      <p>We will try to Remove Background for this image :</p>
-  <img src="../image/statue.jpg" height="250px"/>
-
+      <h2>Watershed Algorithm</h2>
+      <p>The algorithm is called
+Watershed, because its conceptualization involves water. Imagine areas with low density
+(little to no change) in an image as valleys, and areas with high density (lots of change) as
+peaks. Start filling the valleys with water to the point where water from two different
+valleys is about to merge. To prevent the merging of water from different valleys, you
+build a barrier to keep them separated. The resulting barrier is the image segmentation.</p>
+  <p>This is our input image</p>
+  <img src="../image/basil.png" height="250px"/>
 
 <p class="line">
-  #Import Necessary Libraries<br>
+    # Import Necessary Libraries<br>
   <code>import numpy as np<br></code>
-  <code>import cv2<br></code><br>
-  # Read Image<br>
-  <code>img = cv2.imread('statue.jpg')<br></code>
-  # Create Mask<br>
-  <code>mask = np.zeros(img.shape[:2], np.uint8)<br></code>
-  # Create zero-filled foreground and background<br>
-  <code>bgdModel = np.zeros((1,65),np.float64)<br></code>
-  <code>fgdModel = np.zeros((1,65),np.float64)<br></code>
-  <br>
-  # Define a crop image rectangle size<br>
-  <code>rect = (250,50,421,600)<br></code>
-  #  GrabCut algorithm specifying the empty models and mask<br>
-  <code>cv2.grabCut(img, mask, rect, bgdModel, fgdModel,5, cv2.GC_INIT_WITH_RECT)<br></code>
-  # The values, 0 and 2, will be converted into zeros, and 1-3 into ones, and stored into mask2<br>
-  <code>mask2 = np.where((mask==2)|(mask==0),0,1).astype('uint8')<br></code>
-  <code>img = img*mask2[:,:,np.newaxis]<br></code>
-  # Store image as Grabcut.jpg<br>
-  <code>cv2.imwrite("Grabcut.jpg", img)<br></code>
+<code>import cv2<br><br></code>
+# Read image and convert it into grayscale<br>
+<code>img = cv2.imread('basil.png')<br></code>
+<code>gray = cv2.cvtColor( img, cv2.COLOR_BGR2GRAY)<br></code><br>
+
+# Convert image into only black and white depending upon threshold<br>
+<code>ret, thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)<br></code>
+# Create a kernel of 3x3 contains ones<br>
+<code>kernel = np.ones((3,3),np.uint8)<br></code>
+# Remove noise from the image by applying the morphologyEx transformation<br>
+<code>opening = cv2.morphologyEx( thresh, cv2.MORPH_OPEN, kernel, iterations = 2)<br></code>
+# Dilating the result of the morphology transformation, we can obtain areas of the image
+that are most certainly background<br>
+<code>sure_bg = cv2.dilate(opening, kernel, iterations=3)<br></code>
+ # Obtain sure foreground areas by applying distanceTransform<br>
+<code>dist_transform = cv2.distanceTransform( opening, cv2.DIST_L2,5)<br></code>
+# Apply threshold to determine with a highly mathematical probability whether the areas are foreground.<br>
+<code>ret, sure_fg = cv2.threshold( dist_transform, 0.7*dist_transform.max(), 255,0)<br></code><br>
+# Subtract the sure foreground from the background<br>
+<code>sure_fg = np.uint8(sure_fg)<br></code>
+<code>unknown = cv2.subtract(sure_bg, sure_fg)<br></code><br>
+#  We can build our famous “barriers” to stop the water from merging<br>
+<code>ret, markers = cv2.connectedComponents( sure_fg)<br></code><br>
+# We add 1 to the background areas because we only want unknowns to stay at 0<br>
+<code>markers = markers+1<br></code>
+<code>markers[unknown==255] = 0<br></code><br>
+# Draw the markets on the image<br>
+<code>markers = cv2.watershed(img, markers)<br></code>
+<code>img[markers == -1] = [255,0,0]<br></code>
+# Store image as watershed.jpg<br>
+<code>cv2.imwrite("watershed.jpg", img)<br></code>
 </p>
 
 
+
 <p><strong>Output Image will be: </strong></p>
-<img src="../image/Grabcut.jpg" height="250px"/>
+<img src="../image/watershed.jpg" height="250px"/>
 <br><br>
 
     </div>
 
     <div class="pagination ">
-      <a class="toggler" href="19.html">Prev</a>
-      <a  class="toggler" href="21.html">Next</a>
+      <a class="toggler" href="20.html">Prev</a>
+      <a  class="toggler" href="22.html">Next</a>
     </div>
   </section>
   <footer >
