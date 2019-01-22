@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>HOG</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,minimum-scale=1">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu:400,500,700,300&amp;subset=latin-ext" rel="stylesheet" type="text/css">
+  <link href="../css/bundle.css" rel="stylesheet" type="text/css">
+  <link href="../icons/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link rel="shortcut-icon" href="/assets/icons/favicon.ico">
+  <link rel="icon" href="../icons/logo.png">
+  <style>
+  .line{
+    background-color:  rgba(144, 144, 144, 0.3);
+    border: 1px solid black;
+    padding: 10px;
+  }
+  .line1{
+    background-color:  rgba(060, 060, 060, 0.3);
+    border: 1px solid black;
+    padding: 10px;
+  }
+  code{
+    color: blue;
+  }
+
+  </style>
+</head>
+
+<body>
+  <nav class="bg-nav">
+    <div class="container">
+      <div class="navbar"><a href="../../index.html" class="ozluy-logo">
+            <div class="ozluy-zluy">RSDharra</div></a>
+        <div class="device device--alt">
+          <div class="device__screen">
+            <div id="menu-icon-wrapper2" style="visibility:hidden" class="menu-icon-wrapper">
+              <svg width="1000px" height="1000px">
+                  <path id="pathD" d="M 300 400 L 700 400 C 900 400 900 750 600 850 A 400 400 0 0 1 200 200 L 800 800" style="stroke-dashoffset: 5803.15px; stroke-dasharray: 2901.57px, 2981.57px, 240px;"></path>
+                  <path id="pathE" d="M 300 500 L 700 500" style="stroke-dashoffset: 800px; stroke-dasharray: 400px, 480px, 240px;"></path>
+                  <path id="pathF" d="M 700 600 L 300 600 C 100 600 100 200 400 150 A 400 380 0 1 1 200 800 L 800 200" style="stroke-dashoffset: 6993.11px; stroke-dasharray: 3496.56px, 3576.56px, 240px;"></path>
+                </svg>
+              <button id="menu-icon-trigger2" class="menu-icon-trigger"></button>
+            </div>
+            <div id="dummy2" class="dummy">
+              <div class="dummy__item"></div>
+              <div class="dummy__item"></div>
+              <div class="dummy__item"></div>
+              <div class="dummy__item"></div>
+            </div>
+          </div>
+        </div>
+        <ul class="navbar-links">
+          <li><a href="../../about.html"><i class="mobil-nav-icon fa fa-home"></i>About</a></li>
+          <li><a href="../../work.html"><i class="mobil-nav-icon fa fa-trophy"></i>My Work</a></li>
+          <li><a href="../index.html"><i class="mobil-nav-icon fa fa-book"></i>Blog</a></li>
+          <li><a href="../../contact.html"><i class="mobil-nav-icon fa fa-envelope"></i>Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="home-banner">
+    <div>
+      <ul class="bxslider-subpages">
+        <li style="background-color:#212020">
+          <div class="slider-inner-shell">
+            <div class="slider-detail"><i class="fa fa-book"></i><span>Histogram of Oriented Gradients</span></div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <section class="section-about">
+    <div class="container">
+      <h2>Histogram of Oriented Gradients</h2>
+      <p>The Histogram of Oriented Gradient (HOG) feature descriptor is popular for object detection.</p>
+      <p> In the following example, we compute the HOG descriptor and display a visualisation. </p>
+      <h3>Algorithm overview</h3>
+      <p>Compute a Histogram of Oriented Gradients (HOG) by</p>
+      <ol>
+        <li>(Optional) Global image normalisation</li>
+        <li>Computing the gradient image in x and y</li>
+        <li>Computing gradient histograms</li>
+        <li>Normalising across blocks</li>
+        <li>Flattening into a feature vector</li>
+      </ol>
+
+      <p>The first stage applies an optional global image normalisation equalisation that is designed to reduce the influence of illumination effects.
+        In practice we use gamma (power law) compression, either computing the square root or the log of each color channel.
+        Image texture strength is typically proportional to the local surface illumination so this compression helps to reduce the effects of local shadowing and illumination variations.
+        <p>
+          <p>The second stage computes first order image gradients.
+            These capture contour, silhouette and some texture information, while providing further resistance to illumination variations.
+            The locally dominant color channel is used, which provides color invariance to a large extent.
+            Variant methods may also include second order image derivatives,
+             which act as primitive bar detectors - a useful feature for capturing, e.g. bar like structures in bicycles and limbs in humans.</p>
+
+             <p>The third stage aims to produce an encoding that is sensitive to local image content while remaining resistant to small changes in pose or appearance.
+               The adopted method pools gradient orientation information locally in the same way as the SIFT [2] feature.
+               The image window is divided into small spatial regions, called “cells”.
+               For each cell we accumulate a local 1-D histogram of gradient or edge orientations over all the pixels in the cell.
+               This combined cell-level 1-D histogram forms the basic “orientation histogram” representation.
+               Each orientation histogram divides the gradient angle range into a fixed number of predetermined bins.
+               The gradient magnitudes of the pixels in the cell are used to vote into the orientation histogram.</p>
+
+               <p>The fourth stage computes normalisation, which takes local groups of cells and contrast normalises their overall responses before passing to next stage.
+                 Normalisation introduces better invariance to illumination, shadowing, and edge contrast.
+                 It is performed by accumulating a measure of local histogram “energy” over local groups of cells that we call “blocks”.
+                 The result is used to normalise each cell in the block.
+                 Typically each individual cell is shared between several blocks, but its normalisations are block dependent and thus different.
+                 The cell thus appears several times in the final output vector with different normalisations.
+                 This may seem redundant but it improves the performance. We refer to the normalised block descriptors as Histogram of Oriented Gradient (HOG) descriptors.</p>
+
+                 <p>The final step collects the HOG descriptors from all blocks of a dense overlapping grid of blocks covering the detection window into a combined feature vector for use in the window classifier.</p>
+
+<p class="line">
+# Import necessary libraries<br>
+<code>import numpy as np</code><br>
+<code>import cv2</code><br>
+<code>import matplotlib.pyplot as plt</code><br><br>
+
+# Load image then grayscale<br>
+<code>image = cv2.imread('MyPic.jpg')</code><br>
+<code>gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)</code><br><br>
+
+
+# h, x, w in pixels<br>
+<code>cell_size = (8,8)</code><br>
+
+# h, x, w in cells<br>
+<code>block_size = (2,2)</code><br>
+
+# Number of orientation bins<br>
+<code>nbins = 9</code><br><br>
+
+# Using OpenCV's HOG Descriptor<br>
+# WinSize is the size of the image cropped to multiple of the cell size<br>
+<code>hog = cv2.HOGDescriptor(_winSize = (gray.shape[1] // cell_size[1] * cell_size[1],
+                                   gray.shape[0] // cell_size[0] * cell_size[0]),
+                                   _blockSize = (block_size[1] * cell_size[1],
+                                                block_size[0] * cell_size[0]),
+                                   _blockStride = (cell_size[1], cell_size[0]),
+                                   _cellSize = (cell_size[1], cell_size[0]),
+                                   _nbins = nbins)</code><br><br>
+
+# Create numpy array shape which we use to create hog_feats<br>
+<code>n_cells = (gray.shape[0]// cell_size[0], gray.shape[1]// cell_size[1])</code><br>
+
+# We index blocks by rows first<br>
+# hog_feats now contains the gradient amplitude for each direction,<br>
+# for each celll of its group for each group. Indexing is by rows then columns.<br>
+<code>hog_feats = hog.compute(gray).reshape( n_cells[1] - block_size[1] +1,
+                                     n_cells[0] - block_size[0] +1,
+                                     block_size[0], block_size[1],
+                                     nbins).transpose((1,0,2,3,4))</code><br>
+
+# Create our gradients array with nbins dimensions to store gradient orientations<br>
+<code>gradients = np.zeros((n_cells[0], n_cells[1], nbins))</code><br>
+
+# Create array of dimensions<br>
+<code>cell_count = np.full(( n_cells[0],n_cells[1],1), 0, dtype=int)</code><br>
+
+# Block Normalization<br>
+<code>for off_y in range(block_size[0]):</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>for off_x in range(block_size[1]):</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>gradients[off_y:n_cells[0] - block_size[0] + off_y + 1, off_x:n_cells[1] - block_size[1] + off_x + 1] += hog_feats[:,:,off_y,off_x,:]</code><br>
+
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>cell_count[off_y:n_cells[0] - block_size[0] + off_y +1,
+                  off_x: n_cells[1] -block_size[1] + off_x + 1] += 1</code><br><br>
+
+# Average gradients<br>
+<code>gradients /= cell_count</code><br><br>
+
+# Plot HOGs using Matplotlib<br>
+# angle is 360/nbins * directions<br>
+<code>color_bins = 5</code><br>
+<code>plt.pcolor(gradients[:,:, color_bins])</code><br>
+<code>plt.gca().invert_yaxis()</code><br>
+<code>plt.gca().set_aspect('equal', adjustable='box')</code><br>
+<code>plt.colorbar()</code><br>
+<code>plt.title("HOG of MyPic")</code><br>
+<code>plt.savefig("HOG of MyPic.jpg")</code><br>
+<code>plt.show()</code><br>
+<code>cv2.destroyAllWindows()</code><br>
+
+ </p>
+<p><strong>Note : </strong>Object Detection using HOG will be coming after some more topics.</p>
+<br><br>
+<p><strong>The input Image is: </strong></p>
+<img src="../image/MyPic.jpg" height="250px"/>
+ <p><strong>Output Image will be: </strong></p>
+<img src="../image/HOG of MyPic.jpg" height="250px"/>
+    </div>
+
+    <div class="pagination ">
+      <a class="toggler" href="24.html">Prev</a>
+      <a  class="toggler" href="26.html">Next</a>
+    </div>
+  </section>
+  <footer >
+    <div class="container" >
+      <ul class="socials">
+            <li><a target="_blank" href="mailTo:ratan@rsdharra.com" title="ratan@rsdharra.com" class="social-mail"><i class="fa fa-envelope"></i></a></li>
+            <li><a target="_blank" href="https://www.linkedin.com/in/ratan-singh-dharra-198931144/" title="LinkedIn.com/in/ratan-singh-dharra-198931144" class="social-linkedin"><i class="fa fa-linkedin"></i></a></li>
+            <li><a target="_blank" href="https://github.com/ratansingh98" title="Github.com/ratansingh98" class="social-github"><i class="fa fa-github"></i></a></li>
+      </ul>
+      <div class="copyright">Copyright &copy; 2019 <a style="color:yellow;" href = "https://rsdharra.com" target="_blank">Ratan Singh Dharra</a></div>
+    </div>
+  </footer >
+  <div class="google-rainbow">
+    <div class="rainbow-item"></div>
+    <div class="rainbow-item"></div>
+    <div class="rainbow-item"></div>
+    <div class="rainbow-item"></div>
+  </div>
+  <script src="js/bundle.js"></script>
+</body>
+
+</html>
