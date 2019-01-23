@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>Car Detection</title>
+  <title>Basic Motion Detection</title>
   <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,minimum-scale=1">
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -66,7 +66,7 @@
       <ul class="bxslider-subpages">
         <li style="background-color:#212020">
           <div class="slider-inner-shell">
-            <div class="slider-detail"><i class="fa fa-book"></i><span>Car Detection in video</span></div>
+            <div class="slider-detail"><i class="fa fa-book"></i><span>Basic Motion Detection</span></div>
           </div>
         </li>
       </ul>
@@ -74,55 +74,62 @@
   </div>
   <section class="section-about">
     <div class="container">
-      <h2>Car Detection in video using Haar Cascades</h2>
-      <p>The script will perform the following tasks: it will load video, it will read a
-frame, it will examine that frame for cars,then it will draw red rectangles around the cars.</p>
+      <h2>Basic Motion Detection</h2>
+      <p>The first and most intuitive solution is to calculate the differences between frames, or
+between a frame considered “background” and all the other frames.</p>
 
 
-<p> You can download <strong>cars.xml</strong> from <a href="https://raw.githubusercontent.com/ratansingh98/100_Days_of_ML_Code_Continued/master/Days/mastering%20opencv%202/3.%20Car%20and%20Pedestrian%20Detection/cars.xml" style="color:red;" target="_blank">Here </a>
-  <p> You can download <strong>video</strong> from <a href="https://github.com/ratansingh98/100_Days_of_ML_Code_Continued/blob/master/Days/mastering%20opencv%202/3.%20Car%20and%20Pedestrian%20Detection/cars.mp4?raw=true" style="color:red;" target="_blank">Here </a>
-<p> Here is input image</p>
+<p> Let’s look at an example of this approach:</p>
+
 <p class="line">
-  # OpenCV Python program to detect cars in video frame<br>
-# import libraries of python OpenCV<br>
-<code>import cv2</code><br>
-<br>
-# capture frames from a video<br>
-<code>cap = cv2.VideoCapture( 'cars.mp4')</code><br>
-<br>
-# Trained XML classifiers describes some features of some object we want to detect<br>
-<code>car_cascade = cv2.CascadeClassifier( 'cars.xml')</code><br>
-<br>
-# loop runs if capturing has been initialized.<br>
-<code>while True:</code><br>
-    &nbsp;&nbsp;&nbsp;&nbsp;# reads frames from a video<br>
-    &nbsp;&nbsp;&nbsp;&nbsp;<code>ret, frames = cap.read()</code><br>
-
-    &nbsp;&nbsp;&nbsp;&nbsp;# convert to gray scale of each frames<br>
-    &nbsp;&nbsp;&nbsp;&nbsp;<code>gray = cv2.cvtColor(frames, cv2.COLOR_BGR2GRAY)</code><br>
-
-    &nbsp;&nbsp;&nbsp;&nbsp;# Detects cars of different sizes in the input image<br>
-    &nbsp;&nbsp;&nbsp;&nbsp;<code>cars = car_cascade.detectMultiScale( gray, 1.1, 1)</code><br>
-
-    &nbsp;&nbsp;&nbsp;&nbsp;# To draw a rectangle in each cars<br>
-    &nbsp;&nbsp;&nbsp;&nbsp;<code>for (x,y,w,h) in cars:</code><br>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.rectangle(frames,(x,y),(x+w,y+h),(0,0,255),2)</code><br>
-
-   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Display frames in a window<br>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.imshow('Car Detection', frames)</code><br>
-
-    &nbsp;&nbsp;&nbsp;&nbsp;# Wait for Enter key to stop<br>
-    &nbsp;&nbsp;&nbsp;&nbsp;<code>if cv2.waitKey(33) == 13:</code><br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>break</code><br>
-<br>
-<code>cv2.destroyAllWindows()</code><br>
+  # Import Neccessary libraries<br>
+  <code>import cv2</code><br>
+  <code>import numpy as np</code><br><br>
+  # Create Video Capture Instance<br>
+  <code>camera = cv2.VideoCapture(0)</code><br>
+  # Create an array for ellipse of 9x4 dimension<br>
+  <code>es = cv2.getStructuringElement( cv2.MORPH_ELLIPSE, (9,4))</code><br>
+  # Create a 5x5 kernel of ones<br>
+  <code>kernel = np.ones((5,5),np.uint8)</code><br>
+  <code>background = None</code><br>
+  # Infinite loop unless enter is pressed<br>
+  <code>while (True):</code><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;<code>ret, frame = camera.read()</code><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;<code>if background is None:</code><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>background = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)</code><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>background = cv2.GaussianBlur(background, (21, 21), 0)</code><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>continue</code><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;# Convert into grayscale and apply GaussianBlur.<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;<code>gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)</code><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;<code>gray_frame = cv2.GaussianBlur(gray_frame, (21, 21), 0)</code><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;# Apply a threshold, so as to obtain a black and white image, and dilate the image so holes and imperfections get normalized.<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;<code>diff = cv2.absdiff(background, gray_frame)</code><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;<code>diff = cv2.threshold(diff, 25, 255, cv2.THRESH_BINARY)[1]</code><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;<code>diff = cv2.dilate(diff, es, iterations = 2)</code><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;# Find contours<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;<code>image, cnts, hierarchy = cv2.findContours(diff.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)</code><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;# Loop though countours<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;<code>for c in cnts:</code><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>if cv2.contourArea(c) < 1500:</code><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>continue</code><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>(x, y, w, h) = cv2.boundingRect(c)</code><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)</code><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;# Show Windowss<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.imshow("contours", frame)</code><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.imshow("dif", diff)</code><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;# Break loop when Enter is pressed<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;<code>if cv2.waitKey(13):</code><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>break</code><br><br>
+  # Destroy windows and remove camera Instance<br>
+  <code>cv2.destroyAllWindows()</code><br>
+  <code>camera.release()</code><br>
 </p>
 
     </div>
 
     <div class="pagination ">
-      <a class="toggler" href="25.html">Prev</a>
-      <a  class="toggler" href="27.html">Next</a>
+      <a class="toggler" href="26.html">Prev</a>
+      <a  class="toggler" href="soon.html">Next</a>
     </div>
   </section>
   <footer >
