@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>Basic Motion Detection</title>
+  <title>Face Feature Landmark Detection</title>
   <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,minimum-scale=1">
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -66,7 +66,7 @@
       <ul class="bxslider-subpages">
         <li style="background-color:#212020">
           <div class="slider-inner-shell">
-            <div class="slider-detail"><i class="fa fa-book"></i><span>Basic Motion Detection</span></div>
+            <div class="slider-detail"><i class="fa fa-book"></i><span>Face Landmark Detection</span></div>
           </div>
         </li>
       </ul>
@@ -74,61 +74,71 @@
   </div>
   <section class="section-about">
     <div class="container">
-      <h2>Basic Motion Detection</h2>
-      <p>The first and most intuitive solution is to calculate the differences between frames, or
-between a frame considered “background” and all the other frames.</p>
-
-
-<p> Let’s look at an example of this approach:</p>
+      <h2>Face Feature Landmark Detection</h2>
+      <p>Here we will try to obtain as the neccessary features of face using Dlib's model <b><a href="https://github.com/AKSHAYUBHAT/TensorFace/raw/master/openface/models/dlib/shape_predictor_68_face_landmarks.dat">shape_predictor_68_face_landmarks</a></b>.</p>
+      <p><b>Here is our input image :</b></p>
+      <img src="../image/faces.jpg" height="250px"/>
+<br><br>
+<p><b> Let’s look at an code :</b></p>
 
 <p class="line">
-  # Import Neccessary libraries<br>
+  # Import neccessary libraries<br>
   <code>import cv2</code><br>
-  <code>import numpy as np</code><br><br>
-  # Create Video Capture Instance<br>
-  <code>camera = cv2.VideoCapture(0)</code><br>
-  # Create an array for ellipse of 9x4 dimension<br>
-  <code>es = cv2.getStructuringElement( cv2.MORPH_ELLIPSE, (9,4))</code><br>
-  # Create a 5x5 kernel of ones<br>
-  <code>kernel = np.ones((5,5),np.uint8)</code><br>
-  <code>background = None</code><br>
-  # Infinite loop unless enter is pressed<br>
-  <code>while (True):</code><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;<code>ret, frame = camera.read()</code><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;<code>if background is None:</code><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>background = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)</code><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>background = cv2.GaussianBlur(background, (21, 21), 0)</code><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>continue</code><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;# Convert into grayscale and apply GaussianBlur.<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;<code>gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)</code><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;<code>gray_frame = cv2.GaussianBlur(gray_frame, (21, 21), 0)</code><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;# Apply a threshold, so as to obtain a black and white image, and dilate the image so holes and imperfections get normalized.<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;<code>diff = cv2.absdiff(background, gray_frame)</code><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;<code>diff = cv2.threshold(diff, 25, 255, cv2.THRESH_BINARY)[1]</code><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;<code>diff = cv2.dilate(diff, es, iterations = 2)</code><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;# Find contours<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;<code>image, cnts, hierarchy = cv2.findContours(diff.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)</code><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;# Loop though countours<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;<code>for c in cnts:</code><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>if cv2.contourArea(c) < 1500:</code><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>continue</code><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>(x, y, w, h) = cv2.boundingRect(c)</code><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)</code><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;# Show Windowss<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.imshow("contours", frame)</code><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.imshow("dif", diff)</code><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;# Break loop when Enter is pressed<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;<code>if cv2.waitKey(13):</code><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>break</code><br><br>
-  # Destroy windows and remove camera Instance<br>
+  <code>import dlib</code><br>
+  <code>import numpy</code><br><br>
+  # Load shape_predictor_68_face_landmarks model<br>
+  <code>PREDICTOR_PATH = 'shape_predictor_68_face_landmarks.dat'</code><br>
+  # Create predictor and detector<br>
+  <code>predictor = dlib.shape_predictor( PREDICTOR_PATH)</code><br>
+  <code>detector = dlib.get_frontal_face_detector()</code><br><br>
+
+  # Create Exception for TooManyFaces to ignore<br>
+  <code>class TooManyFaces(Exception):</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>pass</code><br><br>
+  # Create Exception for NoFaces to ignore<br>
+  <code>class NoFaces(Exception):</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>pass</code><br><br><br>
+
+  # This function will obtain landmarks from image which is passed as parameter to it<br>
+  <code>def get_landmarks(im):</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>rects = detector(im,1)</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>if len(rects) > 1:</code><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>raise TooManyFaces</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>if len(rects) == 0:</code><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>raise NoFaces</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>return numpy.matrix([[p.x, p.y] for p in predictor(im, rects[0]).parts()])</code><br><br><br>
+
+  # This Function will display landmarks on the image<br>
+  <code>def annotate_landmarks(im, landmarks):</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>im = im.copy()</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;# Loop through the landmark then number and circle features <br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>for idx, point in enumerate(landmarks):</code><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>pos = (point[0,0], point[0,1])</code><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.putText(im, str(idx), pos, cv2.FONT_HERSHEY_SCRIPT_SIMPLEX , fontScale=0.4, color=(0,0,255))</code><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.circle(im,pos,3,color=(0,255,255))</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;# Return Marked image<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>return im</code><br><br><br>
+
+  # Load our image<br>
+  <code>image = cv2.imread('faces.jpg')</code><br>
+  # Call get_landmarks function<br>
+  <code>landmarks = get_landmarks(image)</code><br>
+  # Call annotate_landmarks function to obtain marked image <br>
+  <code>image_with_landmarks = annotate_landmarks(image, landmarks)</code><br><br>
+  # Display and write Marked image<br>
+  <code>cv2.imshow('Result', image_with_landmarks)</code><br>
+  <code>cv2.imwrite( 'image_with_landmarks.jpg', image_with_landmarks)</code><br>
+  <code>cv2.waitKey(0)</code><br>
   <code>cv2.destroyAllWindows()</code><br>
-  <code>camera.release()</code><br>
 </p>
+<br>
+<p><b>Our Output image will look like this:</b></p>
+<img src="../image/image_with_landmarks.jpg" height="250px"/>
     </div>
 
     <div class="pagination ">
-      <a class="toggler" href="26.html">Prev</a>
-      <a  class="toggler" href="28.html">Next</a>
+      <a class="toggler" href="28.html">Prev</a>
+      <a  class="toggler" href="soon.html">Next</a>
     </div>
   </section>
   <footer >

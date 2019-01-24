@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>Basic Motion Detection</title>
+  <title>Intro to Dlib</title>
   <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,minimum-scale=1">
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -66,7 +66,7 @@
       <ul class="bxslider-subpages">
         <li style="background-color:#212020">
           <div class="slider-inner-shell">
-            <div class="slider-detail"><i class="fa fa-book"></i><span>Basic Motion Detection</span></div>
+            <div class="slider-detail"><i class="fa fa-book"></i><span>Intro to Dlib</span></div>
           </div>
         </li>
       </ul>
@@ -74,61 +74,51 @@
   </div>
   <section class="section-about">
     <div class="container">
-      <h2>Basic Motion Detection</h2>
-      <p>The first and most intuitive solution is to calculate the differences between frames, or
-between a frame considered “background” and all the other frames.</p>
+      <h2>Intro to Dlib</h2>
+      <p>Dlib is a modern C++ toolkit containing machine learning algorithms and tools for creating complex software in C++ to solve real world problems.
+        It is used in both industry and academia in a wide range of domains including robotics, embedded devices, mobile phones, and large high performance computing environments.
+        Dlib's open source licensing allows you to use it in any application, free of charge.</p>
+        <p> We will be using Dlib library though python.
+<br><br>
+      <h3>Major Features</h3>
+      <ul>
+        <li>Documentation</li>
+        <li>High Quality Portable Code</li>
+        <li>Machine Learning Algorithms</li>
+        <li>Numerical Algorithms</li>
+        <li>Graphical Model Inference Algorithms</li>
+        <li>Image Processing</li>
+        <li>Threading</li>
+        <li>Networking</li>
+        <li>Graphical User Interfaces</li>
+        <li>Data Compression and Integrity Algorithms</li>
+        <li>Testing</li>
+        <li>General Utilities</li>
+      </ul>
+      <br><br>
+            <h3>Popular Dlib Models</h3>
+            <ul>
+              <li><b>dlib_face_recognition_resnet_model_v1.dat</b> : This model is a ResNet network with 29 conv layers.
+                It's essentially a version of the ResNet-34 network from the paper Deep Residual Learning for Image Recognition by He, Zhang, Ren, and Sun with a few layers removed and the number of filters per layer reduced by half.
+                The network was trained from scratch on a dataset of about 3 million faces.</li>
+              <li><b>mmod_dog_hipsterizer.dat</b> : This dataset is trained on the data from the Columbia Dogs dataset.</li>
+              <li><b>mmod_human_face_detector.dat</b> : They created the dataset by finding face images in many publicly available image datasets (excluding the FDDB dataset).
+                In particular, there are images from ImageNet, AFLW, Pascal VOC, the VGG dataset, WIDER, and face scrub.
+</li>
+              <li><b>resnet34_1000_imagenet_classifier.dnn</b> : This is trained on the venerable ImageNet dataset.</li>
+              <li><b>shape_predictor_5_face_landmarks.dat</b> : This is a 5 point landmarking model which identifies the corners of the eyes and bottom of the nose. It is trained on the dlib 5-point face landmark dataset, which consists of 7198 faces.
+                I created this dataset by downloading images from the internet and annotating them with dlib's imglab tool.</li>
+              <li><b>shape_predictor_68_face_landmarks.dat</b> : The license for this dataset excludes commercial use and Stefanos Zafeiriou, one of the creators of the dataset, asked me to include a note here saying that the trained model therefore can't be used in a commerical product. So you should contact a lawyer or talk to Imperial College London to find out if it's OK for you to use this model in a commercial product.
+Also note that this model file is designed for use with dlib's HOG face detector. That is, it expects the bounding boxes from the face detector to be aligned a certain way, the way dlib's HOG face detector does it. It won't work as well when used with a face detector that produces differently aligned boxes, such as the CNN based mmod_human_face_detector.dat face detector.</li>
+              <li><b>mmod_rear_end_vehicle_detector.dat</b> : This model is trained on the dlib rear end vehicles dataset. The dataset contains images from vehicle dashcams which they manually annotated using dlib's imglab tool.</li>
+              <li><b>mmod_front_and_rear_end_vehicle_detector.dat</b> : This model is trained on the dlib front and rear end vehicles dataset. The dataset contains images from vehicle dashcams which I manually annotated using dlib's imglab tool.</li>
+            </ul>
 
-
-<p> Let’s look at an example of this approach:</p>
-
-<p class="line">
-  # Import Neccessary libraries<br>
-  <code>import cv2</code><br>
-  <code>import numpy as np</code><br><br>
-  # Create Video Capture Instance<br>
-  <code>camera = cv2.VideoCapture(0)</code><br>
-  # Create an array for ellipse of 9x4 dimension<br>
-  <code>es = cv2.getStructuringElement( cv2.MORPH_ELLIPSE, (9,4))</code><br>
-  # Create a 5x5 kernel of ones<br>
-  <code>kernel = np.ones((5,5),np.uint8)</code><br>
-  <code>background = None</code><br>
-  # Infinite loop unless enter is pressed<br>
-  <code>while (True):</code><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;<code>ret, frame = camera.read()</code><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;<code>if background is None:</code><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>background = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)</code><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>background = cv2.GaussianBlur(background, (21, 21), 0)</code><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>continue</code><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;# Convert into grayscale and apply GaussianBlur.<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;<code>gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)</code><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;<code>gray_frame = cv2.GaussianBlur(gray_frame, (21, 21), 0)</code><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;# Apply a threshold, so as to obtain a black and white image, and dilate the image so holes and imperfections get normalized.<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;<code>diff = cv2.absdiff(background, gray_frame)</code><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;<code>diff = cv2.threshold(diff, 25, 255, cv2.THRESH_BINARY)[1]</code><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;<code>diff = cv2.dilate(diff, es, iterations = 2)</code><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;# Find contours<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;<code>image, cnts, hierarchy = cv2.findContours(diff.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)</code><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;# Loop though countours<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;<code>for c in cnts:</code><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>if cv2.contourArea(c) < 1500:</code><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>continue</code><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>(x, y, w, h) = cv2.boundingRect(c)</code><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)</code><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;# Show Windowss<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.imshow("contours", frame)</code><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.imshow("dif", diff)</code><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;# Break loop when Enter is pressed<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;<code>if cv2.waitKey(13):</code><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>break</code><br><br>
-  # Destroy windows and remove camera Instance<br>
-  <code>cv2.destroyAllWindows()</code><br>
-  <code>camera.release()</code><br>
-</p>
     </div>
 
     <div class="pagination ">
-      <a class="toggler" href="26.html">Prev</a>
-      <a  class="toggler" href="28.html">Next</a>
+      <a class="toggler" href="27.html">Prev</a>
+      <a  class="toggler" href="29.html">Next</a>
     </div>
   </section>
   <footer >
