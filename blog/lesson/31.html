@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Face Swap</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,minimum-scale=1">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu:400,500,700,300&amp;subset=latin-ext" rel="stylesheet" type="text/css">
+  <link href="../css/bundle.css" rel="stylesheet" type="text/css">
+  <link href="../icons/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link rel="shortcut-icon" href="/assets/icons/favicon.ico">
+  <link rel="icon" href="../icons/logo.png">
+  <style>
+  .line{
+    background-color:  rgba(144, 144, 144, 0.3);
+    border: 1px solid black;
+    padding: 10px;
+  }
+  .line1{
+    background-color:  rgba(060, 060, 060, 0.3);
+    border: 1px solid black;
+    padding: 10px;
+  }
+  code{
+    color: blue;
+  }
+
+  </style>
+</head>
+
+<body>
+  <nav class="bg-nav">
+    <div class="container">
+      <div class="navbar"><a href="../../index.html" class="ozluy-logo">
+            <div class="ozluy-zluy">RSDharra</div></a>
+        <div class="device device--alt">
+          <div class="device__screen">
+            <div id="menu-icon-wrapper2" style="visibility:hidden" class="menu-icon-wrapper">
+              <svg width="1000px" height="1000px">
+                  <path id="pathD" d="M 300 400 L 700 400 C 900 400 900 750 600 850 A 400 400 0 0 1 200 200 L 800 800" style="stroke-dashoffset: 5803.15px; stroke-dasharray: 2901.57px, 2981.57px, 240px;"></path>
+                  <path id="pathE" d="M 300 500 L 700 500" style="stroke-dashoffset: 800px; stroke-dasharray: 400px, 480px, 240px;"></path>
+                  <path id="pathF" d="M 700 600 L 300 600 C 100 600 100 200 400 150 A 400 380 0 1 1 200 800 L 800 200" style="stroke-dashoffset: 6993.11px; stroke-dasharray: 3496.56px, 3576.56px, 240px;"></path>
+                </svg>
+              <button id="menu-icon-trigger2" class="menu-icon-trigger"></button>
+            </div>
+            <div id="dummy2" class="dummy">
+              <div class="dummy__item"></div>
+              <div class="dummy__item"></div>
+              <div class="dummy__item"></div>
+              <div class="dummy__item"></div>
+            </div>
+          </div>
+        </div>
+        <ul class="navbar-links">
+          <li><a href="../../about.html"><i class="mobil-nav-icon fa fa-home"></i>About</a></li>
+          <li><a href="../../work.html"><i class="mobil-nav-icon fa fa-trophy"></i>My Work</a></li>
+          <li><a href="../index.html"><i class="mobil-nav-icon fa fa-book"></i>Blog</a></li>
+          <li><a href="../../contact.html"><i class="mobil-nav-icon fa fa-envelope"></i>Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="home-banner">
+    <div>
+      <ul class="bxslider-subpages">
+        <li style="background-color:#212020">
+          <div class="slider-inner-shell">
+            <div class="slider-detail"><i class="fa fa-book"></i><span>Face Swap</span></div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <section class="section-about">
+    <div class="container">
+      <h2>Face Swap using Face Feature Landmark</h2>
+      <p>Here we will try to obtain all the neccessary features for face swap using Dlib's model <b><a href="https://github.com/AKSHAYUBHAT/TensorFace/raw/master/openface/models/dlib/shape_predictor_68_face_landmarks.dat">shape_predictor_68_face_landmarks</a></b>.</p>
+      <p><b>Here are our input images :</b></p>
+      <img src="../image/hillary.jpg" height="250px"/>
+      <img src="../image/trump.jpg" height="250px"/>
+<p><b> Let’s look at an code :</b></p>
+<p class="line">
+  # Import neccessary libraries<br>
+  <code>import cv2</code><br>
+  <code>import dlib</code><br>
+  <code>import numpy</code><br>
+  <code>import sys</code><br><br><br>
+# Load shape_predictor_68_face_landmarks model<br>
+  <code>PREDICTOR_PATH = "shape_predictor_68_face_landmarks.dat"</code><br>
+  # Set Scale factor and feather amount<br>
+  <code>SCALE_FACTOR = 1</code><br>
+  <code>FEATHER_AMOUNT = 11</code><br><br>
+
+  # Define range of feature points according to their feature<br>
+  <code>FACE_POINTS = list(range(17, 68))</code><br>
+  <code>MOUTH_POINTS = list(range(48, 61))</code><br>
+  <code>RIGHT_BROW_POINTS = list(range(17, 22))</code><br>
+  <code>LEFT_BROW_POINTS = list(range(22, 27))</code><br>
+  <code>RIGHT_EYE_POINTS = list(range(36, 42))</code><br>
+  <code>LEFT_EYE_POINTS = list(range(42, 48))</code><br>
+  <code>NOSE_POINTS = list(range(27, 35))</code><br>
+  <code>JAW_POINTS = list(range(0, 17))</code><br><br>
+
+  # Points used to line up the images.<br>
+  <code>ALIGN_POINTS = (LEFT_BROW_POINTS + RIGHT_EYE_POINTS + LEFT_EYE_POINTS + RIGHT_BROW_POINTS + NOSE_POINTS + MOUTH_POINTS)</code><br>
+<br>
+  # Points from the second image to overlay on the first. The convex hull of each element will be overlaid.<br>
+  <code>OVERLAY_POINTS = [ LEFT_EYE_POINTS + RIGHT_EYE_POINTS + LEFT_BROW_POINTS + RIGHT_BROW_POINTS, NOSE_POINTS + MOUTH_POINTS, ]</code><br>
+<br>
+  # Amount of blur to use during colour correction, as a fraction of the pupillary distance.<br>
+  <code>COLOUR_CORRECT_BLUR_FRAC = 0.6</code><br>
+<br>
+# Create predictor and detector<br>
+  <code>detector = dlib.get_frontal_face_detector()</code><br>
+  <code>predictor = dlib.shape_predictor( PREDICTOR_PATH)</code><br>
+<br><br>
+# Raise Exception when there are too many faces ignore<br>
+  <code>class TooManyFaces(Exception):</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>pass</code><br>
+<br><br>
+# Raise Exception when there are no faces and ignore<br>
+  <code>class NoFaces(Exception):</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>pass</code><br>
+<br><br>
+# Obtain facial landmark from the image<br>
+  <code>def get_landmarks(im):</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>rects = detector(im, 1)</code><br>
+
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>if len(rects) > 1:</code><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>raise TooManyFaces</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>if len(rects) == 0:</code><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>raise NoFaces</code><br>
+
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>return numpy.matrix([[p.x, p.y] for p in predictor(im, rects[0]).parts()])</code><br>
+<br><br>
+# This Function will return image with landmarks on the image<br>
+  <code>def annotate_landmarks(im, landmarks):</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>im = im.copy()</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>for idx, point in enumerate(landmarks):</code><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>pos = (point[0, 0], point[0, 1])</code><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.putText(im, str(idx), pos, fontFace = cv2.FONT_HERSHEY_SCRIPT_SIMPLEX, fontScale = 0.4, color=(0, 0, 255))</code><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.circle(im, pos, 3, color=(0, 255, 255))</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>return im</code><br>
+<br><br>
+
+# This function will draw convex hull<br>
+  <code>def draw_convex_hull(im, points, color):</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>points = cv2.convexHull(points)</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.fillConvexPoly(im, points, color=color)</code><br>
+<br><br>
+
+# Obain face mask of image using landmarks<br>
+  <code>def get_face_mask(im, landmarks):</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>im = numpy.zeros(im.shape[:2], dtype=numpy.float64)</code><br>
+
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>for group in OVERLAY_POINTS:</code><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>draw_convex_hull(im, landmarks[group],color=1)</code><br>
+
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>im = numpy.array([im, im, im]).transpose((1, 2, 0))</code><br>
+
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>im = (cv2.GaussianBlur(im, (FEATHER_AMOUNT, FEATHER_AMOUNT), 0) > 0) * 1.0</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>im = cv2.GaussianBlur(im, (FEATHER_AMOUNT, FEATHER_AMOUNT), 0)</code><br>
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>return im</code><br>
+<br><br>
+# Perform affine transformation and return it.<br>
+  <code>def transformation_from_points( points1, points2):</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;"""<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;Return an affine transformation [s * R | T] such that:<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;sum ||s*R*p1,i + T - p2,i||^2<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;is minimized.<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;"""<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;# Solve the procrustes problem by subtracting centroids, scaling by the standard deviation, and then using the SVD to calculate the rotation.
+      <br>&nbsp;&nbsp;&nbsp;&nbsp;# See the following for more details:   https://en.wikipedia.org/wiki/Orthogonal_Procrustes_problem<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>points1 = points1.astype(numpy.float64)</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>points2 = points2.astype(numpy.float64)</code><br>
+
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>c1 = numpy.mean(points1, axis=0)</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>c2 = numpy.mean(points2, axis=0)</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>points1 -= c1</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>points2 -= c2</code><br>
+
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>s1 = numpy.std(points1)</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>s2 = numpy.std(points2)</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>points1 /= s1</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>points2 /= s2</code><br>
+
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>U, S, Vt = numpy.linalg.svd(points1.T * points2)</code><br>
+
+      &nbsp;&nbsp;&nbsp;&nbsp;# The R we seek is in fact the transpose of the one given by U * Vt. This is because the above formulation assumes the matrix goes on the right (with row vectors) where as our solution requires the matrix to be on the left (with column vectors).<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>R = (U * Vt).T</code><br>
+
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>return numpy.vstack([ numpy.hstack(((s2 / s1) * R, c2.T - (s2 / s1) * R * c1.T)), numpy.matrix([0., 0., 1.])])</code><br>
+<br><br>
+# This function read image and obtain landmark by giving filename as parameter<br>
+  <code>def read_im_and_landmarks(fname):</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>im = cv2.imread(fname, cv2.IMREAD_COLOR)</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>im = cv2.resize(im, (im.shape[1] * SCALE_FACTOR, im.shape[0] * SCALE_FACTOR))</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>s = get_landmarks(im)</code><br>
+
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>return im, s</code><br>
+<br><br>
+# Wrap feature of im with M<br>
+  <code>def warp_im(im, M, dshape):</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>output_im = numpy.zeros(dshape, dtype=im.dtype)</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.warpAffine(im, M[:2], (dshape[1], dshape[0]), dst=output_im, borderMode= cv2.BORDER_TRANSPARENT, flags= cv2.WARP_INVERSE_MAP)</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>return output_im</code><br>
+<br><br>
+# Adjuct color properly so image will look more real<br>
+  <code>def correct_colours(im1, im2, landmarks1):</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>blur_amount = COLOUR_CORRECT_BLUR_FRAC * numpy.linalg.norm( numpy.mean( landmarks1[ LEFT_EYE_POINTS], axis=0) - numpy.mean(landmarks1[ RIGHT_EYE_POINTS], axis=0))</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>blur_amount = int(blur_amount)</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>if blur_amount % 2 == 0:</code><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>blur_amount += 1</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>im1_blur = cv2.GaussianBlur(im1, (blur_amount, blur_amount), 0)</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>im2_blur = cv2.GaussianBlur(im2, (blur_amount, blur_amount), 0)</code><br>
+
+      &nbsp;&nbsp;&nbsp;&nbsp;# Avoid divide-by-zero errors.<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>im2_blur += (128 * (im2_blur <= 1.0)).astype(im2_blur.dtype)</code><br>
+
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>return (im2.astype(numpy.float64) * im1_blur.astype(numpy.float64) / im2_blur.astype(numpy.float64))</code><br>
+<br><br>
+    # Enter Filename of 2 pictures.<br>
+  <code>pic2 = "hillary.jpg"</code><br>
+  <code>pic1 = "trump.jpg"</code><br>
+<br>
+# Obtain landmarks along with image.<br>
+  <code>im1, landmarks1 = read_im_and_landmarks(pic1)</code><br>
+  <code>im2, landmarks2 = read_im_and_landmarks(pic2)</code><br>
+<br>
+# Normalize points<br>
+  <code>M = transformation_from_points( landmarks1[ALIGN_POINTS], landmarks2[ALIGN_POINTS])</code><br>
+<br>
+# Creak mask and wrap features<br>
+  <code>mask = get_face_mask(im2, landmarks2)</code><br>
+  <code>warped_mask = warp_im(mask, M, im1.shape)</code><br>
+  <code>combined_mask = numpy.max([get_face_mask(im1, landmarks1), warped_mask],axis=0)</code><br>
+<br>
+# Apply masking to target image<br>
+  <code>warped_im2 = warp_im(im2, M, im1.shape)</code><br>
+  <code>warped_corrected_im2 = correct_colours(im1, warped_im2, landmarks1)</code><br>
+<br>
+# Normalize output image<br>
+  <code>output_im = im1 * (1.0 - combined_mask) + warped_corrected_im2 * combined_mask</code><br>
+<br>
+# Store and write faceswapped image<br>
+  <code>cv2.imwrite('faceswap.jpg', output_im)</code><br>
+</p>
+
+
+
+
+<br>
+<p><b>Our Output image will look like this:</b></p>
+<img src="../image/faceswap.jpg" height="250px"/>
+
+
+<h5><b>Note : </b>Copyright (c) 2015 Matthew Earl
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:<br>
+
+The above copyright notice and this permission notice shall be included
+in all copies or substantial portions of the Software.<br>
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+  DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+ OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+  USE OR OTHER DEALINGS IN THE SOFTWARE</h5>
+    </div>
+
+    <div class="pagination ">
+      <a class="toggler" href="30.html">Prev</a>
+      <a  class="toggler" href="32.html">Next</a>
+    </div>
+  </section>
+  <footer >
+    <div class="container" >
+      <ul class="socials">
+            <li><a target="_blank" href="mailTo:ratan@rsdharra.com" title="ratan@rsdharra.com" class="social-mail"><i class="fa fa-envelope"></i></a></li>
+            <li><a target="_blank" href="https://www.linkedin.com/in/ratan-singh-dharra-198931144/" title="LinkedIn.com/in/ratan-singh-dharra-198931144" class="social-linkedin"><i class="fa fa-linkedin"></i></a></li>
+            <li><a target="_blank" href="https://github.com/ratansingh98" title="Github.com/ratansingh98" class="social-github"><i class="fa fa-github"></i></a></li>
+      </ul>
+      <div class="copyright">Copyright &copy; 2019 <a style="color:yellow;" href = "https://rsdharra.com" target="_blank">Ratan Singh Dharra</a></div>
+    </div>
+  </footer >
+  <div class="google-rainbow">
+    <div class="rainbow-item"></div>
+    <div class="rainbow-item"></div>
+    <div class="rainbow-item"></div>
+    <div class="rainbow-item"></div>
+  </div>
+  <script src="js/bundle.js"></script>
+</body>
+
+</html>

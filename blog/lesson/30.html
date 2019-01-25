@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Yawn Detection</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,minimum-scale=1">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu:400,500,700,300&amp;subset=latin-ext" rel="stylesheet" type="text/css">
+  <link href="../css/bundle.css" rel="stylesheet" type="text/css">
+  <link href="../icons/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link rel="shortcut-icon" href="/assets/icons/favicon.ico">
+  <link rel="icon" href="../icons/logo.png">
+  <style>
+  .line{
+    background-color:  rgba(144, 144, 144, 0.3);
+    border: 1px solid black;
+    padding: 10px;
+  }
+  .line1{
+    background-color:  rgba(060, 060, 060, 0.3);
+    border: 1px solid black;
+    padding: 10px;
+  }
+  code{
+    color: blue;
+  }
+
+  </style>
+</head>
+
+<body>
+  <nav class="bg-nav">
+    <div class="container">
+      <div class="navbar"><a href="../../index.html" class="ozluy-logo">
+            <div class="ozluy-zluy">RSDharra</div></a>
+        <div class="device device--alt">
+          <div class="device__screen">
+            <div id="menu-icon-wrapper2" style="visibility:hidden" class="menu-icon-wrapper">
+              <svg width="1000px" height="1000px">
+                  <path id="pathD" d="M 300 400 L 700 400 C 900 400 900 750 600 850 A 400 400 0 0 1 200 200 L 800 800" style="stroke-dashoffset: 5803.15px; stroke-dasharray: 2901.57px, 2981.57px, 240px;"></path>
+                  <path id="pathE" d="M 300 500 L 700 500" style="stroke-dashoffset: 800px; stroke-dasharray: 400px, 480px, 240px;"></path>
+                  <path id="pathF" d="M 700 600 L 300 600 C 100 600 100 200 400 150 A 400 380 0 1 1 200 800 L 800 200" style="stroke-dashoffset: 6993.11px; stroke-dasharray: 3496.56px, 3576.56px, 240px;"></path>
+                </svg>
+              <button id="menu-icon-trigger2" class="menu-icon-trigger"></button>
+            </div>
+            <div id="dummy2" class="dummy">
+              <div class="dummy__item"></div>
+              <div class="dummy__item"></div>
+              <div class="dummy__item"></div>
+              <div class="dummy__item"></div>
+            </div>
+          </div>
+        </div>
+        <ul class="navbar-links">
+          <li><a href="../../about.html"><i class="mobil-nav-icon fa fa-home"></i>About</a></li>
+          <li><a href="../../work.html"><i class="mobil-nav-icon fa fa-trophy"></i>My Work</a></li>
+          <li><a href="../index.html"><i class="mobil-nav-icon fa fa-book"></i>Blog</a></li>
+          <li><a href="../../contact.html"><i class="mobil-nav-icon fa fa-envelope"></i>Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="home-banner">
+    <div>
+      <ul class="bxslider-subpages">
+        <li style="background-color:#212020">
+          <div class="slider-inner-shell">
+            <div class="slider-detail"><i class="fa fa-book"></i><span>Yawn Detection</span></div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <section class="section-about">
+    <div class="container">
+      <h2>Yawn Detection using Face Feature Landmark</h2>
+      <p>Here we will try to obtain all the features of mouth using Dlib's model <b><a href="https://github.com/AKSHAYUBHAT/TensorFace/raw/master/openface/models/dlib/shape_predictor_68_face_landmarks.dat">shape_predictor_68_face_landmarks</a></b>.</p>
+
+<p><b> Let’s look at an code :</b></p>
+<p class="line">
+  # Import neccessary libraries<br>
+<code>import cv2</code><br>
+<code>import dlib</code><br>
+<code>import numpy as np</code><br><br><br>
+
+# Load shape_predictor_68_face_landmarks model<br>
+<code>PREDICTOR_PATH = "shape_predictor_68_face_landmarks.dat"</code><br>
+# Create predictor and detector<br>
+<code>predictor = dlib.shape_predictor( PREDICTOR_PATH)</code><br>
+<code>detector = dlib.get_frontal_face_detector()</code><br>
+
+<br><br>
+# Obtain facial landmark from the image<br>
+<code>def get_landmarks(im):</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>rects = detector(im, 1)</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>if len(rects) > 1:</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>return "error"</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>if len(rects) == 0:</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>return "error"</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>return np.matrix([[p.x, p.y] for p in predictor(im, rects[0]).parts()])</code><br>
+
+<br><br>
+# This Function will return image with landmarks on the image<br>
+<code>def annotate_landmarks(im, landmarks):</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>im = im.copy()</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>for idx, point in enumerate(landmarks):</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>pos = (point[0, 0], point[0, 1])</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.putText(im, str(idx), pos, fontFace= cv2.FONT_HERSHEY_SCRIPT_SIMPLEX, fontScale=0.4, color=(0, 0, 255))</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.circle(im, pos, 3, color=(0, 255, 255))</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>return im</code><br>
+
+<br><br>
+# This Function will obtain the mean points of top lip<br>
+<code>def top_lip(landmarks):</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>top_lip_pts = []</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>for i in range(50,53):</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>top_lip_pts.append( landmarks[i])</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>for i in range(61,64):</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>top_lip_pts.append( landmarks[i])</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>top_lip_all_pts = np.squeeze( np.asarray( top_lip_pts))</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>top_lip_mean = np.mean(top_lip_pts, axis=0)</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>return int(top_lip_mean[:,1])</code><br>
+
+<br><br>
+# This Function will obtain the mean points of bottom lip<br>
+<code>def bottom_lip(landmarks):</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>bottom_lip_pts = []</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>for i in range(65,68):</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>bottom_lip_pts.append( landmarks[i])</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>for i in range(56,59):</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>bottom_lip_pts.append( landmarks[i])</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>bottom_lip_all_pts = np.squeeze(np.asarray( bottom_lip_pts))</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>bottom_lip_mean = np.mean(bottom_lip_pts, axis=0)</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>return int(bottom_lip_mean[:,1])</code><br>
+
+<br><br>
+# This Function will return distance between landmark image and two lips<br>
+<code>def mouth_open(image):</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>landmarks = get_landmarks(image)</code><br>
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>if landmarks == "error":</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>return image, 0</code><br>
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>image_with_landmarks = annotate_landmarks(image, landmarks)</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>top_lip_center = top_lip(landmarks)</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>bottom_lip_center = bottom_lip(landmarks)</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>lip_distance = abs(top_lip_center - bottom_lip_center)</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>return image_with_landmarks, lip_distance</code><br>
+
+<br><br>
+# Create VideoCapture instance for video camera<br>
+<code>cap = cv2.VideoCapture(0)</code><br>
+# Intialize yawn to zero and set status to False<br>
+<code>yawns = 0</code><br>
+<code>yawn_status = False</code><br>
+# The block will run unless it is break <br>
+<code>while True:</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;# Read frames from webcam<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>ret, frame = cap.read()</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;# Obtain image_landmarks lip_distance from mouth_open function for current frame.<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>image_landmarks, lip_distance = mouth_open(frame)</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;# Store current yawn_status in prev_yawn_status<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>prev_yawn_status = yawn_status</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;# If the lips distance is more than 25 then display subject is yawning along with yawn count.<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>if lip_distance > 25:</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>yawn_status = True</code><br>
+
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.putText(frame, "Subject is Yawning", (50,450), cv2.FONT_HERSHEY_COMPLEX, 1,(0,0,255),2)</code><br>
+
+
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>output_text = " Yawn Count: " + str(yawns + 1)</code><br>
+
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.putText(frame, output_text, (50,50), cv2.FONT_HERSHEY_COMPLEX, 1,(0,255,127),2)</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;# If not lips distance is less than 25 then set yawn status to False<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>else:</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>yawn_status = False</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;# Increasing yawn count if subject was yawning in previous frame as well<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>if prev_yawn_status == True and yawn_status == False:</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>yawns += 1</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;# Display live landmark of face<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.imshow('Live Landmarks', image_landmarks )</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;# Display frame which contain Yawn count<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.imshow('Yawn Detection', frame )</code><br>
+     &nbsp;&nbsp;&nbsp;&nbsp;# Press Enter key to break loop <br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>if cv2.waitKey(1) == 13:</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>break</code><br>
+<br><br>
+# Relase and distroy destroy All Windows<br>
+<code>cap.release()</code><br>
+<code>cv2.destroyAllWindows()</code><br>
+</p>
+
+
+
+<br>
+<p><b>Our Output image will look like this:</b></p>
+<img src="../image/yawn.png" height="250px"/>
+
+
+<h5><b>Note : </b>Copyright (c) 2015 Matthew Earl
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:<br>
+
+The above copyright notice and this permission notice shall be included
+in all copies or substantial portions of the Software.<br>
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+  DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+ OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+  USE OR OTHER DEALINGS IN THE SOFTWARE</h5>
+    </div>
+
+    <div class="pagination ">
+      <a class="toggler" href="29.html">Prev</a>
+      <a  class="toggler" href="31.html">Next</a>
+    </div>
+  </section>
+  <footer >
+    <div class="container" >
+      <ul class="socials">
+            <li><a target="_blank" href="mailTo:ratan@rsdharra.com" title="ratan@rsdharra.com" class="social-mail"><i class="fa fa-envelope"></i></a></li>
+            <li><a target="_blank" href="https://www.linkedin.com/in/ratan-singh-dharra-198931144/" title="LinkedIn.com/in/ratan-singh-dharra-198931144" class="social-linkedin"><i class="fa fa-linkedin"></i></a></li>
+            <li><a target="_blank" href="https://github.com/ratansingh98" title="Github.com/ratansingh98" class="social-github"><i class="fa fa-github"></i></a></li>
+      </ul>
+      <div class="copyright">Copyright &copy; 2019 <a style="color:yellow;" href = "https://rsdharra.com" target="_blank">Ratan Singh Dharra</a></div>
+    </div>
+  </footer >
+  <div class="google-rainbow">
+    <div class="rainbow-item"></div>
+    <div class="rainbow-item"></div>
+    <div class="rainbow-item"></div>
+    <div class="rainbow-item"></div>
+  </div>
+  <script src="js/bundle.js"></script>
+</body>
+
+</html>
