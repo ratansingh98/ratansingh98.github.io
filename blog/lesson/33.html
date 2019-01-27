@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Digit Recognition</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,minimum-scale=1">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu:400,500,700,300&amp;subset=latin-ext" rel="stylesheet" type="text/css">
+  <link href="../css/bundle.css" rel="stylesheet" type="text/css">
+  <link href="../icons/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link rel="shortcut-icon" href="/assets/icons/favicon.ico">
+  <link rel="icon" href="../icons/logo.png">
+  <style>
+  .line{
+    background-color:  rgba(144, 144, 144, 0.3);
+    border: 1px solid black;
+    padding: 10px;
+  }
+  .line1{
+    background-color:  rgba(060, 060, 060, 0.3);
+    border: 1px solid black;
+    padding: 10px;
+  }
+  code{
+    color: blue;
+  }
+
+  </style>
+</head>
+
+<body>
+  <nav class="bg-nav">
+    <div class="container">
+      <div class="navbar"><a href="../../index.html" class="ozluy-logo">
+            <div class="ozluy-zluy">RSDharra</div></a>
+        <div class="device device--alt">
+          <div class="device__screen">
+            <div id="menu-icon-wrapper2" style="visibility:hidden" class="menu-icon-wrapper">
+              <svg width="1000px" height="1000px">
+                  <path id="pathD" d="M 300 400 L 700 400 C 900 400 900 750 600 850 A 400 400 0 0 1 200 200 L 800 800" style="stroke-dashoffset: 5803.15px; stroke-dasharray: 2901.57px, 2981.57px, 240px;"></path>
+                  <path id="pathE" d="M 300 500 L 700 500" style="stroke-dashoffset: 800px; stroke-dasharray: 400px, 480px, 240px;"></path>
+                  <path id="pathF" d="M 700 600 L 300 600 C 100 600 100 200 400 150 A 400 380 0 1 1 200 800 L 800 200" style="stroke-dashoffset: 6993.11px; stroke-dasharray: 3496.56px, 3576.56px, 240px;"></path>
+                </svg>
+              <button id="menu-icon-trigger2" class="menu-icon-trigger"></button>
+            </div>
+            <div id="dummy2" class="dummy">
+              <div class="dummy__item"></div>
+              <div class="dummy__item"></div>
+              <div class="dummy__item"></div>
+              <div class="dummy__item"></div>
+            </div>
+          </div>
+        </div>
+        <ul class="navbar-links">
+          <li><a href="../../about.html"><i class="mobil-nav-icon fa fa-home"></i>About</a></li>
+          <li><a href="../../work.html"><i class="mobil-nav-icon fa fa-trophy"></i>My Work</a></li>
+          <li><a href="../index.html"><i class="mobil-nav-icon fa fa-book"></i>Blog</a></li>
+          <li><a href="../../contact.html"><i class="mobil-nav-icon fa fa-envelope"></i>Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="home-banner">
+    <div>
+      <ul class="bxslider-subpages">
+        <li style="background-color:#212020">
+          <div class="slider-inner-shell">
+            <div class="slider-detail"><i class="fa fa-book"></i><span>Digit Recognition using ML</span></div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <section class="section-about">
+    <div class="container">
+      <h2>Sklearn</h2>
+      <p>Scikit-learn is a free software machine learning library for the Python programming language.
+         It features various classification, regression and clustering algorithms including support vector machines, random forests,
+          gradient boosting, k-means and DBSCAN,
+        and is designed to interoperate with the Python numerical and scientific libraries NumPy and SciPy.</p>
+
+    <h2>Train Model on MNIST dataset</h2>
+    <p>The MNIST database of handwritten digits, available from this page, has a training set of 60,000 examples, and a test set of 10,000 examples. It is a subset of a larger set available from NIST. The digits have been size-normalized and centered in a fixed-size image.</p>
+    <p><b> Let’s look at an code :</b></p>
+    <p class="line">
+      # Import the modules<br>
+      <code>from sklearn.externals import joblib</code><br>
+      <code>from sklearn import datasets</code><br>
+      <code>from skimage.feature import hog</code><br>
+      <code>from sklearn.svm import LinearSVC</code><br>
+      <code>import numpy as np</code><br>
+      <code>from collections import Counter</code><br><br>
+
+      # Load the dataset<br>
+      <code>dataset = datasets.fetch_mldata("MNIST Original")</code><br><br>
+
+      # Extract the features and labels<br>
+      <code>features = np.array(dataset.data, 'int16')</code><br>
+      <code>labels = np.array(dataset.target, 'int')</code><br><br>
+
+      # Extract the hog features<br>
+      <code>list_hog_fd = []</code><br>
+      <code>for feature in features:</code><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;<code>fd = hog(feature.reshape((28, 28)), orientations=9, pixels_per_cell=(14, 14), cells_per_block=(1, 1), visualise=False)</code><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;<code>list_hog_fd.append(fd)</code><br><br>
+      <code>hog_features = np.array(list_hog_fd, 'float64')</code><br><br>
+
+      <code>print ("Count of digits in dataset", Counter(labels))</code><br><br>
+
+      # Create an linear SVM object<br>
+      <code>clf = LinearSVC()</code><br><br>
+
+      # Perform the training<br>
+      <code>clf.fit(hog_features, labels)</code><br><br>
+
+      # Save the classifier as pkl file<br>
+      <code>joblib.dump(clf, "digits_cls.pkl", compress=3)</code><br>
+
+
+    </p>
+<br>
+<h2>Recognize digits from image</h2>
+      <p><b>Here are our input :</b></p>
+      <img src="../image/photo_1.jpg" height="250px"/>
+<p><b> Let’s look at an code :</b></p>
+
+<p class="line">
+
+# Import the modules<br>
+<code>import cv2</code><br>
+<code>from sklearn.externals import joblib</code><br>
+<code>from skimage.feature import hog</code><br>
+<code>import numpy as np</code><br><br>
+
+# Load the classifier<br>
+<code>clf = joblib.load("digits_cls.pkl")</code><br><br>
+
+# Read the input image<br>
+<code>im = cv2.imread("photo_1.jpg")</code><br><br>
+
+# Convert to grayscale and apply Gaussian filtering<br>
+<code>im_gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)</code><br>
+<code>im_gray = cv2.GaussianBlur(im_gray, (5, 5), 0)</code><br><br>
+
+# Threshold the image<br>
+<code>ret, im_th = cv2.threshold(im_gray, 90, 255, cv2.THRESH_BINARY_INV)</code><br><br>
+
+# Find contours in the image<br>
+<code>_,ctrs, hier = cv2.findContours(im_th.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)</code><br><br>
+
+# Get rectangles contains each contour<br>
+<code>rects = [cv2.boundingRect(ctr) for ctr in ctrs]</code><br><br>
+
+# For each rectangular region, calculate HOG features and predict the digit using Linear SVM.<br>
+<code>for rect in rects:</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;# Draw the rectangles<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.rectangle(im, (rect[0], rect[1]), (rect[0] + rect[2], rect[1] + rect[3]), (0, 255, 0), 3)</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;# Make the rectangular region around the digit<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>leng = int(rect[3] * 1.6)</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>pt1 = int(rect[1] + rect[3] // 2 - leng // 2)</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>pt2 = int(rect[0] + rect[2] // 2 - leng // 2)</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>roi = im_th[pt1:pt1+leng, pt2:pt2+leng]</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;# Resize the image<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>roi = cv2.resize(roi, (28, 28), interpolation=cv2.INTER_AREA)</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>roi = cv2.dilate(roi, (3, 3))</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;# Calculate the HOG features<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>roi_hog_fd = hog(roi, orientations=9, pixels_per_cell=(14, 14), cells_per_block=(1, 1), visualise=False)</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>nbr = clf.predict(np.array([roi_hog_fd], 'float64'))</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.putText(im, str(int(nbr[0])), (rect[0], rect[1]),cv2.FONT_HERSHEY_DUPLEX, 2, (0, 255, 255), 3)</code><br><br>
+
+# Display image with output text<br>
+<code>cv2.imshow("Resulting Image with Rectangular ROIs", im)</code><br>
+<code>cv2.waitKey(0)</code><br>
+<code>cv2.destroyAllWindows()</code><br>
+
+</p>
+
+<br>
+<p><b>Our Output image will look like this:</b></p>
+<img src="../image/Digit Recognize.png" height="250px"/>
+
+    </div>
+
+    <div class="pagination ">
+      <a class="toggler" href="32.html">Prev</a>
+      <a  class="toggler" href="34.html">Next</a>
+    </div>
+  </section>
+  <footer >
+    <div class="container" >
+      <ul class="socials">
+            <li><a target="_blank" href="mailTo:ratan@rsdharra.com" title="ratan@rsdharra.com" class="social-mail"><i class="fa fa-envelope"></i></a></li>
+            <li><a target="_blank" href="https://www.linkedin.com/in/ratan-singh-dharra-198931144/" title="LinkedIn.com/in/ratan-singh-dharra-198931144" class="social-linkedin"><i class="fa fa-linkedin"></i></a></li>
+            <li><a target="_blank" href="https://github.com/ratansingh98" title="Github.com/ratansingh98" class="social-github"><i class="fa fa-github"></i></a></li>
+      </ul>
+      <div class="copyright">Copyright &copy; 2019 <a style="color:yellow;" href = "https://rsdharra.com" target="_blank">Ratan Singh Dharra</a></div>
+    </div>
+  </footer >
+  <div class="google-rainbow">
+    <div class="rainbow-item"></div>
+    <div class="rainbow-item"></div>
+    <div class="rainbow-item"></div>
+    <div class="rainbow-item"></div>
+  </div>
+  <script src="js/bundle.js"></script>
+</body>
+
+</html>

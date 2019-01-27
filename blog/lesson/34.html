@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Face Recognition</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,minimum-scale=1">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu:400,500,700,300&amp;subset=latin-ext" rel="stylesheet" type="text/css">
+  <link href="../css/bundle.css" rel="stylesheet" type="text/css">
+  <link href="../icons/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link rel="shortcut-icon" href="/assets/icons/favicon.ico">
+  <link rel="icon" href="../icons/logo.png">
+  <style>
+  .line{
+    background-color:  rgba(144, 144, 144, 0.3);
+    border: 1px solid black;
+    padding: 10px;
+  }
+  .line1{
+    background-color:  rgba(060, 060, 060, 0.3);
+    border: 1px solid black;
+    padding: 10px;
+  }
+  code{
+    color: blue;
+  }
+
+  </style>
+</head>
+
+<body>
+  <nav class="bg-nav">
+    <div class="container">
+      <div class="navbar"><a href="../../index.html" class="ozluy-logo">
+            <div class="ozluy-zluy">RSDharra</div></a>
+        <div class="device device--alt">
+          <div class="device__screen">
+            <div id="menu-icon-wrapper2" style="visibility:hidden" class="menu-icon-wrapper">
+              <svg width="1000px" height="1000px">
+                  <path id="pathD" d="M 300 400 L 700 400 C 900 400 900 750 600 850 A 400 400 0 0 1 200 200 L 800 800" style="stroke-dashoffset: 5803.15px; stroke-dasharray: 2901.57px, 2981.57px, 240px;"></path>
+                  <path id="pathE" d="M 300 500 L 700 500" style="stroke-dashoffset: 800px; stroke-dasharray: 400px, 480px, 240px;"></path>
+                  <path id="pathF" d="M 700 600 L 300 600 C 100 600 100 200 400 150 A 400 380 0 1 1 200 800 L 800 200" style="stroke-dashoffset: 6993.11px; stroke-dasharray: 3496.56px, 3576.56px, 240px;"></path>
+                </svg>
+              <button id="menu-icon-trigger2" class="menu-icon-trigger"></button>
+            </div>
+            <div id="dummy2" class="dummy">
+              <div class="dummy__item"></div>
+              <div class="dummy__item"></div>
+              <div class="dummy__item"></div>
+              <div class="dummy__item"></div>
+            </div>
+          </div>
+        </div>
+        <ul class="navbar-links">
+          <li><a href="../../about.html"><i class="mobil-nav-icon fa fa-home"></i>About</a></li>
+          <li><a href="../../work.html"><i class="mobil-nav-icon fa fa-trophy"></i>My Work</a></li>
+          <li><a href="../index.html"><i class="mobil-nav-icon fa fa-book"></i>Blog</a></li>
+          <li><a href="../../contact.html"><i class="mobil-nav-icon fa fa-envelope"></i>Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="home-banner">
+    <div>
+      <ul class="bxslider-subpages">
+        <li style="background-color:#212020">
+          <div class="slider-inner-shell">
+            <div class="slider-detail"><i class="fa fa-book"></i><span>Face Recognition using ML</span></div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <section class="section-about">
+    <div class="container">
+      <h2>Face Recognition</h2>
+      <p>A facial recognition system is a technology capable of identifying or verifying a person from a digital image or a video frame from a video source.
+        There are multiple methods in which facial recognition systems work, but in general,
+        they work by comparing selected facial features from given image with faces within a database.</p>
+        <p> Here we will follow the following steps:<p>
+          <ol>
+            <li>Create a dataset of one person's face, say 100 samples.</li>
+            <li>Use somple suitable Machine learning algorithms to train model.</li>
+            <li>Use trained model for recognition face.</li>
+          </ol>
+      <p><b> Let’s look at an code :</b></p><br>
+    <h2>Create Training Data</h2>
+
+    <p class="line">
+# Import the modules<br>
+<code>import cv2</code><br>
+<code>import numpy as np</code><br><br>
+
+# Load HAAR face classifier<br>
+<code>face_classifier = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')</code><br><br>
+
+# Function to extract face from frame<br>
+<code>def face_extractor(img):</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;# Function detects faces and returns the cropped face<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;# If no face detected, it returns the input image<br>
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>faces = face_classifier.detectMultiScale(gray, 1.3, 5)</code><br>
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>if faces is ():</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>return None</code><br><br>
+
+    &nbsp;&nbsp;&nbsp;&nbsp;# Crop all faces found<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>for (x,y,w,h) in faces:</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>cropped_face = img[y:y+h, x:x+w]</code><br><br>
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>return cropped_face</code><br><br><br>
+
+# Initialize Webcam<br>
+<code>cap = cv2.VideoCapture(0)</code><br>
+<code>count = 0</code><br>
+
+# Collect 100 samples of your face from webcam input<br>
+<code>while True:</code><br>
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>ret, frame = cap.read()</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;# If face is found in frame<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>if face_extractor(frame) is not None:</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>count += 1</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>face = cv2.resize(face_extractor(frame), (200, 200))</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>face = cv2.cvtColor(face, cv2.COLOR_BGR2GRAY)</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Save file in specified directory with unique name<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>file_name_path = 'face/' + str(count) + '.jpg'</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.imwrite(file_name_path, face)</code><br>
+
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Put count on images and display live count<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.putText(face, str(count), (50, 50), cv2.FONT_HERSHEY_COMPLEX, 1, (0,255,0), 2)</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.imshow('Face Cropper', face)</code><br>
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>else:</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>print("Face not found")</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>pass</code><br>
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>if cv2.waitKey(1) == 13 or count == 100: #13 is the Enter Key</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>break</code><br><br>
+
+# After collecting samples, Release and destroyAllWindows <br>
+<code>cap.release()</code><br>
+<code>cv2.destroyAllWindows()</code><br>
+<code>print("Collecting Samples Complete")</code><br>
+
+    </p>
+<br>
+
+
+
+<h2>Train Model</h2>
+<p class="line">
+  # Import the modules<br>
+  <code>import cv2</code><br>
+  <code>import numpy as np</code><br>
+  <code>from os import listdir</code><br>
+  <code>import pickle</code><br>
+  <code>from os.path import isfile, join</code><br><br>
+
+  # Get the training data we previously made<br>
+  <code>data_path = 'face/'</code><br>
+  <code>onlyfiles = [f for f in listdir(data_path) if isfile(join(data_path, f))]</code><br><br>
+
+
+  # Create arrays for training data and labels<br>
+  <code>Training_Data, Labels = [], []</code><br><br>
+
+  # Open training images in our datapath<br>
+  # Create a numpy array for training data<br>
+  <code>for i, files in enumerate(onlyfiles):</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>image_path = data_path + onlyfiles[i]</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>images = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>Training_Data.append(np.asarray(images, dtype=np.uint8))</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>Labels.append(i)</code><br><br>
+
+  # Create a numpy array for both training data and labels<br>
+  <code>Labels = np.asarray(Labels, dtype=np.int32)</code><br><br>
+
+  # Initialize facial recognizer<br>
+  <code>model = cv2.face.LBPHFaceRecognizer_create()</code><br>
+  # NOTE: For OpenCV 3.0 use cv2.face.createLBPHFaceRecognizer()<br><br>
+
+  # Let's train our model<br>
+  <code>model.train(np.asarray(Training_Data), np.asarray(Labels))</code><br>
+  <code>print("Model trained sucessefully")</code><br>
+</p>
+
+
+
+
+<br>
+<h2>Run Our Facial Recognition</h2>
+<p class="line">
+# Import the modules<br>
+<code>import cv2</code><br>
+<code>import numpy as np</code><br>
+<code>import time</code><br><br>
+
+# Load HAAR face classifier<br>
+<code>face_classifier = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')</code><br><br>
+
+# Function to detect face<br>
+<code>def face_detector(img, size=0.5):</code><br>
+
+    &nbsp;&nbsp;&nbsp;&nbsp;# Convert image to grayscale<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>faces = face_classifier.detectMultiScale(gray, 1.3, 5)</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;# If face not found return blank region<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>if faces is ():</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>return img, []</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;# Obtain Region of face<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>for (x,y,w,h) in faces:</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.rectangle(img,(x,y),(x+w,y+h),(0,255,255),2)</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>roi = img[y:y+h, x:x+w]</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>roi = cv2.resize(roi, (200, 200))</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>return img, roi</code><br><br><br>
+
+
+# Open Webcam<br>
+<code>cap = cv2.VideoCapture(0)</code><br>
+
+<code>while True:</code><br>
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>ret, frame = cap.read()</code><br>
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>image, face = face_detector(frame)</code><br>
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>try:</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>face = cv2.cvtColor(face, cv2.COLOR_BGR2GRAY)</code><br>
+
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Pass face to prediction model<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# "results" comprises of a tuple containing the label and the confidence value<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>results = model.predict(face)</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Tell about the confidence of user.<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>if results[1] < 500:</code><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>confidence = int( 100 * (1 - (results[1])/400) )</code><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>display_string = str(confidence) + '% Confident it is User'</code><br>
+
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.putText(image, display_string, (100, 120), cv2.FONT_HERSHEY_COMPLEX, 1, (255,120,150), 2)</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# If confidence is greater than 90 then the face will be recognized.<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>if confidence > 90:</code><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.putText(image, "Unlocked", (250, 450), cv2.FONT_HERSHEY_COMPLEX, 1, (0,255,0), 2)</code><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.imshow('Face Recognition', image )</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# If confidence is less than 90 then the face will not be recognized.<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>else:</code><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.putText(image, "Locked", (250, 450), cv2.FONT_HERSHEY_COMPLEX, 1, (0,0,255), 2)</code><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.imshow('Face Recognition', image )</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;# Raise exception in case, no image is found<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>except:</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.putText(image, "No Face Found", (220, 120) , cv2.FONT_HERSHEY_COMPLEX, 1, (0,0,255), 2)</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.putText(image, "Locked", (250, 450), cv2.FONT_HERSHEY_COMPLEX, 1, (0,0,255), 2)</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.imshow('Face Recognition', image )</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>pass</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;# Breaks loop when enter is pressed<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>if cv2.waitKey(1) == 13: #13 is the Enter Key</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>break</code><br><br>
+
+# Release and destroyAllWindows<br>
+<code>cap.release()</code><br>
+<code>cv2.destroyAllWindows()</code><br>
+
+</p>
+<p><b>Note : </b><b>Train Model</b> and Run Our <b>Facial Recognition</b> should be written on same file</p>
+
+
+<br>
+<p><b>Our Output image will look like this:</b></p>
+<img src="../image/Face Recognition.jpg" height="250px"/>
+
+    </div>
+
+    <div class="pagination ">
+      <a class="toggler" href="33.html">Prev</a>
+      <a  class="toggler" href="soon.html">Next</a>
+    </div>
+  </section>
+  <footer >
+    <div class="container" >
+      <ul class="socials">
+            <li><a target="_blank" href="mailTo:ratan@rsdharra.com" title="ratan@rsdharra.com" class="social-mail"><i class="fa fa-envelope"></i></a></li>
+            <li><a target="_blank" href="https://www.linkedin.com/in/ratan-singh-dharra-198931144/" title="LinkedIn.com/in/ratan-singh-dharra-198931144" class="social-linkedin"><i class="fa fa-linkedin"></i></a></li>
+            <li><a target="_blank" href="https://github.com/ratansingh98" title="Github.com/ratansingh98" class="social-github"><i class="fa fa-github"></i></a></li>
+      </ul>
+      <div class="copyright">Copyright &copy; 2019 <a style="color:yellow;" href = "https://rsdharra.com" target="_blank">Ratan Singh Dharra</a></div>
+    </div>
+  </footer >
+  <div class="google-rainbow">
+    <div class="rainbow-item"></div>
+    <div class="rainbow-item"></div>
+    <div class="rainbow-item"></div>
+    <div class="rainbow-item"></div>
+  </div>
+  <script src="js/bundle.js"></script>
+</body>
+
+</html>
