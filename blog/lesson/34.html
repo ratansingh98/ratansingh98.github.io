@@ -93,15 +93,15 @@
 <code>import numpy as np</code><br><br>
 
 # Load HAAR face classifier<br>
-<code>face_classifier = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')</code><br><br>
+<code>face_classifier = cv2.CascadeClassifier( 'haarcascade_frontalface_default.xml')</code><br><br>
 
 # Function to extract face from frame<br>
 <code>def face_extractor(img):</code><br>
     &nbsp;&nbsp;&nbsp;&nbsp;# Function detects faces and returns the cropped face<br>
     &nbsp;&nbsp;&nbsp;&nbsp;# If no face detected, it returns the input image<br>
 
-    &nbsp;&nbsp;&nbsp;&nbsp;<code>gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)</code><br>
-    &nbsp;&nbsp;&nbsp;&nbsp;<code>faces = face_classifier.detectMultiScale(gray, 1.3, 5)</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>gray = cv2.cvtColor( img, cv2.COLOR_BGR2GRAY)</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>faces = face_classifier.detectMultiScale( gray, 1.3, 5)</code><br>
 
     &nbsp;&nbsp;&nbsp;&nbsp;<code>if faces is ():</code><br>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>return None</code><br><br>
@@ -172,7 +172,7 @@
   <code>for i, files in enumerate(onlyfiles):</code><br>
       &nbsp;&nbsp;&nbsp;&nbsp;<code>image_path = data_path + onlyfiles[i]</code><br>
       &nbsp;&nbsp;&nbsp;&nbsp;<code>images = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)</code><br>
-      &nbsp;&nbsp;&nbsp;&nbsp;<code>Training_Data.append(np.asarray(images, dtype=np.uint8))</code><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<code>Training_Data.append( np.asarray( images, dtype=np.uint8))</code><br>
       &nbsp;&nbsp;&nbsp;&nbsp;<code>Labels.append(i)</code><br><br>
 
   # Create a numpy array for both training data and labels<br>
@@ -181,9 +181,11 @@
   # Initialize facial recognizer<br>
   <code>model = cv2.face.LBPHFaceRecognizer_create()</code><br>
   # NOTE: For OpenCV 3.0 use cv2.face.createLBPHFaceRecognizer()<br><br>
-
+Training_Data), np.asarray(Labels))</code><br>
+  <code>print("Model trained sucessefully")</code><br>
+<br>
   # Let's train our model<br>
-  <code>model.train(np.asarray(Training_Data), np.asarray(Labels))</code><br>
+  <code>model.train(np.asarray( Training_Data), np.asarray(Labels))</code><br>
   <code>print("Model trained sucessefully")</code><br>
 </p>
 
@@ -199,20 +201,20 @@
 <code>import time</code><br><br>
 
 # Load HAAR face classifier<br>
-<code>face_classifier = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')</code><br><br>
+<code>face_classifier = cv2.CascadeClassifier( 'haarcascade_frontalface_default.xml')</code><br><br>
 
 # Function to detect face<br>
 <code>def face_detector(img, size=0.5):</code><br>
 
     &nbsp;&nbsp;&nbsp;&nbsp;# Convert image to grayscale<br>
     &nbsp;&nbsp;&nbsp;&nbsp;<code>gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)</code><br>
-    &nbsp;&nbsp;&nbsp;&nbsp;<code>faces = face_classifier.detectMultiScale(gray, 1.3, 5)</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>faces = face_classifier.detectMultiScale( gray, 1.3, 5)</code><br>
     &nbsp;&nbsp;&nbsp;&nbsp;# If face not found return blank region<br>
     &nbsp;&nbsp;&nbsp;&nbsp;<code>if faces is ():</code><br>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>return img, []</code><br>
     &nbsp;&nbsp;&nbsp;&nbsp;# Obtain Region of face<br>
     &nbsp;&nbsp;&nbsp;&nbsp;<code>for (x,y,w,h) in faces:</code><br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.rectangle(img,(x,y),(x+w,y+h),(0,255,255),2)</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>cv2.rectangle(img, (x,y), (x+w,y+h), (0,255,255),2)</code><br>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>roi = img[y:y+h, x:x+w]</code><br>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>roi = cv2.resize(roi, (200, 200))</code><br>
     &nbsp;&nbsp;&nbsp;&nbsp;<code>return img, roi</code><br><br><br>
@@ -273,7 +275,7 @@
 
     <div class="pagination ">
       <a class="toggler" href="33.html">Prev</a>
-      <a  class="toggler" href="soon.html">Next</a>
+      <a  class="toggler" href="35.html">Next</a>
     </div>
   </section>
   <footer >
