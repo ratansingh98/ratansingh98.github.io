@@ -8,119 +8,268 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <meta name="keywords" content="Ratan Singh,Ratan Singh Dharra,ratansingh98,Augmented Reality,Artificial Intelligence, Portfolio, AI Portfolio, Developer Portfolio, Software Developer Portfolio">
-  <link rel="icon" href="https://png.icons8.com/color/500/000000/businessman.png">
+  <link rel="icon" href="https://img.icons8.com/fluent/48/000000/businessman.png">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
     crossorigin="anonymous">
 
   <link rel="stylesheet" href="css/main.css">
   <title>About Me</title>
-  <style media="screen">
-
-  </style>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      
+      /* The actual timeline (the vertical ruler) */
+      .timeline {
+        position: relative;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      
+      /* The actual timeline (the vertical ruler) */
+      .timeline::after {
+        content: '';
+        position: absolute;
+        width: 6px;
+        background-color: #FF9F55;
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        margin-left: -3px;
+      }
+      
+      /* Container around content */
+      .container {
+        text-align: left	;
+        padding: 10px 40px;
+        position: relative;
+        background-color: inherit;
+        width: 50%;
+        font-size: 50%;
+      }
+      
+      /* The circles on the timeline */
+      .container::after {
+        content: '';
+        position: absolute;
+        width: 25px;
+        height: 25px;
+        right: -17px;
+        background-color: #5e4646;
+        border: 4px solid #FF9F55;
+        top: 15px;
+        border-radius: 50%;
+        z-index: 1;
+      }
+      
+      /* Place the container to the left */
+      .left {
+        left: 0;
+      }
+      
+      /* Place the container to the right */
+      .right {
+        left: 50%;
+      }
+      
+      /* Add arrows to the left container (pointing right) */
+      .left::before {
+        content: " ";
+        height: 0;
+        position: absolute;
+        top: 22px;
+        width: 0;
+        z-index: 1;
+        right: 30px;
+        border: medium solid white;
+        border-width: 10px 0 10px 10px;
+        border-color: transparent transparent transparent white;
+      }
+      
+      /* Add arrows to the right container (pointing left) */
+      .right::before {
+        content: " ";
+        height: 0;
+        position: absolute;
+        top: 22px;
+        width: 0;
+        z-index: 1;
+        left: 30px;
+        border: medium solid white;
+        border-width: 10px 10px 10px 0;
+        border-color: transparent white transparent transparent;
+      }
+      
+      /* Fix the circle for containers on the right side */
+      .right::after {
+        left: -16px;
+      }
+      
+      /* The actual content */
+      .content {
+        padding: 20px 30px;
+        background-color: #575553;
+        position: relative;
+        border-radius: 6px;
+      }
+      
+      /* Media queries - Responsive timeline on screens less than 600px wide */
+      @media screen and (max-width: 600px) {
+        /* Place the timelime to the left */
+        .timeline::after {
+        left: 31px;
+        }
+        
+        /* Full-width containers */
+        .container {
+        width: 100%;
+        padding-left: 70px;
+        padding-right: 25px;
+        }
+        
+        /* Make sure that all arrows are pointing leftwards */
+        .container::before {
+        left: 60px;
+        border: medium solid white;
+        border-width: 10px 10px 10px 0;
+        border-color: transparent white transparent transparent;
+        }
+      
+        /* Make sure all circles are at the same spot */
+        .left::after, .right::after {
+        left: 15px;
+        }
+        
+        /* Make all right containers behave like the left ones */
+        .right {
+        left: 0%;
+        }
+      }
+      </style>
 </head>
 
-<body>
-  <header>
-    <div class="menu-btn">
-      <div class="btn-line"></div>
-      <div class="btn-line"></div>
-      <div class="btn-line"></div>
-    </div>
 
-    <nav class="menu">
-      <div class="menu-branding">
-        <div class="portrait"></div>
-      </div>
-      <ul class="menu-nav">
-        <li class="nav-item">
-          <a href="index.html" class="nav-link">
-            Home
-          </a>
-        </li>
-        <li class="nav-item current">
-          <a href="about.html" class="nav-link">
-            About Me
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="work.html" class="nav-link">
-            My Work
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="contact.html" class="nav-link">
-            Contact
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="/blog/index.html" class="nav-link">
-            Blog
-          </a>
-        </li>
-      </ul>
-    </nav>
-  </header>
+    
+    <body>
+      <header>
+        <div class="menu-btn">
+          <div class="btn-line"></div>
+          <div class="btn-line"></div>
+          <div class="btn-line"></div>
+        </div>
+    
+        <nav class="menu">
+          <div class="menu-branding">
+            <div class="portrait"></div>
+          </div>
+          <ul class="menu-nav">
+            <li class="nav-item">
+              <a href="index.html" class="nav-link">
+                Home
+              </a>
+            </li>
+            <li class="nav-item current">
+              <a href="about.html" class="nav-link">
+                About Me
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="work.html" class="nav-link">
+                My Work
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="contact.html" class="nav-link">
+                Contact
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/resume.pdf" class="nav-link">
+                Resume
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/blog/index.html" class="nav-link">
+                Blog
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </header>
+    
+      <main id="about">
+        <h1 class="lg-heading">
+          About
+          <span class="text-secondary">Me</span>
+        </h1>
+        <h2 class="sm-heading">
+          Let me tell you a few things...
+        </h2>
+        <div class="about-info">
+          <img src="img/portrait.jpg" alt="Ratan Singh" class="bio-image">
+    
+          <div class="bio">
+            <h3 class="text-secondary">BIO</h3>
+            <p style="text-align: justify;">
+    I am in the journey to become a Machine Learning Expert.
+    Motivated by the belief that data can be used to make better decisions.
+    A passionate coder who loves to code and create programs for fun.
+    <br>
+    I want to make it easier for people to understand code and use data efficiently.
+    I strongly believes in open data and open source softwares.
 
-  <main id="about">
-    <h1 class="lg-heading">
-      About
-      <span class="text-secondary">Me</span>
-    </h1>
-    <h2 class="sm-heading">
-      Let me tell you a few things...
-    </h2>
-    <div class="about-info">
-      <img src="img/portrait.jpg" alt="Ratan Singh" class="bio-image">
-
-      <div class="bio">
-        <h3 class="text-secondary">BIO</h3>
-        <p style="text-align: justify;">
-I am in the journey to become a Machine Learning Expert.
-Motivated by the belief that data can be used to make better decisions.
-A passionate coder who loves to code and create programs for fun.
-<br>
-I want to make it easier for people to understand code and use data efficiently.
-I strongly believes in open data and open source softwares.
-</p>
-      </div>
-
-      <div class="job job-1">
-        <h3 align="center">SMT Group</h3>
-        <h6 align="center">Android and Web Intern</h6>
-        <ul>
-          <li>Worked on real-time projects and build android app and web API from scratch.</li>
-          <li>Designed interface according to the client's needs.</li>
-        </ul>      
-      </div>
-
-      <div class="job job-2">
-        <h3 align="center">HI-IDEALS</h3>
-        <h6 align="center">Web Development Intern</h6>
-        <ul>
-          <li>Worked on various areas of web designing and development.</li>
-          <li>Completed project using java based groovy on grails and web technologies.</li>
-        </ul>
-      </div>
-
-      <div class="job job-3">
-        <h3 align="center">Intozi Tech Pvt Ltd</h3>
-        <h6 align="center">Computer Vision Intern</h6>
-        <ul><li>Developed calibration software for various IOT products from scratch.</li>
-        <li>Worked on various computer vision and DL algorithms to optimize products.</li>  
-        </ul>
-        
-          
+    <h3 class="text-secondary">Experience Timeline</h3>
+    <div class="timeline">
+      <div class="container left">
+        <div class="content">
+          <h3><b>Software Engineer | </b>Intozi Tech Pvt Ltd</h3>
+          <h5>Jan 2020 - Jun 2020</h5>
+          <p>        
+            <ul>
+            <li>Presented product demo to various clients including Addl. CP of Mumbai.</li>
+            <li>Developed complete deployable detection based SDKs and software installers
+              along supervising interns.</li>
+            <li>Analyzed and optimized the performance of products using various profiling
+              tools.</li>
+          </ul>  
         </p>
+        </div>
       </div>
-<!--
-      <div class="job job-3">
-        <h3>Webworks</h3>
-        <h6>Graphic Designer</h6>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates perferendis totam enim. Nesciunt porro dolores
-          expedita dolor necessitatibus deserunt nemo.</p>
+
+
+      <div class="container right">
+        <div class="content">
+          <h3><b>Computer Vision Intern| </b>Intozi Tech Pvt Ltd</h3>
+          <h5>Jul 2019 - Dec 2019</h5>
+          <p>        
+            <ul>
+            <li>Revamped the mapping algorithm to convert and map RADAR’s world
+              coordinate to a pixel coordinate.</li>
+            <li>Developed calibration software for various IoT and computer vision-based
+              products from scratch.</li>
+            <li>Assisted senior developer on optimizing ongoing product which led to approx
+              150% increase in performance.</li>
+          </ul>  
+        </p>
+        </div>
       </div>
--->
-    </div>
+
+
+      <div class="container left">
+        <div class="content">
+          <h3><b>Web Development Intern| </b>Hi-Ideals Tech Pvt Ltd</h3>
+          <h5>Jul 2019 - Dec 2019</h5>
+          <p>        
+            <ul>
+            <li>Worked on various areas of web designing and development.</li>
+            <li>Completed project using java based groovy on grails and web technologies.</li>
+          </ul>  
+        </p>
+        </div>
+      </div>
+
+
+      </div>
   </main>
 
   <footer id="main-footer">
