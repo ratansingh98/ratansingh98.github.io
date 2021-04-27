@@ -1,0 +1,4 @@
+This is a Brave Rewards publisher verification file.
+
+Domain: rsdharra.com
+Token: 9246715c345385e96e8d3c824eb90c9a58f2f4e1acb070ab1ccbb565e0550548
