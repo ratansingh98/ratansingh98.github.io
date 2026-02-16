@@ -1,0 +1,224 @@
+:root {
+  --contact-accent: #cc7832;
+  --contact-border: rgba(78, 82, 84, 0.55);
+  --contact-card: rgba(43, 43, 43, 0.82);
+  --contact-text-soft: #a9b7c6;
+  --contact-radius: 18px;
+  --contact-green: #6897bb;
+}
+
+body {
+  font-family: "Outfit", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#contact {
+  position: relative;
+  overflow: hidden;
+  padding-top: 6.5rem;
+  background:
+    radial-gradient(circle at 10% 12%, rgba(204, 120, 50, 0.24), transparent 34%),
+    radial-gradient(circle at 92% 24%, rgba(104, 151, 187, 0.2), transparent 34%),
+    linear-gradient(160deg, #2b2b2b 0%, #323537 52%, #292c2e 100%);
+}
+
+#contact::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 28px 28px;
+  opacity: 0.22;
+  pointer-events: none;
+}
+
+#contact .lg-heading {
+  font-family: "Space Grotesk", "Outfit", sans-serif;
+  font-size: clamp(2.4rem, 8vw, 5.2rem);
+  line-height: 1.06;
+  margin-bottom: 0.35rem;
+}
+
+#contact .sm-heading {
+  font-size: clamp(0.95rem, 2.5vw, 1.2rem);
+  width: fit-content;
+  max-width: 100%;
+  margin-bottom: 1.4rem;
+  line-height: 1.4;
+}
+
+.contact-shell {
+  position: relative;
+  z-index: 1;
+  max-width: 1120px;
+  margin: 0 auto;
+  display: grid;
+  gap: 1.15rem;
+}
+
+.contact-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.summary-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.36rem 0.76rem;
+  border-radius: 999px;
+  border: 1px solid rgba(104, 151, 187, 0.42);
+  background: rgba(104, 151, 187, 0.2);
+  color: #c6d6e5;
+  font-size: 0.82rem;
+}
+
+.summary-chip i {
+  font-size: 0.75rem;
+  color: var(--contact-green);
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.contact-card {
+  display: grid;
+  gap: 0.7rem;
+  padding: 1.2rem;
+  background: var(--contact-card);
+  border: 1px solid var(--contact-border);
+  border-radius: var(--contact-radius);
+  backdrop-filter: blur(6px);
+  min-height: 185px;
+}
+
+.card-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(204, 120, 50, 0.18);
+  border: 1px solid rgba(204, 120, 50, 0.5);
+  color: #ffd2b0;
+  font-size: 1rem;
+}
+
+.contact-label {
+  margin: 0;
+  color: #a9b7c6;
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.contact-value {
+  margin: 0;
+  color: #d5dee8;
+  font-size: 1.02rem;
+  line-height: 1.45;
+  word-break: break-word;
+}
+
+.contact-value a {
+  color: #8db1cf;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(104, 151, 187, 0.45);
+}
+
+.contact-value a:hover {
+  color: #d5dee8;
+  border-bottom-color: rgba(104, 151, 187, 0.9);
+}
+
+.contact-meta {
+  margin: 0;
+  color: var(--contact-text-soft);
+  font-size: 0.9rem;
+}
+
+.contact-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+}
+
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.66rem 1rem;
+  border-radius: 12px;
+  border: 1px solid rgba(78, 82, 84, 0.72);
+  background: rgba(78, 82, 84, 0.24);
+  color: #a9b7c6;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.action-btn:hover {
+  transform: translateY(-1px);
+  border-color: rgba(204, 120, 50, 0.72);
+  background: rgba(204, 120, 50, 0.24);
+  color: #ffd7ba;
+}
+
+@media (max-width: 920px) {
+  .contact-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  #contact {
+    padding: 5.7rem 1rem 2.2rem;
+    text-align: left;
+  }
+
+  .contact-shell {
+    gap: 0.95rem;
+  }
+
+  #contact .sm-heading {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  .contact-card {
+    min-height: 0;
+  }
+}
+
+@media (max-width: 560px) {
+  #contact {
+    padding: 5.2rem 0.75rem 1.9rem;
+  }
+
+  #contact .lg-heading {
+    font-size: 2.1rem;
+  }
+
+  #contact .sm-heading {
+    font-size: 0.93rem;
+    padding: 0.28rem 0.5rem;
+  }
+
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-card {
+    padding: 1rem;
+  }
+
+  .action-btn {
+    width: 100%;
+  }
+}
