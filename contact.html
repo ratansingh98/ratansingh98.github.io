@@ -1,11 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<style>
-  .disabled-link {
-    pointer-events: none;
-
-  }
-</style>
 <head>
   <meta charset="UTF-8">
   <meta name="description" content="This is the Portfolio website of Ratan Singh Dharra who is in the journey to become great developer.">
@@ -14,13 +8,239 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <meta name="keywords" content="Ratan Singh,Ratan Singh Dharra,ratansingh98,Augmented Reality,Artificial Intelligence, Portfolio, AI Portfolio, Developer Portfolio, Software Developer Portfolio">
   <link rel="icon" href="https://img.icons8.com/fluent/48/000000/businessman.png">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
-    crossorigin="anonymous">
-
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/main.css">
   <title>Contact Me</title>
-</head>
+  <style>
+    :root {
+      --contact-accent: #ffc76a;
+      --contact-border: rgba(255, 255, 255, 0.14);
+      --contact-card: rgba(20, 20, 20, 0.72);
+      --contact-text-soft: #d6d6d6;
+      --contact-radius: 18px;
+      --contact-green: #4de0b3;
+    }
 
+    body {
+      font-family: "Outfit", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    #contact {
+      position: relative;
+      overflow: hidden;
+      padding-top: 6.5rem;
+      background:
+        radial-gradient(circle at 10% 12%, rgba(255, 199, 106, 0.26), transparent 34%),
+        radial-gradient(circle at 92% 24%, rgba(88, 166, 255, 0.2), transparent 34%),
+        linear-gradient(160deg, #1e1e1e 0%, #161616 52%, #242424 100%);
+    }
+
+    #contact::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+      background-size: 28px 28px;
+      opacity: 0.22;
+      pointer-events: none;
+    }
+
+    #contact .lg-heading {
+      font-family: "Space Grotesk", "Outfit", sans-serif;
+      font-size: clamp(2.4rem, 8vw, 5.2rem);
+      line-height: 1.06;
+      margin-bottom: 0.35rem;
+    }
+
+    #contact .sm-heading {
+      font-size: clamp(0.95rem, 2.5vw, 1.2rem);
+      width: fit-content;
+      max-width: 100%;
+      margin-bottom: 1.4rem;
+      line-height: 1.4;
+    }
+
+    .contact-shell {
+      position: relative;
+      z-index: 1;
+      max-width: 1120px;
+      margin: 0 auto;
+      display: grid;
+      gap: 1.15rem;
+    }
+
+    .contact-summary {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+
+    .summary-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.36rem 0.76rem;
+      border-radius: 999px;
+      border: 1px solid rgba(77, 224, 179, 0.34);
+      background: rgba(77, 224, 179, 0.16);
+      color: #b7ffe9;
+      font-size: 0.82rem;
+    }
+
+    .summary-chip i {
+      font-size: 0.75rem;
+      color: var(--contact-green);
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .contact-card {
+      display: grid;
+      gap: 0.7rem;
+      padding: 1.2rem;
+      background: var(--contact-card);
+      border: 1px solid var(--contact-border);
+      border-radius: var(--contact-radius);
+      backdrop-filter: blur(6px);
+      min-height: 185px;
+    }
+
+    .card-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 199, 106, 0.14);
+      border: 1px solid rgba(255, 199, 106, 0.4);
+      color: #ffd891;
+      font-size: 1rem;
+    }
+
+    .contact-label {
+      margin: 0;
+      color: #f2f2f2;
+      font-size: 1rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .contact-value {
+      margin: 0;
+      color: #ffffff;
+      font-size: 1.02rem;
+      line-height: 1.45;
+      word-break: break-word;
+    }
+
+    .contact-value a {
+      color: #f7deb0;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(247, 222, 176, 0.45);
+    }
+
+    .contact-value a:hover {
+      color: #fff0cd;
+      border-bottom-color: rgba(255, 240, 205, 0.9);
+    }
+
+    .contact-meta {
+      margin: 0;
+      color: var(--contact-text-soft);
+      font-size: 0.9rem;
+    }
+
+    .contact-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+    }
+
+    .action-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      padding: 0.66rem 1rem;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.06);
+      color: #ffffff;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+
+    .action-btn:hover {
+      transform: translateY(-1px);
+      border-color: rgba(255, 199, 106, 0.62);
+      background: rgba(255, 199, 106, 0.16);
+      color: #ffe7b7;
+    }
+
+    @media (max-width: 920px) {
+      .contact-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 768px) {
+      #contact {
+        padding: 5.7rem 1rem 2.2rem;
+        text-align: left;
+      }
+
+      .contact-shell {
+        gap: 0.95rem;
+      }
+
+      #contact .sm-heading {
+        width: 100%;
+        margin-bottom: 1rem;
+      }
+
+      .contact-card {
+        min-height: 0;
+      }
+    }
+
+    @media (max-width: 560px) {
+      #contact {
+        padding: 5.2rem 0.75rem 1.9rem;
+      }
+
+      #contact .lg-heading {
+        font-size: 2.1rem;
+      }
+
+      #contact .sm-heading {
+        font-size: 0.93rem;
+        padding: 0.28rem 0.5rem;
+      }
+
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .contact-card {
+        padding: 1rem;
+      }
+
+      .action-btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
 <body>
   <header>
     <div class="menu-btn">
@@ -35,65 +255,73 @@
       </div>
       <ul class="menu-nav">
         <li class="nav-item">
-          <a href="index.html" class="nav-link">
-            Home
-          </a>
+          <a href="index.html" class="nav-link">Home</a>
         </li>
         <li class="nav-item">
-          <a href="about.html" class="nav-link">
-            About Me
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="work.html" class="nav-link disabled-link" style="color: wheat;">
-            My Work
-          </a>
+          <a href="about.html" class="nav-link">About Me</a>
         </li>
         <li class="nav-item current">
-          <a href="contact.html" class="nav-link">
-            Contact
-          </a>
+          <a href="contact.html" class="nav-link">Contact</a>
         </li>
         <li class="nav-item">
-          <a href="/resume.pdf" target="_blank" class="nav-link">
-            Resume
-          </a>
+          <a href="/resume.pdf" target="_blank" class="nav-link">Resume</a>
         </li>
         <li class="nav-item">
-          <a href="/blog/index.html" class="nav-link">
-            Blog
-          </a>
+          <a href="/blog/index.html" class="nav-link">Blog</a>
         </li>
       </ul>
     </nav>
   </header>
 
   <main id="contact">
-    <h1 class="lg-heading">
-      Contact
-      <span class="text-secondary">Me</span>
-    </h1>
-    <h2 class="sm-heading">
-      This is how you can reach me...
-    </h2>
-    <div class="boxes">
-      <div>
-        <a target="_blank" href="mailTo:ratansinghdharra@gmail.com" title="ratansinghdharra@gmail.com"><span class="text-secondary">Email: </span> ratansinghdharra@gmail.com</a>
-      </div>
-      <div>
-      <a href="tel:+919108060078">  <span class="text-secondary">Phone: </span> (+91) 9108060078</a>
-      </div>
-      <div>
-        <span class="text-secondary">Address: </span> Surya Vihar, Gurugram, India 122001
-      </div>
+    <div class="contact-shell">
+      <h1 class="lg-heading">Contact <span class="text-secondary">Me</span></h1>
+      <h2 class="sm-heading">Open to engineering collaboration, product consulting, and interesting build ideas.</h2>
+
+      <section class="contact-summary">
+        <span class="summary-chip"><i class="fas fa-circle"></i> Available for discussions</span>
+        <span class="summary-chip"><i class="fas fa-bolt"></i> Usually replies within 24 hours</span>
+      </section>
+
+      <section class="contact-grid">
+        <article class="contact-card">
+          <span class="card-icon"><i class="fas fa-envelope"></i></span>
+          <h3 class="contact-label">Email</h3>
+          <p class="contact-value">
+            <a target="_blank" href="mailto:ratansinghdharra@gmail.com" title="ratansinghdharra@gmail.com">ratansinghdharra@gmail.com</a>
+          </p>
+          <p class="contact-meta">Best for project and collaboration inquiries.</p>
+        </article>
+
+        <article class="contact-card">
+          <span class="card-icon"><i class="fas fa-phone"></i></span>
+          <h3 class="contact-label">Phone</h3>
+          <p class="contact-value">
+            <a href="tel:+919108060078">(+91) 9108060078</a>
+          </p>
+          <p class="contact-meta">Available during standard IST working hours.</p>
+        </article>
+
+        <article class="contact-card">
+          <span class="card-icon"><i class="fas fa-map-marker-alt"></i></span>
+          <h3 class="contact-label">Address</h3>
+          <p class="contact-value">Bangalore, India</p>
+          <p class="contact-meta">Open to remote and hybrid opportunities.</p>
+        </article>
+      </section>
+
+      <section class="contact-actions">
+        <a class="action-btn" href="mailto:ratansinghdharra@gmail.com"><i class="fas fa-paper-plane"></i> Send Email</a>
+        <a class="action-btn" href="tel:+919108060078"><i class="fas fa-phone"></i> Call Now</a>
+        <a class="action-btn" href="/resume.pdf" target="_blank"><i class="fas fa-file-alt"></i> View Resume</a>
+      </section>
     </div>
   </main>
 
   <footer id="main-footer">
-    Copyright 2018 &copy; All Right Reserved To <font color= #eece1a>Ratan Singh</font>
+    Copyright 2018 &copy; All Right Reserved To <font color="#eece1a">Ratan Singh</font>
   </footer>
 
   <script src="js/main.js"></script>
 </body>
-
 </html>
