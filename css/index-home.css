@@ -19,9 +19,12 @@ body {
   min-height: 100vh;
   padding: 6rem 3.5rem 2.6rem;
   background:
-    radial-gradient(circle at 12% 18%, rgba(204, 120, 50, 0.24), transparent 32%),
-    radial-gradient(circle at 88% 22%, rgba(104, 151, 187, 0.2), transparent 34%),
+    radial-gradient(circle at 12% 18%, rgba(204, 120, 50, 0.28), transparent 34%),
+    radial-gradient(circle at 88% 22%, rgba(104, 151, 187, 0.24), transparent 36%),
+    radial-gradient(circle at 48% 108%, rgba(106, 135, 89, 0.18), transparent 36%),
     linear-gradient(155deg, #2b2b2b 0%, #323537 55%, #292c2e 100%);
+  background-size: 120% 120%, 120% 120%, 120% 120%, 100% 100%;
+  animation: homeBackgroundShift 22s ease-in-out infinite alternate;
 }
 
 #home::before {
@@ -30,8 +33,24 @@ body {
   inset: 0;
   background-image: linear-gradient(rgba(169, 183, 198, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(169, 183, 198, 0.05) 1px, transparent 1px);
   background-size: 28px 28px;
-  opacity: 0.2;
+  opacity: 0.26;
   pointer-events: none;
+  animation: homeGridShift 24s linear infinite;
+}
+
+#home::after {
+  content: "";
+  position: absolute;
+  inset: -18%;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 16% 20%, rgba(204, 120, 50, 0.28), transparent 34%),
+    radial-gradient(circle at 82% 18%, rgba(104, 151, 187, 0.26), transparent 36%),
+    radial-gradient(circle at 68% 84%, rgba(106, 135, 89, 0.22), transparent 38%),
+    radial-gradient(circle at 32% 72%, rgba(204, 120, 50, 0.14), transparent 34%);
+  filter: blur(22px) saturate(108%);
+  opacity: 0.62;
+  animation: homeAuroraDrift 18s ease-in-out infinite alternate;
 }
 
 .home-shell {
@@ -41,6 +60,39 @@ body {
   margin: 0 auto;
   display: grid;
   gap: 1.2rem;
+}
+
+@keyframes homeGridShift {
+  0% {
+    background-position: 0 0, 0 0;
+  }
+  100% {
+    background-position: 56px 28px, 28px 56px;
+  }
+}
+
+@keyframes homeBackgroundShift {
+  0% {
+    background-position: 0% 0%, 100% 0%, 50% 100%, 0% 0%;
+  }
+  50% {
+    background-position: 4% 2%, 96% 4%, 52% 97%, 0% 0%;
+  }
+  100% {
+    background-position: 7% 4%, 92% 7%, 56% 94%, 0% 0%;
+  }
+}
+
+@keyframes homeAuroraDrift {
+  0% {
+    transform: translate3d(-3%, -2%, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(3%, 2.2%, 0) scale(1.06);
+  }
+  100% {
+    transform: translate3d(-2%, 3%, 0) scale(1.03);
+  }
 }
 
 .hero-grid {
@@ -504,5 +556,13 @@ body {
 
   #game-canvas {
     height: 175px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #home,
+  #home::before,
+  #home::after {
+    animation: none;
   }
 }
