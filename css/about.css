@@ -71,10 +71,11 @@ body {
 .about-stats,
 .about-skills,
 .experience-item {
-  background: var(--about-card);
-  border: 1px solid var(--about-border);
+  background: linear-gradient(145deg, rgba(58, 61, 64, 0.56), rgba(43, 45, 47, 0.48));
+  border: 1px solid rgba(169, 183, 198, 0.24);
   border-radius: var(--about-radius);
-  backdrop-filter: blur(6px);
+  backdrop-filter: blur(12px) saturate(125%);
+  box-shadow: 0 20px 42px rgba(0, 0, 0, 0.3);
   transition: border-color 0.25s ease, transform 0.25s ease;
 }
 
@@ -133,13 +134,14 @@ body {
   min-height: 34px;
   padding: 0.35rem 0.82rem;
   border-radius: 12px;
-  border: 1px solid rgba(104, 151, 187, 0.45);
-  background: linear-gradient(145deg, rgba(104, 151, 187, 0.24), rgba(104, 151, 187, 0.1));
+  border: 1px solid rgba(104, 151, 187, 0.5);
+  background: linear-gradient(145deg, rgba(104, 151, 187, 0.3), rgba(78, 82, 84, 0.2));
   color: #c4d6e6;
   font-size: 0.82rem;
   line-height: 1.2;
   letter-spacing: 0.01em;
   white-space: nowrap;
+  transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
 }
 
 .about-intro-actions {
@@ -173,7 +175,7 @@ body {
 
 .about-action-btn.secondary {
   color: #a9b7c6;
-  background: rgba(78, 82, 84, 0.24);
+  background: linear-gradient(145deg, rgba(78, 82, 84, 0.34), rgba(60, 63, 65, 0.2));
 }
 
 .about-action-btn:hover {
@@ -191,8 +193,11 @@ body {
 .stat-box {
   padding: 0.85rem;
   border-radius: 14px;
-  background: rgba(78, 82, 84, 0.24);
+  background: linear-gradient(145deg, rgba(78, 82, 84, 0.32), rgba(60, 63, 65, 0.2));
+  border: 1px solid rgba(169, 183, 198, 0.18);
+  backdrop-filter: blur(8px);
   text-align: center;
+  transition: transform 0.22s ease, border-color 0.22s ease, background 0.22s ease;
 }
 
 .stat-value {
@@ -234,10 +239,31 @@ body {
 .skills-grid span {
   padding: 0.36rem 0.7rem;
   border-radius: 10px;
-  background: rgba(78, 82, 84, 0.24);
-  border: 1px solid rgba(78, 82, 84, 0.52);
+  background: linear-gradient(145deg, rgba(78, 82, 84, 0.32), rgba(60, 63, 65, 0.2));
+  border: 1px solid rgba(169, 183, 198, 0.2);
   font-size: 0.85rem;
   color: #a9b7c6;
+  transition: transform 0.22s ease, border-color 0.22s ease, background 0.22s ease;
+}
+
+@media (hover: hover) {
+  .about-stats:hover {
+    border-color: rgba(137, 180, 225, 0.44);
+    transform: translateY(-2px);
+    box-shadow: 0 26px 52px rgba(0, 0, 0, 0.34);
+  }
+
+  .about-chip:hover,
+  .stat-box:hover,
+  .skills-grid span:hover {
+    transform: translateY(-2px);
+    border-color: rgba(137, 180, 225, 0.44);
+    background: linear-gradient(145deg, rgba(104, 151, 187, 0.34), rgba(60, 63, 65, 0.24));
+  }
+
+  .about-chip:hover {
+    box-shadow: 0 8px 18px rgba(104, 151, 187, 0.2);
+  }
 }
 
 .experience-section {
@@ -248,7 +274,7 @@ body {
 .experience-item {
   padding: 1.2rem 1.3rem;
   border-left: 4px solid var(--about-accent);
-  background: linear-gradient(160deg, var(--about-card-strong), var(--about-card));
+  background: linear-gradient(145deg, rgba(58, 61, 64, 0.58), rgba(43, 45, 47, 0.5));
 }
 
 .experience-item h4 {

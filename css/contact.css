@@ -67,10 +67,11 @@ body {
   gap: 0.4rem;
   padding: 0.36rem 0.76rem;
   border-radius: 999px;
-  border: 1px solid rgba(104, 151, 187, 0.42);
-  background: rgba(104, 151, 187, 0.2);
+  border: 1px solid rgba(104, 151, 187, 0.5);
+  background: linear-gradient(145deg, rgba(104, 151, 187, 0.3), rgba(78, 82, 84, 0.2));
   color: #c6d6e5;
   font-size: 0.82rem;
+  transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
 }
 
 .summary-chip i {
@@ -88,11 +89,28 @@ body {
   display: grid;
   gap: 0.7rem;
   padding: 1.2rem;
-  background: var(--contact-card);
-  border: 1px solid var(--contact-border);
+  background: linear-gradient(145deg, rgba(58, 61, 64, 0.56), rgba(43, 45, 47, 0.48));
+  border: 1px solid rgba(169, 183, 198, 0.24);
   border-radius: var(--contact-radius);
-  backdrop-filter: blur(6px);
+  backdrop-filter: blur(12px) saturate(125%);
+  box-shadow: 0 20px 42px rgba(0, 0, 0, 0.3);
   min-height: 185px;
+  transition: transform 0.24s ease, border-color 0.24s ease, box-shadow 0.24s ease;
+}
+
+@media (hover: hover) {
+  .summary-chip:hover {
+    transform: translateY(-1px);
+    border-color: rgba(137, 180, 225, 0.64);
+    background: linear-gradient(145deg, rgba(104, 151, 187, 0.36), rgba(78, 82, 84, 0.24));
+    box-shadow: 0 8px 18px rgba(104, 151, 187, 0.2);
+  }
+
+  .contact-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(137, 180, 225, 0.44);
+    box-shadow: 0 26px 52px rgba(0, 0, 0, 0.34);
+  }
 }
 
 .card-icon {
@@ -155,11 +173,12 @@ body {
   gap: 0.45rem;
   padding: 0.66rem 1rem;
   border-radius: 12px;
-  border: 1px solid rgba(78, 82, 84, 0.72);
-  background: rgba(78, 82, 84, 0.24);
+  border: 1px solid rgba(169, 183, 198, 0.24);
+  background: linear-gradient(145deg, rgba(78, 82, 84, 0.34), rgba(60, 63, 65, 0.2));
   color: #a9b7c6;
   font-weight: 500;
   text-decoration: none;
+  backdrop-filter: blur(8px);
   transition: all 0.25s ease;
 }
 
