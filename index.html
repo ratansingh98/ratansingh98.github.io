@@ -1,13 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<style>
-  .disabled-link {
-    pointer-events: none;
-
-  }
-</style>
-
 <head>
   <meta charset="UTF-8">
   <meta name="description" content="This is the Portfolio website of Ratan Singh Dharra who is in the journey to become great engineer.">
@@ -16,14 +8,524 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <meta name="keywords" content="Ratan Singh,Ratan Singh Dharra,ratansingh98, Software architecture, Portfolio, AI Portfolio, Developer Portfolio, Software Developer Portfolio">
   <link rel="icon" href="https://img.icons8.com/fluent/48/000000/businessman.png">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
-    crossorigin="anonymous">
-
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/main.css">
   <title>Welcome To My Portfolio</title>
-</head>
+  <style>
+    :root {
+      --home-accent: #ffc86d;
+      --home-accent-soft: rgba(255, 200, 109, 0.14);
+      --home-text-soft: #d3d3d3;
+      --home-border: rgba(255, 255, 255, 0.14);
+      --home-card: rgba(18, 18, 18, 0.7);
+      --home-radius: 18px;
+    }
 
-<body id="bg-img">
+    body {
+      font-family: "Outfit", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      background: #181818;
+    }
+
+    #home {
+      position: relative;
+      overflow: hidden;
+      min-height: 100vh;
+      padding: 6rem 3.5rem 2.6rem;
+      background:
+        radial-gradient(circle at 12% 18%, rgba(255, 200, 109, 0.28), transparent 32%),
+        radial-gradient(circle at 88% 22%, rgba(74, 154, 255, 0.2), transparent 34%),
+        linear-gradient(155deg, #1f1f1f 0%, #151515 55%, #212121 100%);
+    }
+
+    #home::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+      background-size: 28px 28px;
+      opacity: 0.2;
+      pointer-events: none;
+    }
+
+    .home-shell {
+      position: relative;
+      z-index: 1;
+      max-width: 1140px;
+      margin: 0 auto;
+      display: grid;
+      gap: 1.2rem;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.25fr 0.75fr;
+      gap: 1rem;
+      align-items: stretch;
+    }
+
+    .hero-main,
+    .hero-side,
+    .home-stats {
+      background: var(--home-card);
+      border: 1px solid var(--home-border);
+      border-radius: var(--home-radius);
+      backdrop-filter: blur(6px);
+    }
+
+    .hero-main,
+    .hero-side {
+      height: 100%;
+    }
+
+    .hero-main {
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.72rem;
+      align-content: start;
+    }
+
+    .status-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5rem;
+      margin: 0;
+    }
+
+    .status-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 auto;
+      gap: 0.4rem;
+      min-height: 0;
+      height: 40px;
+      margin: 0;
+      padding: 0 0.82rem;
+      border-radius: 999px;
+      border: 1px solid rgba(98, 230, 172, 0.38);
+      background: rgba(98, 230, 172, 0.16);
+      color: #bbffe4;
+      font-size: 0.82rem;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .status-chip i {
+      color: #62e6ac;
+      font-size: 0.72rem;
+    }
+
+    #home .lg-heading {
+      margin: 0;
+      font-family: "Space Grotesk", "Outfit", sans-serif;
+      font-size: clamp(2.2rem, 7vw, 5.2rem);
+      line-height: 1;
+    }
+
+    .hero-role {
+      margin: 0;
+      color: var(--home-accent);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 600;
+      font-size: clamp(0.8rem, 2vw, 1rem);
+    }
+
+    .hero-copy {
+      margin: 0;
+      max-width: 56ch;
+      color: var(--home-text-soft);
+      font-size: 1rem;
+      line-height: 1.55;
+    }
+
+    .hero-detail {
+      margin: 0;
+      max-width: 58ch;
+      color: #c6c6c6;
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+
+    .hero-points {
+      display: grid;
+      gap: 0.45rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .hero-points li {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      color: #dbdbdb;
+      font-size: 0.9rem;
+      line-height: 1.3;
+    }
+
+    .hero-points li i {
+      color: #8ae8bf;
+      font-size: 0.7rem;
+      width: 14px;
+      text-align: center;
+      flex: 0 0 14px;
+    }
+
+    .hero-highlights {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.55rem;
+      margin-top: 0.15rem;
+    }
+
+    .hero-highlight-item {
+      padding: 0.5rem 0.55rem;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .hero-highlight-item strong {
+      display: block;
+      color: #ffd48d;
+      font-size: 0.85rem;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      line-height: 1.2;
+    }
+
+    .hero-highlight-item span {
+      display: block;
+      margin-top: 0.2rem;
+      color: #d3d3d3;
+      font-size: 0.82rem;
+      line-height: 1.25;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+      margin: 0;
+      margin-top: 0.35rem;
+    }
+
+    .hero-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.42rem;
+      height: 50px;
+      padding: 0 1rem;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.96rem;
+      line-height: 1;
+      white-space: nowrap;
+      transition: all 0.25s ease;
+    }
+
+    .hero-btn i {
+      font-size: 0.9rem;
+      line-height: 1;
+    }
+
+    .hero-btn.primary {
+      color: #231909;
+      background: linear-gradient(140deg, #ffd897, #ffc86d);
+      border-color: rgba(255, 216, 151, 0.5);
+    }
+
+    .hero-btn.secondary {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.07);
+    }
+
+    .hero-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .hero-side {
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      align-content: start;
+    }
+
+    .hero-side h3 {
+      margin: 0;
+      color: var(--home-accent);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .focus-list {
+      display: grid;
+      gap: 0.55rem;
+    }
+
+    .focus-item {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      padding: 0.46rem 0.52rem;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.05);
+      color: #ececec;
+      font-size: 0.9rem;
+    }
+
+    .focus-item i {
+      color: var(--home-accent);
+      width: 16px;
+      text-align: center;
+    }
+
+    .icons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      margin-top: 0.25rem;
+    }
+
+    .game-card {
+      display: grid;
+      gap: 0.5rem;
+      padding: 0.68rem;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.04);
+      align-content: start;
+    }
+
+    .game-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.6rem;
+      color: #f7e2b3;
+      font-size: 0.83rem;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    .game-title {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .game-status {
+      color: #9ddabf;
+      font-size: 0.7rem;
+      letter-spacing: 0.04em;
+      border: 1px solid rgba(157, 218, 191, 0.3);
+      border-radius: 999px;
+      padding: 0.12rem 0.42rem;
+      text-transform: uppercase;
+    }
+
+    .game-score {
+      color: #fff4d8;
+      font-weight: 600;
+      font-size: 0.85rem;
+      border: 1px solid rgba(255, 200, 109, 0.36);
+      background: rgba(255, 200, 109, 0.14);
+      border-radius: 999px;
+      padding: 0.2rem 0.55rem;
+    }
+
+    .game-help {
+      margin: 0;
+      color: #d3d3d3;
+      font-size: 0.82rem;
+      line-height: 1.4;
+    }
+
+    #game-canvas {
+      width: 100%;
+      height: 158px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: radial-gradient(circle at 20% 16%, rgba(255, 200, 109, 0.16), transparent 38%), #101010;
+      overflow: hidden;
+      cursor: crosshair;
+    }
+
+    .game-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    #reset-game {
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      background: rgba(255, 255, 255, 0.08);
+      color: #f0f0f0;
+      border-radius: 9px;
+      padding: 0.33rem 0.65rem;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    #reset-game:hover {
+      border-color: rgba(255, 200, 109, 0.72);
+      color: #ffe2ad;
+    }
+
+    .game-best {
+      color: #bbbbbb;
+      font-size: 0.8rem;
+    }
+
+    .icons a {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(255, 255, 255, 0.05);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.25s ease;
+    }
+
+    .icons a i {
+      font-size: 1.05rem;
+    }
+
+    .icons a:hover {
+      border-color: rgba(255, 200, 109, 0.8);
+      color: #ffd692;
+      transform: translateY(-1px);
+    }
+
+    .home-stats {
+      padding: 0.9rem;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.75rem;
+    }
+
+    .stat-box {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 0.8rem;
+      text-align: center;
+    }
+
+    .stat-value {
+      display: block;
+      font-size: 1.2rem;
+      color: var(--home-accent);
+      font-weight: 600;
+    }
+
+    .stat-label {
+      display: block;
+      margin-top: 0.2rem;
+      color: #c6c6c6;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    @media (max-width: 960px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .home-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 768px) {
+      #home {
+        padding: 5.4rem 0.9rem 1.9rem;
+        text-align: left;
+      }
+
+      .home-shell {
+        gap: 0.9rem;
+      }
+
+      .hero-main,
+      .hero-side {
+        padding: 1rem;
+      }
+
+      .hero-copy {
+        font-size: 0.92rem;
+      }
+
+      .hero-detail {
+        font-size: 0.87rem;
+      }
+
+      .hero-points li {
+        font-size: 0.86rem;
+      }
+
+      .hero-highlights {
+        grid-template-columns: 1fr;
+      }
+
+      #game-canvas {
+        height: 170px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      #home {
+        padding: 5rem 0.7rem 1.6rem;
+      }
+
+      #home .lg-heading {
+        font-size: clamp(1.9rem, 11vw, 3.5rem);
+      }
+
+      .status-chip {
+        height: 36px;
+        font-size: 0.78rem;
+      }
+
+      .home-stats {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-btn {
+        width: 100%;
+      }
+
+      .status-chip {
+        width: 100%;
+        justify-content: center;
+      }
+
+      #game-canvas {
+        height: 175px;
+      }
+    }
+  </style>
+</head>
+<body>
   <header>
     <div class="menu-btn">
       <div class="btn-line"></div>
@@ -37,59 +539,409 @@
       </div>
       <ul class="menu-nav">
         <li class="nav-item current">
-          <a href="index.html" class="nav-link">
-            Home
-          </a>
+          <a href="index.html" class="nav-link">Home</a>
         </li>
         <li class="nav-item">
-          <a href="about.html" class="nav-link">
-            About Me
-          </a>
+          <a href="about.html" class="nav-link">About Me</a>
         </li>
         <li class="nav-item">
-          <a href="contact.html" class="nav-link">
-            Contact
-          </a>
+          <a href="contact.html" class="nav-link">Contact</a>
         </li>
         <li class="nav-item">
-          <a href="/resume.pdf" target="_blank" class="nav-link">
-            Resume
-          </a>
+          <a href="/resume.pdf" target="_blank" class="nav-link">Resume</a>
         </li>
         <li class="nav-item">
-          <a href="/blog/index.html" class="nav-link">
-            Blog
-          </a>
+          <a href="/blog/index.html" class="nav-link">Blog</a>
         </li>
       </ul>
     </nav>
   </header>
 
   <main id="home">
-    <h1 class="lg-heading">
-      Ratan
-      <span class="text-secondary">Singh</span>
-    </h1>
-    <h2 class="sm-heading">
-      Senior Software Engineer
-    </h2>
-    <div class="icons">
-      <a href="https://twitter.com/Ratan_Singh98" target="_blank">
-        <i class="fab fa-twitter fa-2x"></i>
-      </a>
-      <a href="https://www.facebook.com/ratan.saindharra" target="_blank">
-        <i class="fab fa-facebook fa-2x"></i>
-      </a>
-      <a href="https://www.linkedin.com/in/ratan-singh-198931144/" target="_blank">
-        <i class="fab fa-linkedin fa-2x"></i>
-      </a>
-      <a href="https://github.com/ratansingh98" target="_blank">
-        <i class="fab fa-github fa-2x"></i>
-      </a>
+    <div class="home-shell">
+      <section class="hero-grid">
+        <article class="hero-main">
+          <div class="status-row">
+            <span class="status-chip"><i class="fas fa-circle"></i> Available for engineering roles</span>
+            <span class="status-chip"><i class="fas fa-rocket"></i> Open to product collaboration</span>
+          </div>
+          <h1 class="lg-heading">Ratan <span class="text-secondary">Singh</span></h1>
+          <p class="hero-role">Senior Software Engineer</p>
+          <p class="hero-copy">I design and ship high-impact software systems with strong focus on architecture, performance, and reliability. I enjoy turning complex product ideas into clean, scalable engineering outcomes.</p>
+          <p class="hero-detail">My recent work includes scaling AI-assisted workflows, improving engineering execution speed, and mentoring teams to ship dependable features with measurable business impact.</p>
+          <ul class="hero-points">
+            <li><i class="fas fa-circle"></i>Built and scaled production systems from early stage to enterprise use.</li>
+            <li><i class="fas fa-circle"></i>Led cross-functional delivery with strong release quality and velocity.</li>
+            <li><i class="fas fa-circle"></i>Focused on practical automation that saves developer and customer time.</li>
+          </ul>
+          <div class="hero-highlights">
+            <div class="hero-highlight-item">
+              <strong>Current</strong>
+              <span>AI workflows and backend systems</span>
+            </div>
+            <div class="hero-highlight-item">
+              <strong>Preferred</strong>
+              <span>Product-focused engineering teams</span>
+            </div>
+            <div class="hero-highlight-item">
+              <strong>Mode</strong>
+              <span>Remote-friendly collaboration</span>
+            </div>
+          </div>
+          <div class="hero-actions">
+            <a class="hero-btn primary" href="/resume.pdf" target="_blank"><i class="fas fa-file-alt"></i> View Resume</a>
+            <a class="hero-btn secondary" href="contact.html"><i class="fas fa-paper-plane"></i> Contact Me</a>
+          </div>
+        </article>
+
+        <aside class="hero-side">
+          <h3>What I Focus On</h3>
+          <div class="focus-list">
+            <div class="focus-item"><i class="fas fa-sitemap"></i> Scalable backend architecture</div>
+            <div class="focus-item"><i class="fas fa-bolt"></i> Performance optimization</div>
+            <div class="focus-item"><i class="fas fa-users"></i> Team leadership and delivery</div>
+            <div class="focus-item"><i class="fas fa-robot"></i> AI-powered product systems</div>
+          </div>
+          <section class="game-card" id="mini-game">
+            <div class="game-head">
+              <span class="game-title">Arcade Mode <span id="game-status" class="game-status">Ready</span></span>
+              <span class="game-score">Score: <span id="game-score">0</span></span>
+            </div>
+            <p class="game-help">Flappy Bird: tap/click or press space to flap and pass through gaps.</p>
+            <div id="game-canvas" aria-label="Three.js mini game area"></div>
+            <div class="game-actions">
+              <button id="reset-game" type="button">Reset</button>
+              <span class="game-best">Best: <span id="game-best">0</span></span>
+            </div>
+          </section>
+          <div class="icons">
+            <a href="https://twitter.com/Ratan_Singh98" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.facebook.com/ratan.saindharra" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.linkedin.com/in/ratan-singh-198931144/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+            <a href="https://github.com/ratansingh98" target="_blank"><i class="fab fa-github"></i></a>
+          </div>
+        </aside>
+      </section>
+
+      <section class="home-stats">
+        <div class="stat-box">
+          <span class="stat-value">5+ Years</span>
+          <span class="stat-label">Experience</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-value">14 Engineers</span>
+          <span class="stat-label">Team Led</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-value">4x-5x</span>
+          <span class="stat-label">Growth Impact</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-value">Monthly</span>
+          <span class="stat-label">Release Cadence</span>
+        </div>
+      </section>
     </div>
   </main>
 
   <script src="js/main.js"></script>
-</body>
+  <script>
+    (function () {
+      var gameRoot = document.getElementById("mini-game");
+      if (!gameRoot) return;
 
+      var canvasHost = document.getElementById("game-canvas");
+      var scoreEl = document.getElementById("game-score");
+      var bestEl = document.getElementById("game-best");
+      var resetBtn = document.getElementById("reset-game");
+      var statusEl = document.getElementById("game-status");
+
+      function setStatus(text, tone) {
+        if (!statusEl) return;
+        statusEl.textContent = text;
+        if (tone === "error") {
+          statusEl.style.color = "#ffadad";
+          statusEl.style.borderColor = "rgba(255, 173, 173, 0.4)";
+        } else {
+          statusEl.style.color = "#9ddabf";
+          statusEl.style.borderColor = "rgba(157, 218, 191, 0.3)";
+        }
+      }
+
+      var canvas = document.createElement("canvas");
+      var ctx = canvas.getContext("2d");
+      if (!ctx) {
+        setStatus("Unavailable", "error");
+        return;
+      }
+      canvasHost.innerHTML = "";
+      canvasHost.style.touchAction = "manipulation";
+      canvasHost.appendChild(canvas);
+
+      var score = 0;
+      var best = 0;
+      try {
+        best = Number(localStorage.getItem("gm_flappy_best_score") || 0);
+      } catch (err) {
+        best = 0;
+      }
+      bestEl.textContent = String(best);
+
+      var state = {
+        width: 0,
+        height: 0,
+        started: false,
+        over: false,
+        score: 0,
+        gravity: 1220,
+        flapPower: -360,
+        scrollSpeed: 170,
+        gapSize: 128,
+        pipeWidth: 58,
+        spawnEvery: 1.35,
+        spawnTimer: 0,
+        bird: { x: 78, y: 100, r: 12, vy: 0 },
+        pipes: []
+      };
+
+      function updateScore(next) {
+        score = next;
+        state.score = next;
+        scoreEl.textContent = String(next);
+        if (next > best) {
+          best = next;
+          bestEl.textContent = String(best);
+          try {
+            localStorage.setItem("gm_flappy_best_score", String(best));
+          } catch (err) {
+            // Ignore storage failures.
+          }
+        }
+      }
+
+      function resize() {
+        var width = Math.max(120, canvasHost.clientWidth);
+        var height = Math.max(120, canvasHost.clientHeight);
+        var dpr = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = Math.floor(width * dpr);
+        canvas.height = Math.floor(height * dpr);
+        canvas.style.width = width + "px";
+        canvas.style.height = height + "px";
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        state.width = width;
+        state.height = height;
+        if (!state.started) {
+          state.bird.y = Math.round(height * 0.48);
+        } else {
+          state.bird.y = Math.max(state.bird.r, Math.min(height - state.bird.r, state.bird.y));
+        }
+      }
+
+      function resetGame() {
+        state.started = false;
+        state.over = false;
+        state.spawnTimer = 0;
+        state.pipes = [];
+        state.bird.vy = 0;
+        state.bird.y = Math.round(state.height * 0.48);
+        updateScore(0);
+        setStatus("Ready");
+      }
+
+      function spawnPipe() {
+        var margin = 22;
+        var minTop = margin;
+        var maxTop = Math.max(minTop, state.height - state.gapSize - margin);
+        var topHeight = minTop + Math.random() * (maxTop - minTop);
+        state.pipes.push({
+          x: state.width + 24,
+          topHeight: topHeight,
+          scored: false
+        });
+      }
+
+      function flap() {
+        if (state.over) {
+          resetGame();
+          state.started = true;
+        } else if (!state.started) {
+          state.started = true;
+        }
+        state.bird.vy = state.flapPower;
+        setStatus("Live");
+      }
+
+      function pipeCollides(pipe, bird) {
+        var pipeLeft = pipe.x;
+        var pipeRight = pipe.x + state.pipeWidth;
+        var birdLeft = bird.x - bird.r;
+        var birdRight = bird.x + bird.r;
+        if (birdRight < pipeLeft || birdLeft > pipeRight) return false;
+        var gapTop = pipe.topHeight;
+        var gapBottom = pipe.topHeight + state.gapSize;
+        var birdTop = bird.y - bird.r;
+        var birdBottom = bird.y + bird.r;
+        return birdTop < gapTop || birdBottom > gapBottom;
+      }
+
+      function gameOver() {
+        if (state.over) return;
+        state.over = true;
+        state.started = false;
+        setStatus("Crashed", "error");
+      }
+
+      function update(dt) {
+        if (!state.started || state.over) {
+          return;
+        }
+
+        state.spawnTimer += dt;
+        if (state.spawnTimer >= state.spawnEvery) {
+          state.spawnTimer = 0;
+          spawnPipe();
+        }
+
+        state.bird.vy += state.gravity * dt;
+        state.bird.y += state.bird.vy * dt;
+
+        if (state.bird.y - state.bird.r <= 0 || state.bird.y + state.bird.r >= state.height) {
+          gameOver();
+        }
+
+        for (var i = state.pipes.length - 1; i >= 0; i -= 1) {
+          var pipe = state.pipes[i];
+          pipe.x -= state.scrollSpeed * dt;
+
+          if (!pipe.scored && pipe.x + state.pipeWidth < state.bird.x) {
+            pipe.scored = true;
+            updateScore(state.score + 1);
+          }
+
+          if (pipe.x + state.pipeWidth < -10) {
+            state.pipes.splice(i, 1);
+            continue;
+          }
+
+          if (pipeCollides(pipe, state.bird)) {
+            gameOver();
+          }
+        }
+      }
+
+      function drawBird() {
+        var bird = state.bird;
+        var tilt = Math.max(-0.65, Math.min(0.9, bird.vy / 430));
+        ctx.save();
+        ctx.translate(bird.x, bird.y);
+        ctx.rotate(tilt);
+        ctx.fillStyle = "#ffd16f";
+        ctx.beginPath();
+        ctx.arc(0, 0, bird.r, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = "#ff9f3f";
+        ctx.beginPath();
+        ctx.moveTo(bird.r - 2, 0);
+        ctx.lineTo(bird.r + 8, -3);
+        ctx.lineTo(bird.r + 8, 3);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.fillStyle = "#1a1a1a";
+        ctx.beginPath();
+        ctx.arc(3, -4, 2, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      function drawPipes() {
+        for (var i = 0; i < state.pipes.length; i += 1) {
+          var pipe = state.pipes[i];
+          var gapTop = pipe.topHeight;
+          var gapBottom = pipe.topHeight + state.gapSize;
+
+          ctx.fillStyle = "#64d498";
+          ctx.fillRect(pipe.x, 0, state.pipeWidth, gapTop);
+          ctx.fillRect(pipe.x, gapBottom, state.pipeWidth, state.height - gapBottom);
+
+          ctx.fillStyle = "#8bf6be";
+          ctx.fillRect(pipe.x - 2, gapTop - 10, state.pipeWidth + 4, 10);
+          ctx.fillRect(pipe.x - 2, gapBottom, state.pipeWidth + 4, 10);
+        }
+      }
+
+      function drawBackdrop() {
+        var sky = ctx.createLinearGradient(0, 0, 0, state.height);
+        sky.addColorStop(0, "#1d2a38");
+        sky.addColorStop(1, "#0f131b");
+        ctx.fillStyle = sky;
+        ctx.fillRect(0, 0, state.width, state.height);
+
+        ctx.strokeStyle = "rgba(255,255,255,0.06)";
+        ctx.lineWidth = 1;
+        for (var x = 0; x < state.width; x += 26) {
+          ctx.beginPath();
+          ctx.moveTo(x + 0.5, 0);
+          ctx.lineTo(x + 0.5, state.height);
+          ctx.stroke();
+        }
+      }
+
+      function drawOverlay(message, subMessage) {
+        ctx.fillStyle = "rgba(6, 8, 12, 0.48)";
+        ctx.fillRect(0, 0, state.width, state.height);
+        ctx.fillStyle = "#fff5df";
+        ctx.font = "600 14px Outfit, sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText(message, state.width / 2, state.height / 2 - 4);
+        ctx.fillStyle = "#d5d5d5";
+        ctx.font = "400 12px Outfit, sans-serif";
+        ctx.fillText(subMessage, state.width / 2, state.height / 2 + 16);
+      }
+
+      function draw() {
+        drawBackdrop();
+        drawPipes();
+        drawBird();
+
+        if (!state.started && !state.over) {
+          drawOverlay("Tap To Start", "Click/tap/space to flap");
+        } else if (state.over) {
+          drawOverlay("Game Over", "Press reset or tap to restart");
+        }
+      }
+
+      function handlePress(event) {
+        if (event) event.preventDefault();
+        flap();
+      }
+
+      canvas.addEventListener("pointerdown", handlePress);
+      window.addEventListener("keydown", function (event) {
+        if (event.code === "Space" || event.code === "ArrowUp") {
+          handlePress(event);
+        }
+      });
+      resetBtn.addEventListener("click", function () {
+        resetGame();
+      });
+      window.addEventListener("resize", resize);
+
+      resize();
+      resetGame();
+
+      var lastTime = performance.now();
+      function loop(now) {
+        var dt = Math.min(0.033, (now - lastTime) / 1000);
+        lastTime = now;
+        update(dt);
+        draw();
+        requestAnimationFrame(loop);
+      }
+
+      requestAnimationFrame(loop);
+    })();
+  </script>
+</body>
 </html>
