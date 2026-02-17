@@ -1,0 +1,63 @@
+@import url("https://fonts.googleapis.com/css?family=Montserrat:600,700");
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:400,700");
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: linear-gradient(160deg, #2b2b2b 0%, #323537 52%, #292c2e 100%);
+}
+
+h1 {
+  margin: 0;
+  font-family: "Montserrat", sans-serif;
+  font-size: clamp(2.3rem, 8vw, 5.2rem);
+  color: #fff4e9;
+  letter-spacing: 0.06em;
+  text-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+p {
+  margin: 0.7rem 0 0;
+  font-family: "Open Sans", sans-serif;
+  font-size: clamp(1rem, 2.8vw, 1.35rem);
+  font-weight: 600;
+  color: #a9b7c6;
+}
+
+.container {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.container::before {
+  content: "";
+  position: absolute;
+  inset: -14%;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 14% 20%, rgba(204, 120, 50, 0.24), transparent 34%),
+    radial-gradient(circle at 84% 18%, rgba(104, 151, 187, 0.22), transparent 36%);
+  filter: blur(22px);
+}
+
+.wrapper {
+  width: 100%;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+}
+
+.item {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 1.4rem 1.6rem;
+  border-radius: 16px;
+  border: 1px solid rgba(169, 183, 198, 0.24);
+  background: linear-gradient(145deg, rgba(58, 61, 64, 0.56), rgba(43, 45, 47, 0.48));
+  backdrop-filter: blur(12px) saturate(125%);
+  box-shadow: 0 20px 42px rgba(0, 0, 0, 0.3);
+}
